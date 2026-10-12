@@ -50,7 +50,7 @@ h1{margin:var(--s3) 0 0;font-size:var(--t-display);line-height:var(--t-display-l
 h1 .en{display:block;margin-top:var(--s2);font-size:18px;line-height:1.4;font-weight:400;letter-spacing:0;color:var(--muted)}
 .intro{max-width:31em;margin:var(--s6) 0 0;color:var(--muted)}
 
-/* ── 버튼형 내비게이션: 칸 전체가 링크. Portfolio 만 채움 ── */
+/* ── 버튼형 내비게이션: 칸 전체가 링크. Profile·Portfolio 만 채움 ── */
 nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s3);margin-top:var(--s10)}
 nav a{display:grid;grid-template-columns:1fr auto;align-items:center;align-content:start;column-gap:var(--s3);row-gap:var(--s1);padding:var(--s4) var(--s5);border:1px solid var(--line);border-radius:var(--radius);color:var(--ink);text-decoration:none;transition:background-color .2s ease,border-color .2s ease}
 nav a:hover{background:var(--surface);border-color:var(--line-strong)}
@@ -123,7 +123,7 @@ footer{grid-column:1/-1;display:flex;justify-content:space-between;padding-top:v
       <p class="intro">9년간 통신 인프라 현장에서 쌓은 경험을 바탕으로, 클라우드 인프라 설계와 자동화로 기술 영역을 확장하고 있습니다.</p>
 
       <nav aria-label="주요 메뉴">
-        <a href="profile/"><b>Profile</b><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg><small>경력, 학력, 자격, 기술 스택</small></a>
+        <a href="profile/" class="primary"><b>Profile</b><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg><small>경력, 학력, 자격, 기술 스택</small></a>
         <a href="portfolio/" class="primary"><b>Portfolio</b><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg><small>프로젝트별 설계와 발표 자료</small></a>
         <a href="/game/"><b>Playground<span class="live">운영 중</span></b><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg><small>웹게임 「시간 낭비의 숲」, GKE 운영</small></a>
         <a href="contact/"><b>Contact</b><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4.5 11.5l7-7M5.5 4.5h6v6"/></svg><small>이메일, GitHub</small></a>
