@@ -4,7 +4,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>유준형 · 클라우드 인프라 엔지니어</title>
-<meta name="description" content="클라우드 인프라·DevOps 엔지니어 유준형의 포트폴리오">
+<meta name="description" content="통신 장비 검증·기술지원 경험과 클라우드 프로젝트를 소개합니다.">
+<link rel="canonical" href="https://1bit.kr/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="유준형 · 클라우드 인프라·DevOps">
+<meta property="og:description" content="통신 장비 검증·기술지원 경험과 클라우드 프로젝트를 소개합니다.">
+<meta property="og:url" content="https://1bit.kr/">
+<meta property="og:image" content="https://1bit.kr/assets/double-thumbs.png">
+<meta property="og:image:width" content="256">
+<meta property="og:image:height" content="256">
+<meta property="og:image:alt" content="유준형 픽셀 캐릭터">
+<meta name="twitter:card" content="summary">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="site.css">
@@ -12,22 +22,10 @@
 </head>
 <body>
 <main class="page" id="main">
-  <!--
-    프로필 미디어 교체법 (assets/ 폴더):
-    - 사진: assets/photo.jpg (png/webp 면 img src 만 바꾼다)
-    - GIF: assets/photo.gif 를 넣고 아래 <source> 주석을 푼다. 모션 줄이기 사용자에겐 photo.jpg 가 나온다
-    - 영상: <picture> 를 지우고 <video> 주석을 푼다. poster 는 첫 프레임 이미지
-    - 비율·크롭: figure 의 style 에 --media-ratio:4/5; --media-pos:50% 30%; --media-fit:cover
-    - 파일이 없거나 깨지면 JR 모노그램이 나온다
-  -->
-  <figure class="media" id="media" style="--media-fit:contain;--media-pos:50% 50%">
-    <picture>
-      <source srcset="assets/bow.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)">
-      <img src="assets/bow.png" alt="허리를 숙여 인사하는 유준형 픽셀 캐릭터" width="256" height="256" decoding="async" style="image-rendering:pixelated" onerror="this.closest('.media').classList.add('is-empty')">
-    </picture>
-    <!-- <video src="assets/intro.mp4" poster="assets/photo.jpg" autoplay muted loop playsinline aria-label="유준형 소개 영상"></video> -->
-    <div class="media-empty" aria-hidden="true">JR</div>
-  </figure>
+  <figure class="media" id="media" data-motion style="--media-fit:contain;--media-pos:50% 50%"><div class="character-image"><picture>
+    <source srcset="assets/bow.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)">
+    <img src="assets/bow.png" alt="허리를 숙여 인사하는 유준형 픽셀 캐릭터" width="256" height="256" decoding="async" style="image-rendering:pixelated">
+  </picture><span class="media-empty" aria-hidden="true">JR</span></div><button class="motion-toggle" data-motion-toggle hidden>움직임 멈춤</button></figure>
 
   <div class="intro-col">
     <div class="head">
@@ -48,14 +46,6 @@
 
   <footer><span>© 2026 유준형</span><span>1bit.kr</span></footer>
 </main>
-<script>
-  // 영상은 모션 줄이기면 멈춘 첫 프레임만. 이미지가 깨진 채 캐시돼 onerror 를 놓친 경우도 모노그램으로
-  const media = document.getElementById('media');
-  const video = media.querySelector('video');
-  if (video && matchMedia('(prefers-reduced-motion: reduce)').matches) { video.removeAttribute('autoplay'); video.pause(); }
-  if (video) video.addEventListener('error', () => media.classList.add('is-empty'));
-  const img = media.querySelector('img');
-  if (!video && img && img.complete && !img.naturalWidth) media.classList.add('is-empty');
-</script>
+<script src="motion.js" defer></script>
 </body>
 </html>
