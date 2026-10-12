@@ -20,7 +20,7 @@
   --radius:6px;
   --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
   /* 증명사진 크기·비율 */
-  --id-w:200px; --id-ratio:3/4; --id-pos:50% 30%; --id-fit:cover;
+  --id-w:200px; --id-ratio:1/1; --id-pos:50% 30%; --id-fit:cover;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -41,8 +41,8 @@ a{color:inherit}
 
 /* ── 헤더 ── */
 .intro{display:grid;grid-template-columns:var(--id-w) minmax(0,1fr);gap:var(--s12);align-items:end;padding:var(--s14) 0 var(--s12)}
-.id{position:relative;aspect-ratio:var(--id-ratio);border-radius:var(--radius);overflow:hidden;background:var(--sage-tint)}
-.id img{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--id-fit);object-position:var(--id-pos)}
+.id{position:relative;aspect-ratio:var(--id-ratio);border-radius:var(--radius);overflow:hidden}
+.id img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;image-rendering:pixelated}
 .id-empty{position:absolute;inset:0;display:none;place-items:center;font-size:48px;font-weight:300;letter-spacing:-.04em;color:var(--sage)}
 .id.is-empty .id-empty{display:grid}
 .id.is-empty img{display:none}
@@ -130,10 +130,8 @@ footer a:hover{color:var(--ink)}
 
 <main class="wrap">
   <div class="intro">
-    <!-- 증명사진: 1bit.kr/assets/profile-id.jpg 에 넣으면 바로 나온다. 크기·비율·크롭은 :root 의 --id-* 변수 -->
     <figure class="id" id="id-photo" style="margin:0">
-      <img src="../assets/profile-id.jpg" alt="유준형 증명사진" width="600" height="800" decoding="async" onerror="this.closest('.id').classList.add('is-empty')">
-      <div class="id-empty" aria-hidden="true">JR</div>
+      <picture><source srcset="../assets/thumbsup.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)"><img src="../assets/thumbsup.png" alt="엄지척으로 인사하는 유준형 픽셀 캐릭터" width="256" height="256" decoding="async"></picture>
     </figure>
     <div class="head-text">
       <div>
@@ -168,7 +166,7 @@ footer a:hover{color:var(--ink)}
       <p class="note">실무 경험 및 교육·프로젝트 기반 기술</p>
       <dl class="rows">
         <div><dt>Infrastructure &amp; Networking</dt><dd><ul class="tags"><li>TCP/IP</li><li>VLAN</li><li>Linux</li><li>DWDM</li><li>Optical Transceivers</li></ul></dd></div>
-        <div><dt>Cloud &amp; Virtualization</dt><dd><ul class="tags"><li>AWS</li><li>OpenStack</li></ul></dd></div>
+        <div><dt>Cloud &amp; Virtualization</dt><dd><ul class="tags"><li>AWS</li><li>GCP</li><li>GKE</li><li>OpenStack</li></ul></dd></div>
         <div><dt>IaC &amp; Automation</dt><dd><ul class="tags"><li>Terraform</li><li>Ansible</li></ul></dd></div>
         <div><dt>Containers &amp; Orchestration</dt><dd><ul class="tags"><li>Docker</li><li>Kubernetes</li></ul></dd></div>
       </dl>
@@ -205,10 +203,6 @@ footer a:hover{color:var(--ink)}
 <footer>
   <div class="wrap"><span>© 2026 유준형</span><a href="../">← Home</a></div>
 </footer>
-<script>
-  // 깨진 채 캐시돼 onerror 를 놓친 경우도 자리표시로
-  const img = document.querySelector('#id-photo img');
-  if (img.complete && !img.naturalWidth) img.closest('.id').classList.add('is-empty');
-</script>
+
 </body>
 </html>

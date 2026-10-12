@@ -8,7 +8,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="Portfolio · 유준형">
 <meta property="og:description" content="프로젝트별 설계와 발표 자료">
-<meta property="og:url" content="https://jryu91.github.io/1bit.kr/portfolio/">
+<meta property="og:url" content="https://1bit.kr/portfolio/">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <style>
@@ -39,78 +39,47 @@ a{color:inherit}
 .menu a:hover{color:var(--ink);background:var(--surface)}
 .menu a[aria-current="page"]{color:var(--green);font-weight:600;box-shadow:inset 0 -2px 0 var(--green);border-radius:0}
 
-/* ── 헤더 ── */
-.intro{display:grid;grid-template-columns:var(--id-w) minmax(0,1fr);gap:var(--s12);align-items:end;padding:var(--s14) 0 var(--s12)}
-.id{position:relative;aspect-ratio:var(--id-ratio);border-radius:var(--radius);overflow:hidden;background:var(--sage-tint)}
-.id img{position:absolute;inset:0;width:100%;height:100%;object-fit:var(--id-fit);object-position:var(--id-pos)}
-.id-empty{position:absolute;inset:0;display:none;place-items:center;font-size:48px;font-weight:300;letter-spacing:-.04em;color:var(--sage)}
-.id.is-empty .id-empty{display:grid}
-.id.is-empty img{display:none}
-.role{margin:0;font-size:13px;line-height:1.4;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
-h1{margin:var(--s3) 0 0;font-size:clamp(36px,4vw,48px);line-height:1.12;font-weight:600;letter-spacing:-.025em}
-h1 .en{display:block;margin-top:var(--s2);font-size:18px;line-height:1.4;font-weight:400;letter-spacing:0;color:var(--muted)}
-.lead{max-width:34em;margin:var(--s5) 0 0;font-size:17px;line-height:1.75;color:var(--muted)}
-
-/* ── 섹션: 왼쪽 제목 칸 + 오른쪽 내용 ── */
-section{display:grid;grid-template-columns:200px minmax(0,1fr);gap:var(--s12);padding:var(--s12) 0;border-top:1px solid var(--line)}
-section > h2{margin:0;font-size:13px;line-height:1.6;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--green)}
-section > h2 span{display:block;font-weight:500;color:var(--muted);letter-spacing:.04em}
-.note{margin:0 0 var(--s5);font-size:14px;color:var(--muted)}
-.note.focus-text{font-size:15px;color:var(--ink)}
-
-/* 경력 */
-.company{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:var(--s2) var(--s6)}
-.company h3{margin:0;font-size:22px;line-height:1.35;font-weight:600;letter-spacing:-.01em}
-.company .period{font-size:15px;font-weight:500;color:var(--green);white-space:nowrap}
-.position{margin:var(--s1) 0 0;font-size:15px;color:var(--muted)}
-.duties{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s6) var(--s10);margin:var(--s8) 0 0;padding:var(--s8) 0 0;border-top:1px dashed var(--line);list-style:none;counter-reset:duty}
-.duties li{counter-increment:duty;display:grid;grid-template-columns:28px minmax(0,1fr);column-gap:var(--s2)}
-.duties li::before{content:counter(duty,decimal-leading-zero);grid-row:1/3;font-size:13px;line-height:1.6;font-weight:600;color:var(--sage);font-variant-numeric:tabular-nums}
-.duties h4{margin:0;font-size:16px;line-height:1.5;font-weight:600}
-.duties p{margin:var(--s1) 0 0;font-size:15px;line-height:1.65;color:var(--muted)}
-
-/* 기술·학력·자격: 정의 목록 행 */
-.rows{margin:0}
-.rows > div{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--s2) var(--s6);padding:var(--s4) 0;border-bottom:1px solid var(--line)}
-.rows > div:first-child{padding-top:0}
-.rows > div:last-child{border-bottom:0;padding-bottom:0}
-.rows dt{font-size:15px;font-weight:600}
-.rows dd{margin:0;font-size:15px;color:var(--muted)}
-.rows dd strong{color:var(--ink);font-weight:600}
-.tags{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0;padding:0;list-style:none}
-.tags li{padding:2px var(--s3);border:1px solid var(--line);border-radius:4px;background:var(--surface);font-size:14px;line-height:1.6;color:var(--ink)}
-.status{display:inline-block;margin-left:var(--s2);font-size:13px;font-weight:500;color:var(--green)}
-.status.pending{color:var(--muted)}
-
+h1{margin:0;font-size:clamp(32px,4vw,48px);line-height:1.2;letter-spacing:-.025em;font-weight:600}
+.page-head{padding:56px 0 32px}
+.eyebrow{margin:0 0 12px;font-size:13px;letter-spacing:.08em;font-weight:600;color:var(--green)}
+.lead{max-width:40em;margin:16px 0 0;color:var(--muted)}
+.projects{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:32px 24px;padding-bottom:56px}
+.project{overflow:hidden;border:1px solid var(--line);border-radius:6px;background:var(--surface)}
+.cover{display:block;position:relative;width:100%;padding:0;border:0;border-bottom:1px solid var(--line);background:var(--sage-tint);cursor:pointer;aspect-ratio:16/9;overflow:hidden}
+.cover img{display:block;width:100%;height:100%;object-fit:contain;transition:transform .2s}
+.cover:focus-visible{outline-offset:-4px}
+.cover:hover img{transform:scale(1.025)}
+.cover span{position:absolute;right:12px;bottom:12px;padding:6px 12px;background:var(--green);color:var(--cream);border-radius:4px;font:600 13px/1.5 var(--sans)}
+.project-body{padding:24px}
+.project-label{margin:0 0 8px;font-size:13px;font-weight:600;color:var(--green)}
+h2{margin:0;font-size:24px;line-height:1.35;letter-spacing:-.02em}
+.summary{margin:12px 0;color:var(--muted);font-size:15px}
+.tech{margin:0;font-size:13px;color:var(--green)}
+.role-note{margin:16px 0 0;padding-top:12px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+.project-links{display:flex;flex-wrap:wrap;gap:12px 20px;margin-top:20px}
+.project-links a{font-size:14px;font-weight:600;text-underline-offset:4px}
+.project-links button{border:0;background:none;padding:0;color:var(--green);font:600 14px var(--sans);text-decoration:underline;text-underline-offset:4px;cursor:pointer;min-height:44px}
 footer{border-top:1px solid var(--line)}
-footer .wrap{display:flex;justify-content:space-between;padding-top:var(--s5);padding-bottom:var(--s10);font-size:13px;color:var(--muted)}
+footer .wrap{display:flex;justify-content:space-between;padding-top:20px;padding-bottom:40px;font-size:13px;color:var(--muted)}
 footer a{text-decoration:none}
-footer a:hover{color:var(--ink)}
-
-@media (max-width:900px){
-  section{grid-template-columns:1fr;gap:var(--s5)}
-  .rows > div{grid-template-columns:200px minmax(0,1fr)}
+.viewer{position:fixed;inset:0;width:100%;height:100dvh;max-width:none;max-height:none;margin:0;padding:0;border:0;background:var(--cream);color:var(--ink)}
+.viewer::backdrop{background:rgba(38,56,43,.65)}
+.viewer[open]{display:flex;flex-direction:column}
+.viewer-bar{display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding:12px 20px;border-bottom:1px solid var(--line)}
+.viewer-bar h2{flex:1;font-size:18px}
+.viewer-bar a{font-size:14px;text-underline-offset:4px}
+.close{width:44px;height:44px;border:1px solid var(--line-strong);border-radius:6px;background:var(--surface);color:var(--ink);font-size:28px;cursor:pointer}
+.viewer-help{margin:0;padding:8px 20px;font-size:13px;color:var(--muted)}
+.viewer iframe{flex:1;min-height:0;width:100%;border:0;background:#525659}
+body:has(.viewer[open]){overflow:hidden}
+@media(max-width:600px){
+ .wrap{padding:0 20px}.bar .wrap{flex-wrap:wrap;gap:0;padding-top:8px;padding-bottom:8px}
+ .menu{width:100%;justify-content:space-between}.menu a{padding:0 8px;font-size:14px}
+ .page-head{padding:32px 0 24px}.projects{grid-template-columns:1fr;gap:24px;padding-bottom:32px}
+ .project-body{padding:20px}h2{font-size:22px}.viewer-bar{gap:12px;padding:8px 12px}
+ .viewer-bar h2{flex-basis:calc(100% - 60px);order:0}.close{order:1}.viewer-bar a{order:2}
 }
-@media (max-width:600px){
-  :root{--id-w:88px}
-  .wrap{padding:0 var(--s5)}
-  .bar .wrap{flex-wrap:wrap;gap:0;padding-top:var(--s2);padding-bottom:var(--s2)}
-  .menu{width:100%;justify-content:space-between}
-  .menu a{padding:0 var(--s2);font-size:14px}
-  .intro{grid-template-columns:var(--id-w) minmax(0,1fr);gap:var(--s5);align-items:center;padding:var(--s8) 0}
-  .intro .lead{grid-column:1/-1;margin-top:0}
-  .head-text{display:contents}
-  .id-empty{font-size:28px}
-  h1{font-size:32px;margin-top:var(--s2)}
-  h1 .en{font-size:16px;margin-top:var(--s1)}
-  .role{font-size:12px;letter-spacing:.08em}
-  section{padding:var(--s10) 0}
-  .company h3{font-size:20px}
-  .duties{grid-template-columns:1fr;gap:var(--s5)}
-  .rows > div{grid-template-columns:1fr;gap:var(--s2)}
-}
-@media (max-width:380px){.role .sep{display:block;height:0;overflow:hidden}}
-@media (prefers-reduced-motion:reduce){.menu a{transition:none}}
+@media(prefers-reduced-motion:reduce){.cover img,.menu a{transition:none}}
 </style>
 </head>
 <body>
@@ -128,18 +97,20 @@ footer a:hover{color:var(--ink)}
   </div>
 </header>
 
-<main class="wrap">
-  <div class="head-text" style="padding:var(--s14) 0 var(--s12)">
-    <div>
-      <p class="role">Portfolio</p>
-      <h1>프로젝트<span class="en">프로젝트별 설계와 발표 자료</span></h1>
-    </div>
-    <p class="lead">준비 중입니다.</p>
-  </div>
-</main>
+<main class="wrap"><header class="page-head"><p class="eyebrow">PORTFOLIO</p><h1>설계하고, 구축하고, 운영한 프로젝트</h1><p class="lead">개인 운영 프로젝트와 교육·해커톤 팀 프로젝트의 발표자료를 모았습니다. 표지를 누르면 전체 자료를 볼 수 있습니다.</p></header><div class="projects"><article class="project">
+<button class="cover" data-pdf="../projects/Personal%20Project_web-game.pdf" data-title="웹게임 운영 인프라" aria-label="웹게임 운영 인프라 발표자료 전체 보기"><img src="../projects/personal-cover.png" alt="웹게임 운영 인프라 발표자료 표지" width="1000" height="563" loading="lazy"><span>PDF · 13쪽 · 전체 보기</span></button>
+<div class="project-body"><p class="project-label">개인 프로젝트</p><h2>웹게임 운영 인프라</h2><p class="summary">접속 채널을 파드 단위로 구성하고, 온디맨드·Spot 노드풀을 분리한 GKE 운영 프로젝트.</p><p class="tech">GCP · GKE · Terraform · GitHub Actions</p><p class="role-note">개인 수행 · 인프라 설계·구축·운영</p><div class="project-links"><button data-pdf="../projects/Personal%20Project_web-game.pdf" data-title="웹게임 운영 인프라">발표자료 보기</button><a href="../projects/Personal%20Project_web-game.pdf" target="_blank" rel="noopener">원본 열기</a><a href="../projects/Personal%20Project_web-game.pdf" download>PDF 다운로드</a></div></div></article><article class="project">
+<button class="cover" data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-title="ENDIVE-CLOUD" aria-label="ENDIVE-CLOUD 발표자료 전체 보기"><img src="../projects/endive-cover.png" alt="ENDIVE-CLOUD 발표자료 표지" width="1000" height="563" loading="lazy"><span>PDF · 27쪽 · 전체 보기</span></button>
+<div class="project-body"><p class="project-label">2차 팀 프로젝트</p><h2>ENDIVE-CLOUD</h2><p class="summary">야외행사 안내 플랫폼의 서울 운영 환경과 도쿄 재해복구 환경을 구성한 하이브리드 클라우드 프로젝트.</p><p class="tech">AWS · OpenStack · Terraform · Ansible</p><p class="role-note">담당 · Kubernetes 클러스터 구축 · Ansible 자동화</p><div class="project-links"><button data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-title="ENDIVE-CLOUD">발표자료 보기</button><a href="../projects/2st%20Project_Team%20Endive.pdf" target="_blank" rel="noopener">원본 열기</a><a href="../projects/2st%20Project_Team%20Endive.pdf" download>PDF 다운로드</a></div></div></article><article class="project">
+<button class="cover" data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-title="Bluebell" aria-label="Bluebell 발표자료 전체 보기"><img src="../projects/bluebell-cover.png" alt="Bluebell 발표자료 표지" width="1000" height="563" loading="lazy"><span>PDF · 22쪽 · 전체 보기</span></button>
+<div class="project-body"><p class="project-label">1차 팀 프로젝트</p><h2>Bluebell</h2><p class="summary">AWS·온프레미스 3-Tier 환경에서 구축·배포·모니터링·장애복구 흐름을 자동화한 프로젝트.</p><p class="tech">AWS · Ansible · Prometheus · Grafana</p><p class="role-note">담당 · Monitoring 스택 및 Alerting 프로비저닝 자동화</p><div class="project-links"><button data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-title="Bluebell">발표자료 보기</button><a href="../projects/1st%20Project_Team%20Bluebell.pdf" target="_blank" rel="noopener">원본 열기</a><a href="../projects/1st%20Project_Team%20Bluebell.pdf" download>PDF 다운로드</a></div></div></article><article class="project">
+<button class="cover" data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-title="Partnerhub Cloud" aria-label="Partnerhub Cloud 발표자료 전체 보기"><img src="../projects/hackathon-cover.png" alt="Partnerhub Cloud 발표자료 표지" width="1000" height="563" loading="lazy"><span>PDF · 13쪽 · 전체 보기</span></button>
+<div class="project-body"><p class="project-label">해커톤 팀 프로젝트</p><h2>Partnerhub Cloud</h2><p class="summary">제조 협력사의 품질 데이터를 관리하고 AI 이상 탐지를 연계하는 플랫폼 제안·데모.</p><p class="tech">GCP · GKE · Terraform · WIF</p><p class="role-note">담당 · 사업 시나리오 기획 · E2E 검증 · 트러블슈팅 기록·발표</p><div class="project-links"><button data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-title="Partnerhub Cloud">발표자료 보기</button><a href="../projects/Hackathon_Team%20Eclipse.pdf" target="_blank" rel="noopener">원본 열기</a><a href="../projects/Hackathon_Team%20Eclipse.pdf" download>PDF 다운로드</a></div></div></article></div></main>
+<dialog class="viewer" aria-labelledby="viewer-title"><div class="viewer-bar"><h2 id="viewer-title">발표자료</h2><a id="pdf-open" target="_blank" rel="noopener">원본 열기</a><a id="pdf-download" download>다운로드</a><button class="close" aria-label="발표자료 닫기" autofocus>×</button></div><p class="viewer-help">자료가 표시되지 않으면 원본 열기를 이용해 주세요. X 버튼 또는 Esc로 돌아갈 수 있습니다.</p><iframe title="프로젝트 발표자료"></iframe></dialog>
 
 <footer>
   <div class="wrap"><span>© 2026 유준형</span><a href="../">← Home</a></div>
 </footer>
+<script src="viewer.js" defer></script>
 </body>
 </html>
