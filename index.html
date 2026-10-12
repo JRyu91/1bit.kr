@@ -1,51 +1,76 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<script src="./support.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>유준형 · Cloud Infrastructure Engineer</title>
+<meta name="description" content="클라우드 인프라 엔지니어 유준형의 포트폴리오">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* Pantone 2026 Cloud Dancer + Powdered Pastels (hex 는 근사값) */
+:root{
+  --cloud-dancer:#F0EEE9; --nimbus:#D5D5D8; --lemon:#F4EBC6; --rose:#EAD6DC;
+  --ice:#D3E2EF; --peach:#F0D7CB; --aqua:#CDD8C6; --orchid:#DCD6E1;
+  --ink:#2F2F33; --ink-sub:#5E5E66; --card:#FBFAF7;
+  --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  --latin:'Space Grotesk',var(--sans);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100dvh;display:grid;place-items:center;padding:40px 16px;background:var(--cloud-dancer);color:var(--ink);font:16px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+.card{width:100%;max-width:400px;padding:44px 28px 32px;border-radius:28px;background:var(--card);border:1px solid var(--nimbus);box-shadow:0 24px 48px -28px rgba(47,47,51,.25);text-align:center}
+.photo{width:128px;height:128px;margin:0 auto 22px;border-radius:50%;padding:4px;background:conic-gradient(var(--ice),var(--orchid),var(--rose),var(--peach),var(--lemon),var(--aqua),var(--ice))}
+.photo div{position:relative;width:100%;height:100%;border-radius:50%;overflow:hidden;border:3px solid var(--card);background:var(--cloud-dancer);display:grid;place-items:center;font:700 34px var(--latin);color:var(--ink-sub)}
+.photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+h1{margin:0;font-size:28px;letter-spacing:-.02em}
+.en{margin-top:2px;font:500 14px var(--latin);letter-spacing:.08em;color:var(--ink-sub)}
+.role{display:inline-block;margin-top:14px;padding:6px 14px;border-radius:999px;background:var(--ice);font-size:14px;font-weight:600}
+.lead{margin:16px auto 0;max-width:300px;font-size:15px;color:var(--ink-sub)}
+nav{display:grid;gap:12px;margin-top:30px}
+nav a{display:flex;align-items:center;gap:14px;min-height:64px;padding:12px 18px;border-radius:18px;text-decoration:none;text-align:left;border:1px solid transparent;transition:transform .2s,border-color .2s}
+nav a:hover{transform:translateY(-2px);border-color:var(--ink-sub)}
+nav a:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+nav a:nth-child(1){background:var(--rose)}
+nav a:nth-child(2){background:var(--aqua)}
+nav a:nth-child(3){background:var(--lemon)}
+nav a:nth-child(4){background:var(--orchid)}
+nav svg{flex:none;width:22px;height:22px}
+nav b{display:block;font:700 17px var(--latin)}
+nav small{display:block;font-size:13px;color:var(--ink-sub)}
+nav .go{margin-left:auto;font:500 18px var(--latin);color:var(--ink-sub)}
+footer{margin-top:28px;font-size:13px;color:var(--ink-sub)}
+@media (prefers-reduced-motion:reduce){nav a{transition:none}}
+</style>
 </head>
 <body>
-<x-dc>
-<helmet data-dc-atomics>
-<style>
-  body{margin:0}
-  @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-</style>
-</helmet>
-<div style="min-height:100dvh;width:100%;background:linear-gradient(180deg,oklch(96.5% 0.01 60) 0%,oklch(97.5% 0.006 70) 40%);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px 56px;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif;overflow-y:auto">
-  <div style="width:100%;max-width:380px;background:#FFFFFF;border:1px solid oklch(91% 0.01 70);border-radius:32px;box-shadow:0 24px 48px -24px oklch(40% 0.03 40 / 0.28), 0 2px 6px oklch(40% 0.02 40 / 0.06);padding:44px 30px 34px;display:flex;flex-direction:column;align-items:center;text-align:center;animation:fadeUp .5s cubic-bezier(.2,.8,.2,1)">
+<main class="card">
+  <div class="photo"><div>JR<img src="assets/photo.jpg" alt="유준형 프로필 사진" onerror="this.remove()"></div></div>
+  <h1>유준형</h1>
+  <div class="en">JASON RYU</div>
+  <div class="role">Cloud Infrastructure Engineer</div>
+  <p class="lead">안정적인 클라우드 인프라를 설계하고 운영합니다.</p>
 
-    <div style="width:104px;height:104px;border-radius:50%;padding:3px;background:linear-gradient(135deg,#D97757,#C2703F);display:flex;align-items:center;justify-content:center;box-sizing:border-box;margin-bottom:22px;box-shadow:0 8px 20px -8px rgba(217,119,87,0.5)">
-      <div style="width:100%;height:100%;border-radius:50%;overflow:hidden;background:oklch(94% 0.01 70);display:flex;align-items:center;justify-content:center;position:relative;border:2.5px solid #FFFFFF">
-        <img src="https://github.com/JasonRyu1991.png" alt="" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:100%;height:100%;object-fit:cover;display:block;position:absolute;inset:0" />
-        <span style="display:none;font-size:32px;font-weight:700;color:#D97757;letter-spacing:0.02em">JR</span>
-      </div>
-    </div>
+  <nav aria-label="메뉴">
+    <a href="profile/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+      <span><b>Profile</b><small>이력 · 경력 · 기술</small></span><span class="go" aria-hidden="true">→</span>
+    </a>
+    <a href="portfolio/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="13" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+      <span><b>Portfolio</b><small>프로젝트 발표 자료</small></span><span class="go" aria-hidden="true">→</span>
+    </a>
+    <a href="/game/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="6 3 20 12 6 21 6 3"/></svg>
+      <span><b>Playground</b><small>직접 운영하는 웹게임 · 시간 낭비의 숲</small></span><span class="go" aria-hidden="true">→</span>
+    </a>
+    <a href="contact/">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+      <span><b>Contact</b><small>이메일 · GitHub</small></span><span class="go" aria-hidden="true">→</span>
+    </a>
+  </nav>
 
-    <h1 style="margin:0;font-size:27px;font-weight:700;color:oklch(22% 0.015 50);letter-spacing:-0.01em;white-space:nowrap">유준형</h1>
-    <div style="margin-top:3px;font-size:14px;font-weight:500;color:oklch(52% 0.015 50);letter-spacing:0.03em;white-space:nowrap">JASON RYU</div>
-
-    <div style="margin-top:16px;padding:7px 16px;border-radius:999px;background:oklch(93% 0.045 45);color:#B3552E;font-size:13px;font-weight:700;letter-spacing:0.01em;white-space:nowrap">
-      Cloud Infrastructure Engineer
-    </div>
-
-    <p style="margin:18px 0 0;font-size:14.5px;line-height:1.65;color:oklch(45% 0.012 50);max-width:270px">
-      안정적인 클라우드 인프라를 설계하고 운영하는 것을 목표로 합니다.
-    </p>
-
-    <div style="width:100%;height:1px;background:linear-gradient(90deg,transparent,oklch(88% 0.01 70),transparent);margin:26px 0 24px"></div>
-
-    <div style="width:100%;display:flex;flex-direction:column;gap:12px">
-      <a href="profile/profile.html" style="display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box;padding:16px 0;border-radius:16px;background:linear-gradient(135deg,#D97757,#C2703F);color:#FFFFFF;text-decoration:none;font-size:15.5px;font-weight:700;letter-spacing:0.01em;box-shadow:0 10px 20px -10px rgba(217,119,87,0.6);transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-1px);box-shadow:0 14px 24px -10px rgba(217,119,87,0.7)">Profile</a>
-      <a href="portfolio/portfolio.html" style="display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box;padding:15px 0;border-radius:16px;background:oklch(97% 0.006 70);border:1.5px solid oklch(89% 0.012 70);color:oklch(26% 0.015 50);text-decoration:none;font-size:15.5px;font-weight:700;letter-spacing:0.01em;transition:background .15s,border-color .15s" style-hover="background:oklch(94% 0.03 45);border-color:#D97757">Portfolio</a>
-      <a href="contact/contact.html" style="display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box;padding:15px 0;border-radius:16px;background:oklch(97% 0.006 70);border:1.5px solid oklch(89% 0.012 70);color:oklch(26% 0.015 50);text-decoration:none;font-size:15.5px;font-weight:700;letter-spacing:0.01em;transition:background .15s,border-color .15s" style-hover="background:oklch(94% 0.03 45);border-color:#D97757">Contact</a>
-    </div>
-
-  </div>
-</div>
-
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:420,&quot;height&quot;:780}}"></script>
+  <footer>© 2026 Jason Ryu</footer>
+</main>
 </body>
 </html>
