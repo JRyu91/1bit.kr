@@ -1,0 +1,11 @@
+# 원본은 저장소에 보관하고 사이트 배포에서 제외한다.
+exclude:
+  - projects/legacy-pages.zip
+  - motion.test.cjs
+  - portfolio/viewer.test.cjs
+  - assets/flex.gif
+  - assets/flex.png
+  - assets/wave.gif
+  - assets/wave.png
+  - assets/thumbsup.gif
+  - assets/thumbsup.png
