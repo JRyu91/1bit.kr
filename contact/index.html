@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Contact · 유준형</title>
 <meta name="description" content="유준형 이메일, GitHub">
 <meta property="og:type" content="website">
@@ -11,47 +11,7 @@
 <meta property="og:url" content="https://1bit.kr/contact/">
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
-<style>
-/* 메인(index.html)과 같은 Botanical Cream 토큰. sage 는 글자 대비가 2.3:1 이라 면·선에만 쓴다 */
-:root{
-  --cream:#FFF9ED; --green:#355E3B; --green-deep:#2B4D30; --sage:#A2AD84; --beige:#D9C7A3; --ink:#26382B; --surface:#FFFFFF;
-  --muted:#5B6A5E; --line:#E6DCC8; --line-strong:#C9C3A6; --sage-tint:#ECEDE2;
-  --s1:4px; --s2:8px; --s3:12px; --s4:16px; --s5:20px; --s6:24px; --s8:32px; --s10:40px; --s12:48px; --s14:56px; --s16:64px;
-  --radius:6px;
-  --sans:'Pretendard Variable',Pretendard,-apple-system,BlinkMacSystemFont,'Apple SD Gothic Neo','Noto Sans KR',sans-serif;
-  /* 증명사진 크기·비율 */
-  --id-w:200px; --id-ratio:3/4; --id-pos:50% 30%; --id-fit:cover;
-}
-*{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
-body{margin:0;background:var(--cream);color:var(--ink);font:400 16px/1.7 var(--sans);-webkit-font-smoothing:antialiased;word-break:keep-all;overflow-wrap:anywhere}
-a{color:inherit}
-:focus-visible{outline:2px solid var(--green);outline-offset:3px}
-.wrap{max-width:1080px;margin:0 auto;padding:0 var(--s10)}
-
-/* ── 상단바 ── */
-.bar{border-bottom:1px solid var(--line)}
-.bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);min-height:64px}
-.home{display:inline-flex;align-items:center;gap:var(--s2);min-height:44px;font-weight:600;text-decoration:none}
-.home svg{width:16px;height:16px;color:var(--green)}
-.menu{display:flex;gap:var(--s1);margin:0;padding:0;list-style:none}
-.menu a{white-space:nowrap;display:inline-flex;align-items:center;min-height:44px;padding:0 var(--s3);border-radius:var(--radius);font-size:15px;color:var(--muted);text-decoration:none;transition:color .2s ease,background-color .2s ease}
-.menu a:hover{color:var(--ink);background:var(--surface)}
-.menu a[aria-current="page"]{color:var(--green);font-weight:600;box-shadow:inset 0 -2px 0 var(--green);border-radius:0}
-
-h1{margin:0;font-size:clamp(32px,4vw,48px);line-height:1.2;font-weight:600;letter-spacing:-.025em}
-.contact-head{padding:56px 0 32px}.role{margin:0 0 12px;font-size:13px;font-weight:600;color:var(--green);letter-spacing:.08em}
-.lead{margin:16px 0 0;color:var(--muted)}
-.contact-links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px;padding-bottom:56px}
-.contact-card{display:flex;align-items:flex-start;gap:20px;padding:28px;min-width:0;border:1px solid var(--line);border-radius:6px;background:var(--surface);text-decoration:none}
-.contact-card:hover{border-color:var(--green);background:var(--sage-tint)}
-.contact-card svg{width:36px;height:36px;flex-shrink:0;color:var(--green)}
-.contact-card strong{display:block;font-size:22px;line-height:1.3}.contact-card span{min-width:0}.address{display:block;margin-top:8px;font-size:16px;color:var(--green)}
-.contact-card small{display:block;margin-top:16px;font-size:14px;color:var(--muted)}
-footer{border-top:1px solid var(--line)}footer .wrap{display:flex;justify-content:space-between;padding-top:20px;padding-bottom:40px;font-size:13px;color:var(--muted)}footer a{text-decoration:none}
-@media(max-width:600px){.wrap{padding:0 20px}.bar .wrap{flex-wrap:wrap;gap:0;padding:8px 20px}.menu{width:100%;justify-content:space-between}.menu a{padding:0 8px;font-size:14px}.contact-head{padding:32px 0 24px}.contact-links{grid-template-columns:1fr;gap:16px;padding-bottom:32px}.contact-card{padding:20px;gap:16px}}
-@media(prefers-reduced-motion:reduce){.menu a{transition:none}}
-</style>
+<link rel="stylesheet" href="../site.css">
 </head>
 <body>
 <header class="bar">
@@ -68,8 +28,8 @@ footer{border-top:1px solid var(--line)}footer .wrap{display:flex;justify-conten
   </div>
 </header>
 
-<main class="wrap">
-<header class="contact-head"><p class="role">CONTACT</p><h1>연락하기</h1><p class="lead">프로젝트와 코드가 궁금하다면 GitHub에서 확인해 주세요. 채용·협업 관련 연락은 이메일로 보내주시면 됩니다.</p></header>
+<main class="wrap" id="main">
+<header class="page-head"><p class="eyebrow">CONTACT</p><h1>연락하기</h1><p class="lead">채용·협업 문의는 이메일로, 프로젝트 코드는 GitHub에서 확인해 주세요.</p></header>
 <div class="contact-links">
 <a class="contact-card" href="https://github.com/JRyu91" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.1c-3.13.68-3.79-1.33-3.79-1.33-.51-1.3-1.25-1.65-1.25-1.65-1.03-.7.08-.69.08-.69 1.14.08 1.74 1.18 1.74 1.18 1.01 1.73 2.65 1.23 3.3.94.1-.73.4-1.23.72-1.51-2.5-.29-5.13-1.25-5.13-5.56 0-1.23.44-2.23 1.16-3.02-.12-.28-.5-1.43.11-2.98 0 0 .95-.3 3.08 1.15a10.7 10.7 0 0 1 5.6 0c2.13-1.45 3.08-1.15 3.08-1.15.61 1.55.23 2.7.11 2.98.72.79 1.16 1.79 1.16 3.02 0 4.32-2.64 5.27-5.15 5.55.41.35.77 1.03.77 2.08v3.09c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8Z"/></svg><span><strong>GitHub</strong><span class="address">github.com/JRyu91</span><small>프로젝트 저장소·코드 보기 · 새 탭</small></span></a>
 <a class="contact-card" href="mailto:ujun5190@gmail.com"><svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m3 6 9 7 9-7"/></svg><span><strong>Email</strong><span class="address">ujun5190@gmail.com</span><small>채용·협업 문의 · 메일 보내기</small></span></a>
