@@ -105,10 +105,10 @@ footer{grid-column:1/-1;display:flex;justify-content:space-between;padding-top:v
     - 비율·크롭: figure 의 style 에 --media-ratio:4/5; --media-pos:50% 30%; --media-fit:cover
     - 파일이 없거나 깨지면 JR 모노그램이 나온다
   -->
-  <figure class="media" id="media">
+  <figure class="media" id="media" style="--media-fit:contain;--media-pos:50% 50%">
     <picture>
-      <!-- <source srcset="assets/photo.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)"> -->
-      <img src="assets/photo.jpg" alt="유준형 프로필 사진" width="800" height="1000" decoding="async" onerror="this.closest('.media').classList.add('is-empty')">
+      <source srcset="assets/flex.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)">
+      <img src="assets/flex.png" alt="유준형 픽셀아트 캐릭터" width="256" height="256" decoding="async" style="image-rendering:pixelated" onerror="this.closest('.media').classList.add('is-empty')">
     </picture>
     <!-- <video src="assets/intro.mp4" poster="assets/photo.jpg" autoplay muted loop playsinline aria-label="유준형 소개 영상"></video> -->
     <div class="media-empty" aria-hidden="true">JR</div>
