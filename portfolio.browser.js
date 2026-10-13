@@ -24,7 +24,7 @@ async page => {
     }
   }
   await page.goto(base + '/portfolio/', {waitUntil:'domcontentloaded'});
-  for (const [id, pdfPage] of [['personal',4],['hackathon',7],['endive',8],['bluebell',2]]) {
+  for (const [id, pdfPage] of [['personal',4],['hackathon',6],['endive',8],['bluebell',2]]) {
     const cover = page.locator('#' + id + ' .cover');
     await cover.click();
     check(await page.locator('.viewer').evaluate(el => el.open), id + ' dialog');
