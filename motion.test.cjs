@@ -79,12 +79,11 @@ for (const page of ['index.html', 'profile/index.html']) {
   const figure = html.match(/<figure\b[^>]*data-motion\b[^>]*>[\s\S]*?<\/figure>/)[0];
   const gif = figure.match(/<source\b[^>]*srcset="([^"]+)"/)[1];
   const png = figure.match(/<img\b[^>]*src="([^"]+)"/)[1];
-  if (page === 'index.html') assert.doesNotMatch(figure, /data-motion-toggle/);
-  else assert.match(figure, /data-motion-toggle hidden/);
+  assert.doesNotMatch(figure, /data-motion-toggle/);
   assert.match(figure, /media="\(prefers-reduced-motion: no-preference\)"/);
   assert.doesNotMatch(figure, /onerror=/);
   assert.match(html, /<script src="(?:\.\.\/)?motion\.js" defer><\/script>/);
-  const paths = {gif, png, noButton: page === 'index.html', baseURI: new URL(page, 'https://1bit.kr/').href};
+  const paths = {gif, png, noButton: true, baseURI: new URL(page, 'https://1bit.kr/').href};
   const pageImage = setup(false, {complete: true, naturalWidth: 0}, paths);
   assert.equal(pageImage.img.src, png);
   assert.equal(pageImage.source.removed, 'srcset');
