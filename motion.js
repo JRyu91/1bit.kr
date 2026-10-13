@@ -4,19 +4,20 @@
     const source = figure.querySelector('source');
     const img = figure.querySelector('img');
     const button = figure.querySelector('[data-motion-toggle]');
-    if (!source || !img || !button) continue;
+    if (!source || !img) continue;
     const gif = new URL(source.getAttribute('srcset'), document.baseURI).href;
     const png = img.getAttribute('src');
     let paused = preference.matches;
     let failed = false;
     function render() {
       source.media = paused || failed ? 'not all' : 'all';
+      if (!button) return;
       button.hidden = failed;
       button.disabled = preference.matches;
       button.textContent = preference.matches ? '기기 설정으로 움직임 꺼짐' : paused ? '움직임 재생' : '움직임 멈춤';
       button.setAttribute('aria-pressed', String(paused || failed));
     }
-    button.addEventListener('click', () => {
+    button?.addEventListener('click', () => {
       if (preference.matches || failed) return;
       paused = !paused;
       render();
