@@ -12,7 +12,7 @@ function setup(reduced = false, imageState = {}, paths = {}) {
   Object.assign(img, imageState);
   const button = {hidden: true, addEventListener(_, fn) {this.click = fn;}, setAttribute(name, value) {this[name] = value;}};
   const classes = new Set();
-  const figure = {classList: {add: value => classes.add(value)}, querySelector: selector => selector === 'source' ? source : selector === 'img' ? img : button};
+  const figure = {classList: {add: value => classes.add(value)}, querySelector: selector => selector === 'source' ? source : selector === 'img' ? img : paths.noButton ? null : button};
   vm.runInNewContext(code, {URL, window: {matchMedia: () => preference}, document: {baseURI, querySelectorAll: () => [figure]}});
   return {preference, source, img, button, classes};
 }
@@ -79,11 +79,12 @@ for (const page of ['index.html', 'profile/index.html']) {
   const figure = html.match(/<figure\b[^>]*data-motion\b[^>]*>[\s\S]*?<\/figure>/)[0];
   const gif = figure.match(/<source\b[^>]*srcset="([^"]+)"/)[1];
   const png = figure.match(/<img\b[^>]*src="([^"]+)"/)[1];
-  assert.match(figure, /data-motion-toggle hidden/);
+  if (page === 'index.html') assert.doesNotMatch(figure, /data-motion-toggle/);
+  else assert.match(figure, /data-motion-toggle hidden/);
   assert.match(figure, /media="\(prefers-reduced-motion: no-preference\)"/);
   assert.doesNotMatch(figure, /onerror=/);
   assert.match(html, /<script src="(?:\.\.\/)?motion\.js" defer><\/script>/);
-  const paths = {gif, png, baseURI: new URL(page, 'https://1bit.kr/').href};
+  const paths = {gif, png, noButton: page === 'index.html', baseURI: new URL(page, 'https://1bit.kr/').href};
   const pageImage = setup(false, {complete: true, naturalWidth: 0}, paths);
   assert.equal(pageImage.img.src, png);
   assert.equal(pageImage.source.removed, 'srcset');
@@ -111,9 +112,17 @@ assert.equal(pausedPng.source.media, 'not all');
 assert.equal(pausedPng.button['aria-pressed'], 'true');
 let incompleteListeners = 0;
 vm.runInNewContext(code, {window: {matchMedia: () => ({matches: false})}, document: {
-  querySelectorAll: () => [{querySelector: () => null}, {
-    querySelector: selector => selector === '[data-motion-toggle]' ? null : {addEventListener() {incompleteListeners++;}}
-  }]
+  querySelectorAll: () => [{querySelector: () => null}]
 }});
 assert.equal(incompleteListeners, 0);
 console.log('paused PNG failure/reduced preference after failure/incomplete markup PASS');
+
+const noControl = setup(false, {}, {noButton: true});
+assert.equal(noControl.source.media, 'all');
+noControl.preference.matches = true;
+noControl.preference.change();
+assert.equal(noControl.source.media, 'not all');
+noControl.img.currentSrc = 'https://1bit.kr/assets/wave.png';
+noControl.img.error();
+assert.equal(noControl.classes.has('is-empty'), true);
+console.log('button-free home motion preference and image fallback PASS');
