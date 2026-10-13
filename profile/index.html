@@ -2,6 +2,8 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#FFF9ED">
+<link rel="icon" type="image/png" href="../assets/bow.png">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Profile · 유준형</title>
 <meta name="description" content="통신 실무 경력, 클라우드 프로젝트 담당, 학력·자격·교육.">
@@ -19,7 +21,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="../site.css">
 </head>
-<body>
+<body class="site-page">
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
 <header class="bar">
   <div class="wrap">
     <a class="home" href="../"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>유준형</a>
@@ -36,19 +39,27 @@
 
 <main class="wrap" id="main">
 <header class="profile-head">
-<figure class="character" data-motion><div class="character-image"><picture><source srcset="../assets/double-thumbs.gif" type="image/gif" media="(prefers-reduced-motion: no-preference)"><img src="../assets/double-thumbs.png" alt="양손 엄지척을 하는 유준형 픽셀 캐릭터" width="256" height="256"></picture><span class="media-empty" aria-hidden="true">JR</span></div></figure>
+<figure class="portrait" aria-label="유준형 사진 대신 이름 이니셜"><span aria-hidden="true">JR</span></figure>
 <div class="identity"><p class="eyebrow">Cloud Infrastructure · DevOps</p><h1>유준형<span class="en">Jason Ryu</span></h1></div>
 <p class="lead">통신 장비 검증·기술지원 약 9년의 경험을 바탕으로 클라우드 인프라·DevOps 직무를 준비합니다.</p>
 </header>
 <section class="profile-section" aria-labelledby="experience"><h2 id="experience">실무 경력</h2><div>
 <h3>(주)자람테크놀로지</h3><p class="meta">2017.02~2026.04 · 사업부 품질기술팀 과장</p>
-<ul class="duties"><li>통신 장비·광모듈 검증, 고객 BMT·PoC 지원</li><li>고객 기술지원·장애 분석, DWDM 설치·유지보수</li><li>재고·품질 관리, ISO 인증 수검 대응</li></ul>
+<ul class="duties"><li>통신 장비·광모듈 검증, 고객 BMT·PoC 지원</li><li>고객 기술지원 및 장애 분석</li><li>DWDM 설치·유지보수</li><li>재고·품질 관리, ISO 인증 수검 대응</li></ul>
 </div></section>
+<section class="profile-section" aria-labelledby="expansion"><h2 id="expansion">클라우드로의 확장</h2><div><p>통신 장비 검증·기술지원 경험을 바탕으로, 클라우드 인프라·DevOps 직업훈련과 프로젝트를 진행하고 있습니다. Linux와 네트워크 기초부터 인프라 구성·배포 자동화까지 직접 적용하며 학습하고 있습니다.</p></div></section>
 <section class="profile-section" aria-labelledby="projects"><h2 id="projects">클라우드 프로젝트<span class="section-note">교육·개인·팀 프로젝트 경험</span></h2><dl class="proof-list">
 <div><dt><a href="../portfolio/#personal">개인 프로젝트 <span aria-hidden="true">↗</span></a><small>웹게임 운영 인프라</small></dt><dd>Terraform 구성, 온디맨드·Spot 노드풀 분리, GitHub Actions·WIF 배포 자동화.</dd></div>
 <div><dt><a href="../portfolio/#hackathon">해커톤 <span aria-hidden="true">↗</span></a><small>Partnerhub Cloud</small></dt><dd>담당: 기획·E2E 검증·트러블슈팅 기록·발표.</dd></div>
 <div><dt><a href="../portfolio/#endive">2차 프로젝트 <span aria-hidden="true">↗</span></a><small>ENDIVE-CLOUD</small></dt><dd>담당: Kubernetes 클러스터 구축·Ansible 자동화.</dd></div>
 <div><dt><a href="../portfolio/#bluebell">1차 프로젝트 <span aria-hidden="true">↗</span></a><small>Bluebell</small></dt><dd>담당: Monitoring·Alerting 프로비저닝 자동화.</dd></div>
+</dl></section>
+<section class="profile-section" aria-labelledby="skills"><h2 id="skills">기술 스택<span class="section-note">실무와 프로젝트에서 사용한 기술</span></h2><dl class="skill-list">
+<div><dt>통신 실무</dt><dd>통신 장비·광모듈 검증, DWDM</dd></div>
+<div><dt>클라우드·컨테이너</dt><dd>AWS, GCP, OpenStack, Docker, Kubernetes·GKE</dd></div>
+<div><dt>구성·배포 자동화</dt><dd>Terraform, Ansible, GitHub Actions, WIF</dd></div>
+<div><dt>모니터링</dt><dd>Prometheus, Grafana, Alerting</dd></div>
+<div><dt>기반 환경</dt><dd>Linux, 네트워킹</dd></div>
 </dl></section>
 <section class="profile-section" aria-labelledby="qualifications"><h2 id="qualifications">학력·자격·교육</h2><dl class="credential-list">
 <div><dt>한성대학교 컴퓨터공학과</dt><dd>2009~2026 · 학사과정 · 2026.08 졸업</dd></div>
@@ -59,9 +70,8 @@
 </main>
 
 <footer>
-  <div class="wrap"><span>© 2026 유준형</span><a href="../">← Home</a></div>
+  <div class="wrap"><span>© 2026 유준형</span><a href="../">홈으로</a></div>
 </footer>
 
-<script src="../motion.js" defer></script>
 </body>
 </html>

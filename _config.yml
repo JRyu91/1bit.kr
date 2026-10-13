@@ -9,3 +9,5 @@ exclude:
   - assets/wave.png
   - assets/thumbsup.gif
   - assets/thumbsup.png
+  - contact/contact.test.cjs
+  - portfolio.browser.js

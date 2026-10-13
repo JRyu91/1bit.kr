@@ -74,7 +74,7 @@ const cachedLoaded = setup(false, {complete: true, naturalWidth: 96});
 assert.equal(cachedLoaded.button.hidden, false);
 console.log('motion toggle/reduced-motion/change/GIF fallback/PNG failure/cached failure PASS');
 
-for (const page of ['index.html', 'profile/index.html']) {
+for (const page of ['index.html']) {
   const html = fs.readFileSync(__dirname + '/' + page, 'utf8');
   const figure = html.match(/<figure\b[^>]*data-motion\b[^>]*>[\s\S]*?<\/figure>/)[0];
   const gif = figure.match(/<source\b[^>]*srcset="([^"]+)"/)[1];
@@ -93,7 +93,7 @@ for (const page of ['index.html', 'profile/index.html']) {
   const pageReduced = setup(true, {currentSrc: new URL(png, paths.baseURI).href, complete: true, naturalWidth: 0}, paths);
   assert.equal(pageReduced.classes.has('is-empty'), true);
 }
-console.log('main/profile HTML motion contract and relative asset fallback PASS');
+console.log('main HTML motion contract and relative asset fallback PASS');
 
 const pausedPng = setup();
 pausedPng.button.click();
@@ -125,3 +125,7 @@ noControl.img.currentSrc = 'https://1bit.kr/assets/wave.png';
 noControl.img.error();
 assert.equal(noControl.classes.has('is-empty'), true);
 console.log('button-free home motion preference and image fallback PASS');
+
+const profile = fs.readFileSync(__dirname + "/profile/index.html", "utf8");
+assert.match(profile, /class="portrait"/);
+assert.doesNotMatch(profile, /data-motion|motion\.js/);

@@ -2,13 +2,15 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
+<meta name="theme-color" content="#FFF9ED">
+<link rel="icon" type="image/png" href="../assets/bow.png">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Portfolio · 유준형</title>
-<meta name="description" content="개인·해커톤·2차·1차 프로젝트의 담당 역할과 최종 발표자료.">
+<meta name="description" content="웹게임 운영 인프라와 팀 프로젝트의 아키텍처, 담당 업무, 구축·배포 자동화 기록.">
 <link rel="canonical" href="https://1bit.kr/portfolio/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Portfolio · 유준형">
-<meta property="og:description" content="개인·해커톤·2차·1차 프로젝트의 담당 역할과 최종 발표자료.">
+<meta property="og:description" content="웹게임 운영 인프라와 팀 프로젝트의 아키텍처, 담당 업무, 구축·배포 자동화 기록.">
 <meta property="og:url" content="https://1bit.kr/portfolio/">
 <meta property="og:image" content="https://1bit.kr/assets/double-thumbs.png">
 <meta property="og:image:width" content="256">
@@ -19,7 +21,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <link rel="stylesheet" href="../site.css">
 </head>
-<body>
+<body class="site-page">
+<a class="skip-link" href="#main">본문으로 건너뛰기</a>
 <header class="bar">
   <div class="wrap">
     <a class="home" href="../"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3 5 8l5 5"/></svg>유준형</a>
@@ -34,18 +37,47 @@
   </div>
 </header>
 
-<main class="wrap" id="main"><header class="page-head"><p class="eyebrow">PORTFOLIO</p><h1>프로젝트</h1><p class="lead">담당한 작업과 설계를 발표자료로 확인할 수 있습니다.</p><p class="document-note">PDF는 발표 당시 기준의 최종 원본입니다.</p></header><div class="projects"><article class="project" id="personal">
-<button class="cover" data-pdf="../projects/Personal%20Project_web-game.pdf" data-title="개인 프로젝트 · 웹게임 운영 인프라" aria-label="개인 프로젝트 · 웹게임 운영 인프라 발표자료 전체 보기"><img src="../projects/personal-cover.png" alt="웹게임 운영 인프라 발표자료 표지" width="1000" height="563" loading="lazy"></button><div class="project-body"><h2>개인 프로젝트</h2><p class="project-label">웹게임 운영 인프라 · PDF 13쪽</p><p class="summary">홈 채널과 확장 채널을 온디맨드·Spot 노드풀로 분리한 GKE 웹게임 운영 프로젝트.</p><p class="role-note">개인 수행 · 인프라 설계·구축·운영</p><p class="tech">GCP · GKE · Terraform · GitHub Actions</p><div class="project-links actions"><button class="button" data-pdf="../projects/Personal%20Project_web-game.pdf" data-title="개인 프로젝트 · 웹게임 운영 인프라">발표자료 보기</button><a href="../projects/Personal%20Project_web-game.pdf" download class="text-link">다운로드 <small>3.6MB</small></a></div></div></article>
+<main class="wrap" id="main">
+<header class="page-head"><h1>프로젝트</h1><p class="lead">운영 인프라를 설계하고, 구축과 배포를 자동화한 작업들입니다.<br>각 프로젝트에서 직접 맡은 업무와 팀의 전체 구성을 구분해 정리했습니다.</p><p class="document-note">PDF는 발표 당시 기준의 최종 원본입니다.</p></header>
+<div class="projects">
+<article class="project" id="personal">
+<button class="cover" data-pdf="../projects/Personal%20Project_web-game.pdf" data-page="4" data-title="개인 프로젝트 · 웹게임 운영 인프라" aria-label="개인 프로젝트 아키텍처 원본 PDF 보기"><img src="../projects/personal-architecture.webp" alt="GKE 홈 채널·확장 채널, Redis와 Cloud SQL 연결 아키텍처" width="1416" height="824" loading="lazy"></button>
+<p class="preview-caption">인프라 아키텍처<span>클릭하여 원본 보기</span></p>
+<div class="project-body"><h2>개인 프로젝트</h2><p class="project-label">웹게임 운영 인프라 · 시간 낭비의 숲 · PDF 13쪽</p><p class="summary">웹게임의 접속 세션을 유지하며 채널 수를 조절하는 운영 인프라입니다. 홈 채널은 온디맨드, 확장 채널은 Spot 노드풀에 배치했습니다.</p>
+<p class="role-note">개인 수행 · 인프라 설계·구축·운영</p><ul class="project-duties"><li>Terraform으로 GCP 인프라 구성</li><li>KEDA 기반 채널 확장·축소와 Redis 이관 구성</li><li>GitHub Actions·WIF로 빌드·배포 자동화</li></ul>
+<p class="tech">GCP · GKE · Terraform · Redis · Cloud SQL · GitHub Actions</p>
+<a class="service-link" href="/game/">시간 낭비의 숲 플레이하기</a>
+<div class="project-links actions"><button class="button" data-pdf="../projects/Personal%20Project_web-game.pdf" data-title="개인 프로젝트 · 웹게임 운영 인프라">발표자료 보기</button><a href="../projects/Personal%20Project_web-game.pdf" download class="text-link">다운로드 <small>3.6MB</small></a></div>
+</div></article>
 <article class="project" id="hackathon">
-<button class="cover" data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-title="해커톤 · Partnerhub Cloud" aria-label="해커톤 · Partnerhub Cloud 발표자료 전체 보기"><img src="../projects/hackathon-cover.png" alt="Partnerhub Cloud 발표자료 표지" width="1000" height="563" loading="lazy"></button><div class="project-body"><h2>해커톤</h2><p class="project-label">Partnerhub Cloud · PDF 13쪽</p><p class="summary">제조 협력사의 품질 데이터를 관리하고 AI 이상 탐지를 연계하는 플랫폼 제안·데모.</p><p class="role-note">담당 · 기획·E2E 검증·트러블슈팅 기록·발표</p><p class="tech">GCP · GKE · Terraform · WIF</p><div class="project-links actions"><button class="button" data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-title="해커톤 · Partnerhub Cloud">발표자료 보기</button><a href="../projects/Hackathon_Team%20Eclipse.pdf" download class="text-link">다운로드 <small>1.9MB</small></a></div></div></article>
+<button class="cover" data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-page="7" data-title="해커톤 · Partnerhub Cloud" aria-label="해커톤 배포 파이프라인 원본 PDF 보기"><img src="../projects/hackathon-architecture.webp" alt="Partnerhub Cloud의 IaC 구성과 Git Push부터 Registry Push까지의 CI/CD 파이프라인" width="2184" height="1174" loading="lazy"></button>
+<p class="preview-caption">IaC·배포 파이프라인<span>클릭하여 원본 보기</span></p>
+<div class="project-body"><h2>해커톤</h2><p class="project-label">Partnerhub Cloud · Team Eclipse · PDF 13쪽</p><p class="summary">제조 협력사의 품질 데이터를 관리하고 AI 이상 탐지를 연계하는 플랫폼 제안·데모입니다. 팀은 GKE 배포와 Key-less CI/CD를 구성했습니다.</p>
+<p class="role-note">담당 · 기획·발표·QA</p><ul class="project-duties"><li>사업 시나리오 구상</li><li>데모 7단계 E2E 검증</li><li>트러블슈팅 기록 및 최종 발표</li></ul>
+<p class="tech">팀 기술 · GCP · GKE · Terraform · WIF</p>
+<div class="project-links actions"><button class="button" data-pdf="../projects/Hackathon_Team%20Eclipse.pdf" data-title="해커톤 · Partnerhub Cloud">발표자료 보기</button><a href="../projects/Hackathon_Team%20Eclipse.pdf" download class="text-link">다운로드 <small>1.9MB</small></a></div>
+</div></article>
 <article class="project" id="endive">
-<button class="cover" data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-title="2차 프로젝트 · ENDIVE-CLOUD" aria-label="2차 프로젝트 · ENDIVE-CLOUD 발표자료 전체 보기"><img src="../projects/endive-cover.png" alt="ENDIVE-CLOUD 발표자료 표지" width="1000" height="563" loading="lazy"></button><div class="project-body"><h2>2차 프로젝트</h2><p class="project-label">ENDIVE-CLOUD · PDF 27쪽</p><p class="summary">서울 운영·도쿄 재해복구 환경을 구성한 야외행사 안내 플랫폼.</p><p class="role-note">담당 · Kubernetes 클러스터 구축 · Ansible 자동화</p><p class="tech">AWS · OpenStack · Terraform · Ansible</p><div class="project-links actions"><button class="button" data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-title="2차 프로젝트 · ENDIVE-CLOUD">발표자료 보기</button><a href="../projects/2st%20Project_Team%20Endive.pdf" download class="text-link">다운로드 <small>11.3MB</small></a></div></div></article>
+<button class="cover" data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-page="8" data-title="2차 프로젝트 · ENDIVE-CLOUD" aria-label="2차 프로젝트 아키텍처 원본 PDF 보기"><img src="../projects/endive-architecture.webp" alt="AWS 서울 Active·도쿄 DR, OpenStack 모니터링 연결 아키텍처" width="1536" height="864" loading="lazy"></button>
+<p class="preview-caption">인프라 아키텍처<span>클릭하여 원본 보기</span></p>
+<div class="project-body"><h2>2차 프로젝트</h2><p class="project-label">ENDIVE-CLOUD · PDF 27쪽</p><p class="summary">서울 운영·도쿄 재해복구 환경을 구성한 야외행사 안내 플랫폼입니다. 팀은 리전 간 백업·이미지 복제와 OpenStack 중앙 관제를 연계했습니다.</p>
+<p class="role-note">담당 · Kubernetes 구축·Ansible 자동화</p><ul class="project-duties"><li>프로비저닝된 인프라에 Kubernetes 클러스터 구축</li><li>Ansible로 클러스터 설치·설정 자동화</li></ul>
+<p class="tech">팀 기술 · AWS · OpenStack · Kubernetes · Terraform · Ansible</p>
+<div class="project-links actions"><button class="button" data-pdf="../projects/2st%20Project_Team%20Endive.pdf" data-title="2차 프로젝트 · ENDIVE-CLOUD">발표자료 보기</button><a href="../projects/2st%20Project_Team%20Endive.pdf" download class="text-link">다운로드 <small>11.3MB</small></a></div>
+</div></article>
 <article class="project" id="bluebell">
-<button class="cover" data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-title="1차 프로젝트 · Bluebell" aria-label="1차 프로젝트 · Bluebell 발표자료 전체 보기"><img src="../projects/bluebell-cover.png" alt="Bluebell 발표자료 표지" width="1000" height="563" loading="lazy"></button><div class="project-body"><h2>1차 프로젝트</h2><p class="project-label">Bluebell · PDF 22쪽</p><p class="summary">AWS·온프레미스 3-Tier 환경의 구축·배포·장애복구 자동화.</p><p class="role-note">담당 · Monitoring 스택 및 Alerting 프로비저닝 자동화</p><p class="tech">AWS · Ansible · Prometheus · Grafana</p><div class="project-links actions"><button class="button" data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-title="1차 프로젝트 · Bluebell">발표자료 보기</button><a href="../projects/1st%20Project_Team%20Bluebell.pdf" download class="text-link">다운로드 <small>5.6MB</small></a></div></div></article></div></main>
+<button class="cover" data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-page="2" data-title="1차 프로젝트 · Bluebell" aria-label="1차 프로젝트 아키텍처 원본 PDF 보기"><img src="../projects/bluebell-architecture.webp" alt="AWS Web·WAS·DB 3-Tier와 Prometheus·Grafana 모니터링 아키텍처" width="1452" height="918" loading="lazy"></button>
+<p class="preview-caption">인프라 아키텍처<span>클릭하여 원본 보기</span></p>
+<div class="project-body"><h2>1차 프로젝트</h2><p class="project-label">Bluebell · PDF 22쪽</p><p class="summary">AWS·온프레미스 3-Tier 환경의 구축·배포·장애복구 자동화 프로젝트입니다. 팀의 서비스 흐름에 모니터링과 알림 구성을 연결했습니다.</p>
+<p class="role-note">담당 · Monitoring·Alerting 자동화</p><ul class="project-duties"><li>Prometheus·Grafana 모니터링 스택 배포 자동화</li><li>노드 Exporter 및 Alerting 프로비저닝 자동화</li></ul>
+<p class="tech">팀 기술 · AWS · Ansible · Docker Swarm · Prometheus · Grafana</p>
+<div class="project-links actions"><button class="button" data-pdf="../projects/1st%20Project_Team%20Bluebell.pdf" data-title="1차 프로젝트 · Bluebell">발표자료 보기</button><a href="../projects/1st%20Project_Team%20Bluebell.pdf" download class="text-link">다운로드 <small>5.6MB</small></a></div>
+</div></article>
+</div></main>
 <dialog class="viewer" aria-labelledby="viewer-title"><div class="viewer-bar"><h2 id="viewer-title">발표자료</h2><a id="pdf-open" target="_blank" rel="noopener">원본 열기</a><a id="pdf-download" download>다운로드</a><button class="close" aria-label="발표자료 닫기" autofocus>×</button></div><p class="viewer-help">자료가 표시되지 않으면 원본 열기를 이용해 주세요. PDF 원본 내용은 발표 당시 기준입니다.</p><iframe title="프로젝트 발표자료"></iframe></dialog>
 
 <footer>
-  <div class="wrap"><span>© 2026 유준형</span><a href="../">← Home</a></div>
+  <div class="wrap"><span>© 2026 유준형</span><a href="../">홈으로</a></div>
 </footer>
 <script src="viewer.js" defer></script>
 </body>

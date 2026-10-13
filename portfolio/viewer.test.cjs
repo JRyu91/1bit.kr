@@ -43,3 +43,15 @@ const b = setup(false);
 b.buttons[0].click();
 assert.equal(b.window.location.href, 'one.pdf');
 console.log('viewer open/close/focus/reopen/simulated-cancel/fallback PASS');
+
+const mapped = setup();
+mapped.buttons[0].dataset.page = '4';
+mapped.buttons[0].click();
+assert.equal(mapped.frame.src, 'one.pdf#page=4');
+assert.equal(mapped.nodes['pdf-open'].href, 'one.pdf#page=4');
+assert.equal(mapped.nodes['pdf-download'].href, 'one.pdf');
+const fallback = setup(false);
+fallback.buttons[0].dataset.page = '4';
+fallback.buttons[0].click();
+assert.equal(fallback.window.location.href, 'one.pdf#page=4');
+console.log('architecture page mapping/download/fallback PASS');
