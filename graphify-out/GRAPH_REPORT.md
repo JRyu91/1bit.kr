@@ -1,7 +1,7 @@
 # Graph Report - 1bit.kr  (2026-10-26)
 
 ## Corpus Check
-- 12 files · ~6,558 words
+- 12 files · ~6,437 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: .css 3, (none) 1, .zip 1)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `40d28e4a`
+- Built from commit: `4763d02c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

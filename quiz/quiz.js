@@ -26,14 +26,9 @@
   function render(focus = false, complete = false) {
     submitted = false;
     const q = questions.find(q => q.id === state.current);
-    const records = Object.values(state.records);
-    $('stats').textContent = `신규 학습 ${records.length} / ${questions.length} · 복습 대기 ${records.filter(r => !r.correct).length}개`;
-    $('progress').value = records.length;
     $('question').hidden = complete; $('done').hidden = !complete;
     $('number').textContent = `문제 ${q.id}`;
-    $('kind').textContent = state.records[q.id] ? (state.records[q.id].correct ? '다시 풀기' : '오답 복습') : '처음 풀기';
     $('prompt').textContent = q.prompt;
-    $('instruction').textContent = q.answers.length > 1 ? `정답 ${q.answers.length}개를 선택해 줘` : '정답 1개를 선택해 줘';
     $('choices').replaceChildren();
     for (const c of q.choices) {
       const label = document.createElement('label'); label.className = 'choice';
@@ -68,8 +63,6 @@
     const answers = document.createElement('p'); answers.textContent = `선택: ${selected.join(', ')} / 정답: ${q.answers.join(', ')}`;
     const explanation = document.createElement('p'); explanation.textContent = q.explanation || '등록된 해설이 없어.';
     $('result').replaceChildren(heading, answers, explanation); $('result').hidden = false; $('submit').hidden = true; $('next').hidden = false;
-    $('stats').textContent = `신규 학습 ${Object.keys(state.records).length} / ${questions.length} · 복습 대기 ${Object.values(state.records).filter(r => !r.correct).length}개`;
-    $('progress').value = Object.keys(state.records).length;
   };
   $('next').onclick = () => { const q = E.next(state, questions); if (q) state.current = q.id; save(); render(!!q, !q); };
   $('backup').onclick = () => {
