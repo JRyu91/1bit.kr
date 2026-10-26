@@ -38,15 +38,17 @@
     }
     $('result').hidden = true; $('result').replaceChildren(); $('submit').hidden = false; $('submit').disabled = true; $('next').hidden = true;
     $('numbers').replaceChildren();
+    if (complete) $('numbers').append(new Option('문제 번호 지정', '', true, true));
     for (const item of questions) {
-      const r = state.records[item.id]; const b = document.createElement('button');
-      b.textContent = `${item.id} ${!r ? '○' : r.correct ? '✓' : '↻'}`;
-      b.setAttribute('aria-label', `문제 ${item.id}, ${!r ? '미풀이' : r.correct ? '정답' : '오답'}`);
-      if (item.id === state.current && !complete) b.setAttribute('aria-current', 'true');
-      b.onclick = () => { state.current = item.id; save(); render(true); }; $('numbers').append(b);
+      const r = state.records[item.id];
+      const option = new Option(`${item.id} ${!r ? '△' : r.correct ? 'O' : 'X'}`, String(item.id));
+      option.setAttribute('aria-label', `문제 ${item.id}, ${!r ? '미풀이' : r.correct ? '정답' : '오답'}`);
+      option.selected = !complete && item.id === state.current;
+      $('numbers').append(option);
     }
     if (focus) { $('number').focus({ preventScroll: true }); $('question').scrollIntoView({ block: 'start' }); }
   }
+  $('numbers').onchange = () => { if (!$('numbers').value) return; state.current = Number($('numbers').value); save(); render(true); };
   $('form').onchange = () => { $('submit').disabled = !$('choices').querySelector('input:checked'); };
   $('form').onsubmit = event => {
     event.preventDefault(); if (submitted) return;
@@ -54,6 +56,9 @@
     const selected = [...$('choices').querySelectorAll('input:checked')].map(i => i.value);
     if (!selected.length) return;
     const correct = E.answer(state, q, selected); submitted = true; save();
+    const option = [...$('numbers').options].find(o => o.value === String(q.id));
+    option.textContent = `${q.id} ${correct ? 'O' : 'X'}`;
+    option.setAttribute('aria-label', `문제 ${q.id}, ${correct ? '정답' : '오답'}`);
     for (const input of $('choices').querySelectorAll('input')) {
       input.disabled = true;
       if (q.answers.includes(input.value)) input.parentElement.classList.add('correct');
