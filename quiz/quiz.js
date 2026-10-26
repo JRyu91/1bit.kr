@@ -36,6 +36,7 @@
       const text = document.createElement('span'); const letter = document.createElement('b'); letter.textContent = c.id + '.';
       text.append(letter, document.createTextNode(c.text)); label.append(input, text); $('choices').append(label);
     }
+    $('next').className = 'primary'; $('next').textContent = '다음 문제';
     $('result').hidden = true; $('result').className = ''; $('result').replaceChildren(); $('submit').hidden = false; $('submit').disabled = true; $('next').hidden = true;
     updateNumbers(complete);
     if (focus) { $('number').focus({ preventScroll: true }); $('question').scrollIntoView({ block: 'start' }); }
@@ -74,6 +75,8 @@
     const answers = document.createElement('p'); answers.textContent = `선택: ${selected.join(', ')} / 정답: ${q.answers.join(', ')}`;
     const explanation = document.createElement('p'); explanation.textContent = q.explanation || '등록된 해설이 없어.';
     $('result').className = correct ? 'correct' : 'wrong';
+    $('next').classList.toggle('success', correct);
+    $('next').textContent = correct ? '맞혔다! 다음 문제' : '다음 문제';
     $('result').replaceChildren(heading, answers, explanation); $('result').hidden = false; $('submit').hidden = true; $('next').hidden = false;
   };
   $('next').onclick = () => { const q = E.next(state, questions); if (q) state.current = q.id; save(); render(!!q, !q); };

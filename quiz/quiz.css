@@ -31,3 +31,18 @@ summary{padding:8px 0;cursor:pointer;min-height:44px;font-size:15px}
 .file-button{display:inline-flex;align-items:center;position:relative;overflow:hidden}.file-button input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.file-button:focus-within{outline:2px solid var(--green);outline-offset:3px}
 #notice:not(:empty){padding:10px;border:1px solid #994320;margin-bottom:12px;color:#994320}#done p{margin-top:10px}[hidden]{display:none!important}
 @media(max-width:400px){main{padding-left:12px;padding-right:12px}.choice{padding:8px 10px;gap:8px}}
+
+.choice.correct:has(input:checked){position:relative}
+.choice.correct:has(input:checked)::after{content:'✓';position:absolute;right:-5px;top:-10px;display:grid;place-items:center;width:26px;height:26px;border:2px solid var(--cream);border-radius:50%;background:#185fba;color:white;font-size:17px;font-weight:700;pointer-events:none}
+#result.correct{padding:10px 12px;border-radius:6px;background:#edf4ff}
+#result.correct h3::before{content:'✓';display:inline-grid;place-items:center;width:24px;height:24px;margin-right:8px;border-radius:50%;background:#185fba;color:white;font-size:16px}
+#next.success{background:#185fba;border-color:#185fba}
+@media(prefers-reduced-motion:no-preference){
+ .choice.correct:has(input:checked)::after{animation:success-pop .42s cubic-bezier(.2,.8,.3,1.2)}
+ .choice.correct:has(input:checked)::before{content:'';position:absolute;pointer-events:none;right:6px;top:1px;width:4px;height:4px;border-radius:50%;background:transparent;box-shadow:0 -18px #185fba,16px -9px #c39832,16px 9px #185fba,0 18px #c39832,-16px 9px #185fba,-16px -9px #c39832;animation:success-spark .5s ease-out both}
+ #next.success{animation:success-button .38s ease-out}
+ #result.correct h3::before{animation:success-pop .42s cubic-bezier(.2,.8,.3,1.2)}
+}
+@keyframes success-pop{0%{transform:scale(.3);opacity:0}60%{transform:scale(1.18);opacity:1}100%{transform:scale(1);opacity:1}}
+@keyframes success-spark{0%{transform:scale(.4);opacity:0}25%{opacity:1}100%{transform:scale(1.7);opacity:0}}
+@keyframes success-button{0%{transform:scale(.98)}55%{transform:scale(1.015);box-shadow:0 0 0 5px #185fba18}100%{transform:scale(1);box-shadow:0 0 0 0 transparent}}
