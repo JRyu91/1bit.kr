@@ -1,6 +1,21 @@
 const assert = require('node:assert/strict');
 const E = require('./engine.js');
-const qs = require('./questions.json');
+const all = require('./questions.json');
+const qs = all.slice(0, 10);
+const missing = new Set([51, 73, 95, 147, 382, 933]);
+assert.deepEqual(all.map(q => q.id), Array.from({length: all.at(-1).id}, (_, i) => i + 1).filter(id => !missing.has(id)));
+for (const q of all) {
+  assert.ok(q.prompt.length > 20);
+  assert.deepEqual(q.choices.map(c => c.id), 'ABCDEF'.slice(0, q.choices.length).split(''));
+  assert.ok(q.choices.every(c => c.text.length > 0));
+  assert.ok(q.answers.length > 0 && q.answers.every(a => q.choices.some(c => c.id === a)));
+  assert.equal(new Set(q.answers).size, q.answers.length);
+  assert.ok(q.explanation === null || typeof q.explanation === 'string');
+}
+const oldProgress = E.fresh();
+E.answer(oldProgress, qs[0], ['A']);
+assert.ok(E.valid(oldProgress, all));
+assert.equal(E.next(oldProgress, all).id, 2);
 assert.equal(qs.length, 10);
 assert.deepEqual(qs.map(q => q.answers.join('')), ['A','B','D','B','D','A','D','B','A','A']);
 assert.equal(qs.filter(q => !q.explanation).length, 2);
