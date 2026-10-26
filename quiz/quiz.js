@@ -36,19 +36,27 @@
       const text = document.createElement('span'); const letter = document.createElement('b'); letter.textContent = c.id + '.';
       text.append(letter, document.createTextNode(c.text)); label.append(input, text); $('choices').append(label);
     }
-    $('result').hidden = true; $('result').replaceChildren(); $('submit').hidden = false; $('submit').disabled = true; $('next').hidden = true;
-    $('numbers').replaceChildren();
-    if (complete) $('numbers').append(new Option('문제 번호 지정', '', true, true));
-    for (const item of questions) {
-      const r = state.records[item.id];
-      const option = new Option(`${item.id} ${!r ? '△' : r.correct ? 'O' : 'X'}`, String(item.id));
-      option.setAttribute('aria-label', `문제 ${item.id}, ${!r ? '미풀이' : r.correct ? '정답' : '오답'}`);
-      option.selected = !complete && item.id === state.current;
-      $('numbers').append(option);
-    }
+    $('result').hidden = true; $('result').className = ''; $('result').replaceChildren(); $('submit').hidden = false; $('submit').disabled = true; $('next').hidden = true;
+    updateNumbers(complete);
     if (focus) { $('number').focus({ preventScroll: true }); $('question').scrollIntoView({ block: 'start' }); }
   }
-  $('numbers').onchange = () => { if (!$('numbers').value) return; state.current = Number($('numbers').value); save(); render(true); };
+  function updateNumbers(complete = false) {
+    const status = id => !state.records[id] ? 'unanswered' : state.records[id].correct ? 'correct' : 'wrong';
+    const text = id => `${id} [${!state.records[id] ? '△' : state.records[id].correct ? 'O' : 'X'}]`;
+    $('number-current').textContent = complete ? '문제 번호 지정' : text(state.current);
+    $('number-current').className = complete ? '' : status(state.current);
+    $('numbers').replaceChildren();
+    for (const item of questions) {
+      const button = document.createElement('button');
+      button.type = 'button'; button.textContent = text(item.id); button.className = status(item.id);
+      button.setAttribute('aria-label', `문제 ${item.id}, ${!state.records[item.id] ? '미풀이' : state.records[item.id].correct ? '정답' : '오답'}`);
+      if (!complete && item.id === state.current) button.setAttribute('aria-current', 'true');
+      button.onclick = () => { state.current = item.id; $('number-picker').open = false; save(); render(true); };
+      $('numbers').append(button);
+    }
+  }
+  $('number-picker').onkeydown = event => { if (event.key === 'Escape') { $('number-picker').open = false; $('number-current').focus(); } };
+  document.addEventListener('click', event => { if (!$('number-picker').contains(event.target)) $('number-picker').open = false; });
   $('form').onchange = () => { $('submit').disabled = !$('choices').querySelector('input:checked'); };
   $('form').onsubmit = event => {
     event.preventDefault(); if (submitted) return;
@@ -56,9 +64,7 @@
     const selected = [...$('choices').querySelectorAll('input:checked')].map(i => i.value);
     if (!selected.length) return;
     const correct = E.answer(state, q, selected); submitted = true; save();
-    const option = [...$('numbers').options].find(o => o.value === String(q.id));
-    option.textContent = `${q.id} ${correct ? 'O' : 'X'}`;
-    option.setAttribute('aria-label', `문제 ${q.id}, ${correct ? '정답' : '오답'}`);
+    updateNumbers();
     for (const input of $('choices').querySelectorAll('input')) {
       input.disabled = true;
       if (q.answers.includes(input.value)) input.parentElement.classList.add('correct');
@@ -67,6 +73,7 @@
     const heading = document.createElement('h3'); heading.textContent = correct ? '정답이야' : '오답이야 · 다시 연습하자';
     const answers = document.createElement('p'); answers.textContent = `선택: ${selected.join(', ')} / 정답: ${q.answers.join(', ')}`;
     const explanation = document.createElement('p'); explanation.textContent = q.explanation || '등록된 해설이 없어.';
+    $('result').className = correct ? 'correct' : 'wrong';
     $('result').replaceChildren(heading, answers, explanation); $('result').hidden = false; $('submit').hidden = true; $('next').hidden = false;
   };
   $('next').onclick = () => { const q = E.next(state, questions); if (q) state.current = q.id; save(); render(!!q, !q); };
