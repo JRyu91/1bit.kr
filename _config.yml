@@ -14,3 +14,4 @@ exclude:
   - quiz/engine.test.cjs
   - graphify-out
   - .playwright-cli
+  - quiz/import_questions.py
