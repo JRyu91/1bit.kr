@@ -13,9 +13,9 @@ button,.file-button{font:inherit;min-height:44px;border:1px solid var(--line);bo
 button:disabled{opacity:.5;cursor:default}.primary{width:100%;background:var(--green);border-color:var(--green);color:var(--cream);font-weight:600}
 .submit-area{padding:10px 0}
 #result{margin-top:14px;border-left:3px solid var(--green);padding:2px 0 2px 12px}#result p{margin-top:6px;white-space:pre-line;line-height:1.6}#result h3{font-size:18px}
-.number-section,details{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}.number-section h2{font-size:15px;line-height:1.5;font-weight:500}
+.number-section,details{border-top:1px solid var(--line);margin-top:8px;padding-top:8px}.number-section label{font-size:15px;line-height:1.5;font-weight:500}
 summary{padding:8px 0;cursor:pointer;min-height:44px;font-size:15px}
-#numbers{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}#numbers button{padding:6px}#numbers button[aria-current]{border:2px solid var(--green);font-weight:700}
+#numbers{display:block;width:100%;min-height:44px;margin-top:8px;padding:8px 12px;font:inherit;font-size:16px;color:var(--ink);background:var(--cream);border:1px solid var(--line);border-radius:6px}
 .hint{font-size:13px;color:var(--muted)}.tools{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .file-button{display:inline-flex;align-items:center;position:relative;overflow:hidden}.file-button input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer}.file-button:focus-within{outline:2px solid var(--green);outline-offset:3px}
 #notice:not(:empty){padding:10px;border:1px solid #994320;margin-bottom:12px;color:#994320}#done p{margin-top:10px}[hidden]{display:none!important}

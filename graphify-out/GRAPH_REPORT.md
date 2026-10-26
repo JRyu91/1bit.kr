@@ -1,17 +1,17 @@
 # Graph Report - 1bit.kr  (2026-10-26)
 
 ## Corpus Check
-- 12 files · ~6,437 words
+- 12 files · ~6,470 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: .css 3, (none) 1, .zip 1)
 
 ## Summary
-- 52 nodes · 52 edges · 11 communities (3 shown, 8 thin omitted)
+- 52 nodes · 50 edges · 11 communities (3 shown, 8 thin omitted)
 - Extraction: 92% EXTRACTED · 8% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `4763d02c`
+- Built from commit: `1b214f5b`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -23,20 +23,19 @@
 - contact.js
 - motion.js
 - viewer.js
-- render
 - _config.yml
 
 ## God Nodes (most connected - your core abstractions)
-1. `render()` - 4 edges
-2. `render()` - 2 edges
-3. `handleError()` - 2 edges
-4. `save()` - 2 edges
-5. `exclude` - 1 edges
-6. `copyButton` - 1 edges
-7. `copyStatus` - 1 edges
-8. `code` - 1 edges
-9. `code` - 1 edges
-10. `a` - 1 edges
+1. `render()` - 2 edges
+2. `handleError()` - 2 edges
+3. `exclude` - 1 edges
+4. `copyButton` - 1 edges
+5. `copyStatus` - 1 edges
+6. `code` - 1 edges
+7. `code` - 1 edges
+8. `a` - 1 edges
+9. `b` - 1 edges
+10. `cachedGif` - 1 edges
 
 ## Surprising Connections (you probably didn't know these)
 - None detected - all connections are within the same source files.
