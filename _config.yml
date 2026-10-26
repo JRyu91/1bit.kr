@@ -11,3 +11,6 @@ exclude:
   - assets/thumbsup.png
   - contact/contact.test.cjs
   - portfolio.browser.js
+  - quiz/engine.test.cjs
+  - graphify-out
+  - .playwright-cli
