@@ -1,0 +1,28 @@
+const assert = require('node:assert/strict');
+const E = require('./engine.js');
+const qs = require('./questions.json');
+assert.equal(qs.length, 10);
+assert.deepEqual(qs.map(q => q.answers.join('')), ['A','B','D','B','D','A','D','B','A','A']);
+assert.equal(qs.filter(q => !q.explanation).length, 2);
+let s = E.fresh();
+E.answer(s, qs[0], ['B']);
+const extra = Array.from({length:11}, (_, i) => ({...qs[1], id:i+2}));
+const many = [qs[0], ...extra];
+for (let i=0;i<9;i++) E.answer(s, extra[i], ['B']);
+assert.equal(E.next(s,many).id, 11);
+E.answer(s,extra[9],['B']);
+assert.equal(E.next(s,many).id,1);
+E.answer(s,qs[0],['B']);
+assert.equal(s.records[1].due,s.count+10);
+assert.equal(E.next(s,qs).id,1); // No unseen questions: review remaining errors now.
+E.answer(s,qs[0],['A']);
+assert.equal(E.next(s,qs),null);
+assert.ok(E.valid(s,many));
+assert.ok(!E.valid({...s,count:-1},qs));
+assert.ok(!E.valid({...s,version:'other'},qs));
+const multi={...qs[0],answers:['A','C']};
+assert.equal(E.answer(E.fresh(),multi,['A']),false);
+assert.equal(E.answer(E.fresh(),multi,['C','A']),true);
+assert.throws(()=>E.answer(E.fresh(),qs[0],['Z']));
+assert.throws(()=>E.answer(E.fresh(),qs[0],['A','A']));
+console.log('quiz regression PASS');
