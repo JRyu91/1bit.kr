@@ -1,17 +1,17 @@
-# Graph Report - 1bit.kr  (2026-10-26)
+# Graph Report - 1bit.kr  (2026-10-28)
 
 ## Corpus Check
-- 13 files · ~227,735 words
+- 13 files · ~228,050 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: .css 3, (none) 1, .zip 1)
 
 ## Summary
-- 64 nodes · 65 edges · 10 communities (4 shown, 6 thin omitted)
-- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 4 edges (avg confidence: 0.85)
+- 66 nodes · 67 edges · 11 communities (4 shown, 7 thin omitted)
+- Extraction: 93% EXTRACTED · 7% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `1f8b006b`
+- Built from commit: `47af699c`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -44,7 +44,7 @@
 ## Import Cycles
 - None detected.
 
-## Communities (10 total, 6 thin omitted)
+## Communities (11 total, 7 thin omitted)
 
 ### Community 0 - "motion.test.cjs"
 Cohesion: 0.15
@@ -55,15 +55,15 @@ Cohesion: 0.16
 Nodes (6): code, a, b, code, fallback, mapped
 
 ### Community 2 - "engine.test.cjs"
-Cohesion: 0.15
-Nodes (7): extra, many, missing, multi, oldProgress, qs, s
+Cohesion: 0.20
+Nodes (8): extra, guessed, many, missing, multi, oldProgress, qs, s
 
 ### Community 8 - "render"
 Cohesion: 0.83
 Nodes (3): render(), save(), updateNumbers()
 
 ## Knowledge Gaps
-- **6 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
+- **7 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Not enough signal to generate questions. This usually means the corpus has no AMBIGUOUS edges, no bridge nodes, no INFERRED relationships, and all communities are tightly cohesive. Add more files or run with --mode deep to extract richer edges._
