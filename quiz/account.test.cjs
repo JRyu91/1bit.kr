@@ -1,0 +1,54 @@
+const assert = require('node:assert/strict');
+const vm = require('node:vm');
+const fs = require('node:fs');
+const E = require('./engine');
+const questions = require('./questions.json');
+const elements = new Map(), storage = new Map();
+const element = id => elements.get(id) || (elements.set(id, { value: '', textContent: '', hidden: false }), elements.get(id));
+const context = { window: { QuizEngine: E, addEventListener() {} }, document: { getElementById: element }, localStorage: { getItem: k => storage.get(k) || null, setItem: (k, v) => storage.set(k, v) }, confirm: () => true, console };
+vm.runInNewContext(fs.readFileSync(__dirname + '/account.js', 'utf8'), context);
+let changed;
+const client = new context.window.QuizAccount(questions, state => { changed = state; });
+const users = new Map(); let session = 'alice';
+client.api = async (path, body) => {
+  if (path === '/account/me') return { ok: { id: session, name: session } };
+  if (path === '/quiz/progress') {
+    const cloud = users.get(session) || { revision: 0, state: null };
+    if (!body) return { accountId: session, ...cloud };
+    if (body.accountId !== session) throw Error('계정 변경');
+    if (body.revision !== cloud.revision) throw Error('저장 충돌');
+    users.set(session, { revision: cloud.revision + 1, state: body.state });
+    return { revision: cloud.revision + 1 };
+  }
+  if (path === '/account/logout') return {};
+  throw Error('unexpected ' + path);
+};
+(async () => {
+  const guest = E.fresh(); E.answer(guest, questions[0], ['A']);
+  storage.set('1bit-aws-quiz-v1', JSON.stringify(guest));
+  assert.equal(Object.keys((await client.start(guest)).records).length, 0, 'guest never imported silently');
+  client.importGuest(); await client.queue;
+  assert.equal(users.get('alice').state.records[1].correct, true);
+  const state = E.fresh(); E.answer(state, questions[1], ['A']);
+  client.save(state); state.current = 3; client.save(state); await client.queue;
+  assert.equal(users.get('alice').revision, 3);
+  assert.equal(users.get('alice').state.current, 3);
+  assert.equal(JSON.parse(storage.get(client.key)).pending, false);
+  users.get('alice').revision++;
+  state.current = 4; client.save(state); await client.queue;
+  assert.equal(client.paused, true);
+  assert.equal(users.get('alice').state.current, 3, 'conflict cannot overwrite cloud');
+  assert.equal(JSON.parse(storage.get(client.key)).state.current, 4, 'unsent record preserved');
+  await client.load({ id: 'alice', name: 'alice' });
+  assert.equal(client.paused, true, 'reload detects unsent conflict');
+  await client.reload();
+  assert.equal(client.paused, false);
+  assert.equal(changed.current, 3);
+  session = 'bob'; await client.load({ id: 'bob', name: 'bob' });
+  assert.equal(Object.keys(client.latest.records).length, 0, 'second account cannot inherit first');
+  client.save(guest); session = 'alice'; await client.queue;
+  assert.equal(client.paused, true, 'changed game cookie cannot redirect a queued save');
+  assert.equal(users.get('alice').state.current, 3);
+  assert.equal(JSON.parse(storage.get('1bit-aws-quiz-v1')).records[1].correct, true, 'guest preserved');
+  console.log('account sync queue / guest import / account isolation / conflict recovery / changed session PASS');
+})().catch(e => { console.error(e); process.exitCode = 1; });

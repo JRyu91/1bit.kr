@@ -2,13 +2,13 @@
   const $ = id => document.getElementById(id);
   const key = '1bit-aws-quiz-v1';
   const E = window.QuizEngine;
+  let account;
   let questions, state, submitted = false, storageBroken = false;
   let reviewQueue = null, reviewReturn = null;
   const notice = text => { $('notice').textContent = text; };
   function save() {
     if (storageBroken) return;
-    try { localStorage.setItem(key, JSON.stringify(state)); }
-    catch { notice('자동 저장을 할 수 없어. 진도를 백업해 줘.'); }
+    if (account) account.save(state);
   }
   try {
     const response = await fetch('questions.json');
@@ -24,6 +24,9 @@
       state = stored;
     }
   } catch { storageBroken = true; notice('저장된 진도를 읽을 수 없어. 기존 데이터는 덮어쓰지 않았어. 백업을 불러오거나 처음부터 시작해 줘.'); }
+  account = new window.QuizAccount(questions, value => { state = value; storageBroken = false; reviewQueue = null; $('review-status').textContent = ''; render(); });
+  state = await account.start(state);
+  if (account.user && !account.paused) storageBroken = false;
   function render(focus = false, complete = false) {
     submitted = false;
     const q = questions.find(q => q.id === state.current);
@@ -57,7 +60,7 @@
       button.type = 'button'; button.textContent = text(item.id); button.className = status(item.id);
       button.setAttribute('aria-label', `문제 ${item.id}, ${!state.records[item.id] ? '미풀이' : state.records[item.id].correct ? '정답' : '오답'}`);
       if (!complete && item.id === state.current) button.setAttribute('aria-current', 'true');
-      button.onclick = () => { reviewQueue = null; $('review-status').textContent = ''; state.current = item.id; $('number-picker').open = false; save(); render(true); };
+      button.onclick = () => { if (!account.canEdit()) return; reviewQueue = null; $('review-status').textContent = ''; state.current = item.id; $('number-picker').open = false; save(); render(true); };
       $('numbers').append(button);
     }
   }
@@ -65,7 +68,7 @@
   document.addEventListener('click', event => { if (!$('number-picker').contains(event.target)) $('number-picker').open = false; });
   $('form').onchange = () => { $('submit').disabled = !$('choices').querySelector('input:checked'); };
   $('form').onsubmit = event => {
-    event.preventDefault(); if (submitted) return;
+    event.preventDefault(); if (submitted || !account.canEdit()) return;
     const q = questions.find(q => q.id === state.current);
     const selected = [...$('choices').querySelectorAll('input:checked')].map(i => i.value);
     if (!selected.length) return;
@@ -86,6 +89,7 @@
     $('result').replaceChildren(heading, answers, explanation); $('result').hidden = false; $('submit').hidden = true; $('next').hidden = false;
   };
   $('mark-wrong').onclick = () => {
+    if (!account.canEdit()) return;
     const q = questions.find(q => q.id === state.current);
     if (!submitted || !E.markWrong(state, q)) return;
     save(); updateNumbers();
@@ -95,6 +99,7 @@
     $('result').querySelector('h3').textContent = '학습 기록을 X로 저장했어';
   };
   $('review').onclick = () => {
+    if (!account.canEdit()) return;
     if (reviewQueue !== null) {
       state.current = reviewReturn; reviewQueue = null;
       $('review-status').textContent = ''; save(); render(true); return;
@@ -105,6 +110,7 @@
     $('review-status').textContent = '오답만 복습 중'; save(); render(true);
   };
   $('next').onclick = () => {
+    if (!account.canEdit()) return;
     if (reviewQueue !== null) {
       const id = reviewQueue.shift();
       if (id !== undefined) { state.current = id; save(); render(true); return; }
@@ -119,6 +125,7 @@
     const a = document.createElement('a'); a.href = url; a.download = '1bit-quiz-progress.json'; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 60000);
   };
   $('restore').onchange = async event => {
+    if (!account.canEdit()) return;
     const file = event.target.files[0]; if (!file) return;
     try {
       if (file.size > 100000) throw Error();
@@ -129,7 +136,7 @@
     } catch { notice('이 연습판의 올바른 백업 파일이 아니야. 현재 진도는 유지했어.'); }
     finally { event.target.value = ''; }
   };
-  $('reset').onclick = () => { if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작할까?')) { reviewQueue = null; $('review-status').textContent = ''; state = E.fresh(); storageBroken = false; notice(''); save(); render(true); } };
-  window.addEventListener('storage', event => { if (event.key === key) { storageBroken = true; notice('다른 탭에서 진도가 변경됐어. 이 탭은 저장을 멈췄어. 새로고침해서 최신 진도를 불러와 줘.'); $('submit').disabled = true; } });
+  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작할까?')) { reviewQueue = null; $('review-status').textContent = ''; state = E.fresh(); storageBroken = false; notice(''); save(); render(true); } };
+
   render();
 })();
