@@ -15,3 +15,4 @@ exclude:
   - graphify-out
   - .playwright-cli
   - quiz/import_questions.py
+  - quiz/account.test.cjs
