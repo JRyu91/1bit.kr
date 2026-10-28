@@ -1,17 +1,17 @@
 # Graph Report - 1bit.kr  (2026-10-28)
 
 ## Corpus Check
-- 15 files · ~229,244 words
+- 15 files · ~229,351 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: .css 3, (none) 1, .zip 1)
 
 ## Summary
 - 89 nodes · 127 edges · 12 communities (5 shown, 7 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 6 edges (avg confidence: 0.85)
+- Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 5 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9b41207b`
+- Built from commit: `2359b42e`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

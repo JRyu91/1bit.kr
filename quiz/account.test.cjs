@@ -9,6 +9,7 @@ const context = { window: { QuizEngine: E, addEventListener() {} }, document: { 
 vm.runInNewContext(fs.readFileSync(__dirname + '/account.js', 'utf8'), context);
 let changed;
 const client = new context.window.QuizAccount(questions, state => { changed = state; });
+assert.equal(client.canEdit(), false, 'login required before editing');
 const users = new Map(); let session = 'alice';
 client.api = async (path, body) => {
   if (path === '/account/me') return { ok: { id: session, name: session } };
@@ -50,5 +51,16 @@ client.api = async (path, body) => {
   assert.equal(client.paused, true, 'changed game cookie cannot redirect a queued save');
   assert.equal(users.get('alice').state.current, 3);
   assert.equal(JSON.parse(storage.get('1bit-aws-quiz-v1')).records[1].correct, true, 'guest preserved');
+  await client.logout();
+  assert.equal(client.user, null);
+  assert.equal(client.canEdit(), false);
+  assert.equal(element('quiz-content').hidden, true, 'logout hides quiz');
+  session = 'alice'; await client.load({ id: 'alice', name: 'alice' }, true);
+  const previousApi = client.api;
+  client.api = async (path, body) => { if (path === '/quiz/progress' && body) { const error = Error('로그인 필요'); error.status = 401; throw error; } return previousApi(path, body); };
+  client.save(guest); await client.queue;
+  assert.equal(client.user, null, 'expired session requires login');
+  assert.equal(element('quiz-content').hidden, true);
+  assert.equal(JSON.parse(storage.get(client.key)).pending, true, 'expired session keeps unsent progress');
   console.log('account sync queue / guest import / account isolation / conflict recovery / changed session PASS');
 })().catch(e => { console.error(e); process.exitCode = 1; });
