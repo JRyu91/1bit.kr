@@ -50,3 +50,5 @@ summary{padding:8px 0;cursor:pointer;min-height:44px;font-size:15px}
 .review-tools{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:8px 0}.review-tools button{color:var(--green);font-weight:600}.review-tools span{font-size:13px;color:var(--muted)}#mark-wrong{margin-top:10px;min-height:44px;font-size:14px;color:#b52f32;border-color:#d7b0a7}
 
 #account-form{display:grid;gap:10px;margin-top:8px}#account-form label{display:grid;gap:4px;font-size:14px}#account-form input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:inherit;font-size:16px;background:#fffdf7;color:var(--ink)}#account-status{margin-top:8px;font-size:13px;color:var(--muted)}#account-summary{overflow-wrap:anywhere}
+
+#account-fields{display:grid;gap:10px}
