@@ -16,6 +16,8 @@
       });
     }
     status(message) {
+      $('quiz-content').hidden = !this.user;
+      if (!this.user) $('account-panel').open = true;
       $('account-status').textContent = message;
       $('account-summary').textContent = this.user ? `${this.user.name} · ${message}` : '로그인 · 계정별 진도 저장';
       $('account-form').hidden = !!this.user; $('account-actions').hidden = !this.user;
@@ -25,7 +27,7 @@
     async api(path, body) {
       const response = await fetch(base + path, { credentials: 'include', cache: 'no-store', ...(body === undefined ? {} : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) });
       const result = response.status === 204 ? {} : await response.json();
-      if (!response.ok) throw Error(result.err || '서버에 연결할 수 없어');
+      if (!response.ok) { const error = Error(result.err || '서버에 연결할 수 없어'); error.status = response.status; throw error; }
       return result;
     }
     read(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } }
@@ -36,7 +38,7 @@
       try {
         const me = await this.api('/account/me');
         return await this.load(me.ok);
-      } catch (e) { if (this.user) { this.paused = true; this.status(e.message); return this.latest; } this.status('로그인하면 다른 기기에서도 이어 풀 수 있어'); return guest; }
+      } catch (e) { if (this.user) { this.paused = true; this.status(e.message); return this.latest; } this.status('로그인하거나 가입한 뒤 문제를 풀어 줘'); return guest; }
     }
     async load(user, discardPending = false) {
       this.user = user; this.key = guestKey + ':account:' + user.id;
@@ -57,11 +59,10 @@
       this.cache({ state: this.latest, revision: this.revision, pending: false });
       this.status('서버 저장 완료'); return this.latest;
     }
-    canEdit() { if (this.loading) return false; if (this.paused) { $('account-panel').open = true; return false; } return true; }
+    canEdit() { if (!this.user) { $('account-panel').open = true; return false; } if (this.loading) return false; if (this.paused) { $('account-panel').open = true; return false; } return true; }
     save(state) {
       if (!this.canEdit()) return;
       this.latest = JSON.parse(JSON.stringify(state));
-      if (!this.user) { this.cache(this.latest); return; }
       const snapshot = this.latest, sequence = ++this.sequence;
       this.cache({ state: this.latest, revision: this.revision, pending: true }); this.status('저장 중');
       this.queue = this.queue.then(async () => {
@@ -72,7 +73,7 @@
           const pending = sequence !== this.sequence;
           this.cache({ state: this.latest, revision: this.revision, pending });
           this.status(pending ? '저장 중' : '서버 저장 완료');
-        } catch (e) { this.paused = true; this.status(e.message + ' · 진도 백업으로 현재 기록을 보관해 줘'); $('account-panel').open = true; }
+        } catch (e) { this.paused = true; if (e.status === 401 || e.status === 403) this.user = null; this.status(e.message + ' · 진도 백업으로 현재 기록을 보관해 줘'); $('account-panel').open = true; }
       });
     }
     async login(signup) {
@@ -99,7 +100,7 @@
         await this.queue; await this.api('/account/logout', {});
         this.user = null; this.key = guestKey; this.paused = false;
         const guest = this.read(guestKey); this.latest = this.valid(guest) ? guest : window.QuizEngine.fresh();
-        this.change(this.latest); this.status('이 브라우저에만 저장 중');
+        this.change(this.latest); this.status('로그아웃했어. 다시 로그인해 줘');
       } catch (e) { this.status(e.message); }
       finally { this.busy = false; this.loading = false; }
     }
