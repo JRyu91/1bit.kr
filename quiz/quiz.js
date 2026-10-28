@@ -26,6 +26,7 @@
   } catch { storageBroken = true; notice('저장된 진도를 읽을 수 없어. 기존 데이터는 덮어쓰지 않았어. 백업을 불러오거나 처음부터 시작해 줘.'); }
   account = new window.QuizAccount(questions, value => { state = value; storageBroken = false; reviewQueue = null; $('review-status').textContent = ''; render(); });
   state = await account.start(state);
+  $('account-fields').disabled = false;
   if (account.user && !account.paused) storageBroken = false;
   function render(focus = false, complete = false) {
     submitted = false;
