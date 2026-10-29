@@ -6,11 +6,13 @@
     event.preventDefault();
     if (busy || created) return;
     const id = $('signup-id').value.trim(), pw = $('signup-password').value, name = $('signup-name').value.trim();
+    const code = $('signup-code').value.trim();
+    if (!code) { $('signup-status').textContent = '가입코드를 입력하세요.'; return; }
     if (!name) { $('signup-status').textContent = '닉네임을 입력하세요.'; return; }
     busy = true; $('signup-fields').disabled = true;
     $('signup-status').textContent = '회원가입 중입니다.';
     try {
-      await window.QuizAccount.api('/account/signup', { id, pw, name, gender: 'male' });
+      await window.QuizAccount.api('/quiz/signup', { id, pw, name, code });
       created = true; $('signup-password').value = '';
       await window.QuizAccount.api('/account/login', { id, pw });
       window.location.replace('../');

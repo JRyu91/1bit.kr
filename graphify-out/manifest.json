@@ -102,8 +102,8 @@
     "semantic_hash": ""
   },
   "quiz/index.html": {
-    "mtime": 1793233448.3805614,
-    "seen": 1793233448.9192681,
+    "mtime": 1793233459.821603,
+    "seen": 1793235444.910815,
     "ast_hash": "4ba373f4712a9402e56001d796a0c8f6",
     "semantic_hash": ""
   },
@@ -264,21 +264,21 @@
     "semantic_hash": ""
   },
   "quiz/signup/signup.js": {
-    "mtime": 1793233368.8316717,
-    "seen": 1793233448.9189482,
-    "ast_hash": "1b7d3dc5a04ea862ed639777b87ae15a",
+    "mtime": 1793235424.5015087,
+    "seen": 1793235444.9106839,
+    "ast_hash": "76778b9b1a98a3ac2b3cc75a726a90f8",
     "semantic_hash": ""
   },
   "quiz/signup/signup.test.cjs": {
-    "mtime": 1793233368.831841,
-    "seen": 1793233448.9189491,
-    "ast_hash": "d59690c56860f9c85a11a333705f3b92",
+    "mtime": 1793235424.501919,
+    "seen": 1793235444.9106848,
+    "ast_hash": "5b6db310cad9d33dece62b4990179e88",
     "semantic_hash": ""
   },
   "quiz/signup/index.html": {
-    "mtime": 1793233448.3808558,
-    "seen": 1793233448.9192698,
-    "ast_hash": "baa54b08431b8f969be33cfe1b173955",
+    "mtime": 1793235424.5010822,
+    "seen": 1793235444.910816,
+    "ast_hash": "81410016c8bd9be271cb0b4de5ae375e",
     "semantic_hash": ""
   }
 }
