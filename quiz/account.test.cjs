@@ -10,6 +10,7 @@ vm.runInNewContext(fs.readFileSync(__dirname + '/account.js', 'utf8'), context);
 let changed;
 const client = new context.window.QuizAccount(questions, state => { changed = state; });
 assert.equal(client.canEdit(), false, 'login required before editing');
+const originalApi = client.api.bind(client);
 const users = new Map(); let session = 'alice';
 client.api = async (path, body) => {
   if (path === '/account/me') return { ok: { id: session, name: session } };
@@ -25,6 +26,8 @@ client.api = async (path, body) => {
   throw Error('unexpected ' + path);
 };
 (async () => {
+  context.fetch = async () => ({ status: 409, ok: false, json: async () => ({ err: '다른 기기에서 진도가 바뀌었어. 현재 진도를 백업한 뒤 서버 진도를 불러와 줘' }) });
+  await assert.rejects(() => originalApi('/quiz/progress', {}), error => error.status === 409 && error.message === '다른 기기에서 진도가 변경되었습니다. 현재 진도를 백업한 뒤 서버 진도를 불러오세요.');
   const guest = E.fresh(); E.answer(guest, questions[0], ['A']);
   storage.set('1bit-aws-quiz-v1', JSON.stringify(guest));
   assert.equal(Object.keys((await client.start(guest)).records).length, 0, 'guest never imported silently');
