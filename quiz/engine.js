@@ -11,7 +11,7 @@
     });
   }
   function answer(s, q, selected) {
-    if (!selected.length || new Set(selected).size !== selected.length || selected.some(a => !q.choices.some(c => c.id === a)) || (q.answers.length === 1 && selected.length !== 1)) throw Error('답을 선택해 줘.');
+    if (!selected.length || new Set(selected).size !== selected.length || selected.some(a => !q.choices.some(c => c.id === a)) || (q.answers.length === 1 && selected.length !== 1)) throw Error('답을 선택하세요.');
     const correct = selected.length === q.answers.length && q.answers.every(a => selected.includes(a));
     s.count++;
     s.records[q.id] = { correct, selected: [...selected], attempts: (s.records[q.id]?.attempts || 0) + 1, due: s.count + 10 };

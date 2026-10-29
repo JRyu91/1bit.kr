@@ -12,7 +12,7 @@
       $('cloud-reload').onclick = () => this.reload();
       $('import-guest').onclick = () => this.importGuest();
       window.addEventListener('storage', event => {
-        if (event.key === this.key || event.key === null) { this.paused = true; this.status('다른 탭에서 진도가 바뀌었어. 현재 기록을 백업하고 새로고침해 줘.'); }
+        if (event.key === this.key || event.key === null) { this.paused = true; this.status('다른 탭에서 진도가 변경되었습니다. 현재 기록을 백업하고 새로고침하세요.'); }
       });
     }
     status(message) {
@@ -27,18 +27,34 @@
     async api(path, body) {
       const response = await fetch(base + path, { credentials: 'include', cache: 'no-store', ...(body === undefined ? {} : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) });
       const result = response.status === 204 ? {} : await response.json();
-      if (!response.ok) { const error = Error(result.err || '서버에 연결할 수 없어'); error.status = response.status; throw error; }
+      if (!response.ok) {
+        const messages = {
+          '로그인이 필요해': '로그인이 필요합니다.',
+          '저장 서버에 연결할 수 없어': '저장 서버에 연결할 수 없습니다.',
+          '로그인 계정이 변경됐어. 새로고침해 줘': '로그인 계정이 변경되었습니다. 새로고침하세요.',
+          '올바른 퀴즈 진도가 아니야': '올바른 퀴즈 진도가 아닙니다.',
+          '다른 기기에서 진도가 바뀌었어. 현재 진도를 백업한 뒤 서버 진도를 불러와 줘': '다른 기기에서 진도가 변경되었습니다. 현재 진도를 백업한 뒤 서버 진도를 불러오세요.',
+          '캐릭터 이름은 1~10자로 정한다': '닉네임은 1~10자로 입력하세요.',
+          '아이디는 3자 이상이어야 한다': '아이디는 3자 이상으로 입력하세요.',
+          '아이디는 영문·숫자·밑줄만 쓸 수 있다': '아이디는 영문·숫자·밑줄만 사용하세요.',
+          'g_ 로 시작하는 아이디는 쓸 수 없다': 'g_로 시작하는 아이디는 사용할 수 없습니다.',
+          '비밀번호는 4자 이상이어야 한다': '비밀번호는 4자 이상으로 입력하세요.',
+          '이미 있는 아이디이거나 캐릭터 이름이다': '이미 사용 중인 아이디 또는 닉네임입니다.',
+          '비밀번호가 다르다': '비밀번호가 일치하지 않습니다.',
+          'DB 연결 안 됨': '저장 서버에 연결할 수 없습니다.'
+        };
+        const error = Error(messages[result.err] || result.err || '서버에 연결할 수 없습니다.'); error.status = response.status; throw error; }
       return result;
     }
     read(key) { try { return JSON.parse(localStorage.getItem(key)); } catch { return null; } }
-    cache(value) { try { localStorage.setItem(this.key, JSON.stringify(value)); } catch { this.status('브라우저 백업 저장 실패 · 서버 저장 상태를 확인해 줘'); } }
+    cache(value) { try { localStorage.setItem(this.key, JSON.stringify(value)); } catch { this.status('브라우저 백업 저장에 실패했습니다. 서버 저장 상태를 확인하세요.'); } }
     valid(state) { return window.QuizEngine.valid(state, this.questions); }
     async start(guest) {
       this.latest = guest;
       try {
         const me = await this.api('/account/me');
         return await this.load(me.ok);
-      } catch (e) { if (this.user) { this.paused = true; this.status(e.message); return this.latest; } this.status('로그인하거나 가입한 뒤 문제를 풀어 줘'); return guest; }
+      } catch (e) { if (this.user) { this.paused = true; this.status(e.message); return this.latest; } this.status('로그인하거나 가입한 후 문제를 풀어보세요.'); return guest; }
     }
     async load(user, discardPending = false) {
       this.user = user; this.key = guestKey + ':account:' + user.id;
@@ -46,12 +62,12 @@
       if (cached && this.valid(cached.state)) this.latest = cached.state;
       else this.latest = window.QuizEngine.fresh();
       const cloud = await this.api('/quiz/progress');
-      if (cloud.accountId !== user.id || cloud.state !== null && !this.valid(cloud.state)) throw Error('계정 진도를 확인할 수 없어. 현재 기록을 백업해 줘');
+      if (cloud.accountId !== user.id || cloud.state !== null && !this.valid(cloud.state)) throw Error('계정 진도를 확인할 수 없습니다. 현재 기록을 백업하세요.');
       this.revision = cloud.revision;
       if (!discardPending && cached?.pending && this.valid(cached.state)) {
         this.latest = cached.state;
         if (cached.revision !== cloud.revision) {
-          this.paused = true; this.status('미전송 기록과 서버 진도가 달라. 백업 후 서버 진도를 불러와 줘'); return this.latest;
+          this.paused = true; this.status('미전송 기록과 서버 진도가 다릅니다. 백업 후 서버 진도를 불러오세요.'); return this.latest;
         }
         this.paused = false; this.save(this.latest); return this.latest;
       }
@@ -73,7 +89,7 @@
           const pending = sequence !== this.sequence;
           this.cache({ state: this.latest, revision: this.revision, pending });
           this.status(pending ? '저장 중' : '서버 저장 완료');
-        } catch (e) { this.paused = true; if (e.status === 401 || e.status === 403) this.user = null; this.status(e.message + ' · 진도 백업으로 현재 기록을 보관해 줘'); $('account-panel').open = true; }
+        } catch (e) { this.paused = true; if (e.status === 401 || e.status === 403) this.user = null; this.status(e.message + ' · 진도 백업으로 현재 기록을 보관하세요.'); $('account-panel').open = true; }
       });
     }
     async login(signup) {
@@ -82,7 +98,7 @@
       try {
         const id = $('account-id').value.trim(), pw = $('account-password').value;
         if (signup) {
-          if (pw.length < 8) throw Error('가입 비밀번호는 8자 이상으로 정해 줘');
+          if (pw.length < 8) throw Error('가입 비밀번호는 8자 이상으로 설정하세요.');
           await this.api('/account/signup', { id, pw, name: $('account-name').value.trim() || id.slice(0, 10), gender: 'male' });
         }
         const me = await this.api('/account/login', { id, pw });
@@ -94,24 +110,24 @@
     }
     async logout() {
       if (this.busy) return;
-      if (!confirm('로그아웃할까? 같은 브라우저의 게임 로그인도 함께 종료돼.')) return;
+      if (!confirm('로그아웃하시겠습니까? 같은 브라우저의 게임에서도 로그아웃됩니다.')) return;
       this.busy = true; this.loading = true;
       try {
         await this.queue; await this.api('/account/logout', {});
         this.user = null; this.key = guestKey; this.paused = false;
         const guest = this.read(guestKey); this.latest = this.valid(guest) ? guest : window.QuizEngine.fresh();
-        this.change(this.latest); this.status('로그아웃했어. 다시 로그인해 줘');
+        this.change(this.latest); this.status('로그아웃되었습니다. 다시 로그인하세요.');
       } catch (e) { this.status(e.message); }
       finally { this.busy = false; this.loading = false; }
     }
     async reload() {
       if (this.busy || !this.user) return;
-      if (!confirm('현재 미전송 진도를 서버 기록으로 바꿀까? 필요한 기록은 먼저 진도 백업으로 저장해 줘.')) return;
+      if (!confirm('현재 미전송 진도를 서버 기록으로 변경하시겠습니까? 필요한 기록은 먼저 진도 백업으로 저장하세요.')) return;
       this.busy = true; this.loading = true;
       try {
         await this.queue;
         const me = await this.api('/account/me');
-        if (me.ok.id !== this.user.id) throw Error('로그인 계정이 바뀌었어. 진도를 백업하고 새로고침해 줘');
+        if (me.ok.id !== this.user.id) throw Error('로그인 계정이 변경되었습니다. 진도를 백업하고 새로고침하세요.');
         this.change(await this.load(this.user, true));
       } catch (e) { this.status(e.message); }
       finally { this.busy = false; this.loading = false; }
@@ -119,8 +135,8 @@
     importGuest() {
       if (!this.user || !this.canEdit()) return;
       const guest = this.read(guestKey);
-      if (!this.valid(guest) || !Object.keys(guest.records).length) { this.status('가져올 기존 브라우저 진도가 없어'); return; }
-      if (!confirm('이 계정의 진도를 기존 브라우저 기록으로 바꿀까?')) return;
+      if (!this.valid(guest) || !Object.keys(guest.records).length) { this.status('가져올 기존 브라우저 진도가 없습니다.'); return; }
+      if (!confirm('이 계정의 진도를 기존 브라우저 기록으로 변경하시겠습니까?')) return;
       this.change(guest); this.save(guest);
     }
   }

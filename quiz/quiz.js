@@ -14,7 +14,7 @@
     const response = await fetch('questions.json');
     if (!response.ok) throw Error();
     questions = await response.json();
-  } catch { notice('문제를 불러오지 못했어. 인터넷 연결을 확인하고 새로고침해 줘.'); $('question').hidden = true; return; }
+  } catch { notice('문제를 불러오지 못했습니다. 인터넷 연결을 확인하고 새로고침하세요.'); $('question').hidden = true; return; }
   state = E.fresh();
   try {
     const raw = localStorage.getItem(key);
@@ -23,7 +23,7 @@
       if (!E.valid(stored, questions)) throw Error();
       state = stored;
     }
-  } catch { storageBroken = true; notice('저장된 진도를 읽을 수 없어. 기존 데이터는 덮어쓰지 않았어. 백업을 불러오거나 처음부터 시작해 줘.'); }
+  } catch { storageBroken = true; notice('저장된 진도를 읽을 수 없습니다. 기존 데이터는 유지됩니다. 백업을 불러오거나 처음부터 시작하세요.'); }
   account = new window.QuizAccount(questions, value => { state = value; storageBroken = false; reviewQueue = null; $('review-status').textContent = ''; render(); });
   state = await account.start(state);
   $('account-fields').disabled = false;
@@ -41,7 +41,7 @@
       const text = document.createElement('span'); const letter = document.createElement('b'); letter.textContent = c.id + '.';
       text.append(letter, document.createTextNode(c.text)); label.append(input, text); $('choices').append(label);
     }
-    $('mark-wrong').hidden = true; $('mark-wrong').disabled = false; $('mark-wrong').textContent = '찍었어 · 오답으로 저장';
+    $('mark-wrong').hidden = true; $('mark-wrong').disabled = false; $('mark-wrong').textContent = '찍어서 맞힘 · 오답으로 저장';
     $('next').className = 'primary'; $('next').textContent = '다음 문제';
     $('result').hidden = true; $('result').className = ''; $('result').replaceChildren(); $('submit').hidden = false; $('submit').disabled = true; $('next').hidden = true;
     updateNumbers(complete);
@@ -80,13 +80,13 @@
       if (q.answers.includes(input.value)) input.parentElement.classList.add('correct');
       else if (input.checked) input.parentElement.classList.add('wrong');
     }
-    const heading = document.createElement('h3'); heading.textContent = correct ? '정답이야' : '오답이야 · 다시 연습하자';
+    const heading = document.createElement('h3'); heading.textContent = correct ? '정답입니다!' : '오답입니다 · 다시 복습하세요.';
     const answers = document.createElement('p'); answers.textContent = `선택: ${selected.join(', ')} / 정답: ${q.answers.join(', ')}`;
-    const explanation = document.createElement('p'); explanation.textContent = q.explanation || '등록된 해설이 없어.';
+    const explanation = document.createElement('p'); explanation.textContent = q.explanation || '등록된 해설이 없습니다.';
     $('result').className = correct ? 'correct' : 'wrong';
     $('mark-wrong').hidden = !correct;
     $('next').classList.toggle('success', correct);
-    $('next').textContent = correct ? '맞혔다! 다음 문제' : '다음 문제';
+    $('next').textContent = correct ? '정답입니다! 다음 문제' : '다음 문제';
     $('result').replaceChildren(heading, answers, explanation); $('result').hidden = false; $('submit').hidden = true; $('next').hidden = false;
   };
   $('mark-wrong').onclick = () => {
@@ -94,10 +94,10 @@
     const q = questions.find(q => q.id === state.current);
     if (!submitted || !E.markWrong(state, q)) return;
     save(); updateNumbers();
-    $('mark-wrong').textContent = '오답으로 저장했어'; $('mark-wrong').disabled = true;
+    $('mark-wrong').textContent = '오답으로 저장되었습니다.'; $('mark-wrong').disabled = true;
     $('next').className = 'primary'; $('next').textContent = '다음 문제';
     $('result').className = 'wrong';
-    $('result').querySelector('h3').textContent = '학습 기록을 X로 저장했어';
+    $('result').querySelector('h3').textContent = '학습 기록을 X로 저장했습니다.';
   };
   $('review').onclick = () => {
     if (!account.canEdit()) return;
@@ -132,12 +132,12 @@
       if (file.size > 100000) throw Error();
       const restored = JSON.parse(await file.text());
       if (!E.valid(restored, questions)) throw Error();
-      if (!confirm('현재 진도를 백업 내용으로 바꿀까?')) return;
+      if (!confirm('현재 진도를 백업 내용으로 변경하시겠습니까?')) return;
       reviewQueue = null; $('review-status').textContent = ''; state = restored; storageBroken = false; notice(''); save(); render();
-    } catch { notice('이 연습판의 올바른 백업 파일이 아니야. 현재 진도는 유지했어.'); }
+    } catch { notice('이 퀴즈에서 사용할 수 없는 백업 파일입니다. 현재 진도는 유지됩니다.'); }
     finally { event.target.value = ''; }
   };
-  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작할까?')) { reviewQueue = null; $('review-status').textContent = ''; state = E.fresh(); storageBroken = false; notice(''); save(); render(true); } };
+  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) { reviewQueue = null; $('review-status').textContent = ''; state = E.fresh(); storageBroken = false; notice(''); save(); render(true); } };
 
   render();
 })();
