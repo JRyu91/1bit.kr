@@ -1,9 +1,9 @@
 {
   "0": "motion.test.cjs",
-  "1": "account.test.cjs",
+  "1": "viewer.test.cjs",
   "2": "engine.test.cjs",
   "3": "import_questions.py",
-  "4": "viewer.test.cjs",
+  "4": "account.test.cjs",
   "5": "contact.js",
   "6": "motion.js",
   "7": "viewer.js",
@@ -11,5 +11,6 @@
   "9": "_config.yml",
   "10": "portfolio.browser.js",
   "11": "QuizAccount",
-  "12": "signup.js"
+  "12": "signup.js",
+  "13": "theme.js"
 }
