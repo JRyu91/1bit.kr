@@ -28,7 +28,34 @@
   state = await account.start(state);
   $('account-fields').disabled = false;
   if (account.user && !account.paused) storageBroken = false;
+  function updateDaily() {
+    const d = E.daily(state);
+    $('daily-count').textContent = d.goal ? `오늘 ${d.ids.length} / ${d.goal}문제` : `오늘 ${d.ids.length}문제 · 목표를 설정하세요.`;
+    $('daily-progress').max = d.goal || 1;
+    $('daily-progress').value = d.goal ? Math.min(d.ids.length, d.goal) : 0;
+    if (document.activeElement !== $('daily-target')) $('daily-target').value = d.goal || '';
+    $('daily-message').textContent = d.goal && d.ids.length >= d.goal ? '오늘의 학습 목표를 달성했습니다!' : '';
+  }
+  let confettiTimer;
+  function clearConfetti() { document.getElementById('goal-confetti')?.remove(); clearTimeout(confettiTimer); }
+  function celebrateGoal() {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    clearConfetti();
+    const layer = document.createElement('div'); layer.id = 'goal-confetti'; layer.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < 40; i++) {
+      const piece = document.createElement('i');
+      const angle = (i / 40) * Math.PI * 2, distance = 100 + Math.random() * 160;
+      piece.style.setProperty('--x', `${Math.cos(angle) * distance}px`);
+      piece.style.setProperty('--y', `${Math.sin(angle) * distance - 100}px`);
+      piece.style.setProperty('--spin', `${180 + Math.random() * 540}deg`);
+      piece.style.background = ['#78afff', '#e3b84b', '#88c8a2', '#e98d9c'][i % 4];
+      layer.append(piece);
+    }
+    document.body.append(layer);
+    confettiTimer = setTimeout(clearConfetti, 1400);
+  }
   function render(focus = false, complete = false) {
+    clearConfetti(); updateDaily();
     submitted = false;
     const q = questions.find(q => q.id === state.current);
     $('question').hidden = complete; $('done').hidden = !complete;
@@ -65,6 +92,29 @@
       $('numbers').append(button);
     }
   }
+  $('daily-target').max = questions.length;
+  $('daily-form').onsubmit = event => {
+    event.preventDefault(); if (!account.canEdit() || storageBroken) return;
+    try {
+      E.setGoal(state, Number($('daily-target').value), questions.length);
+      const achieved = E.claimGoal(state); save(); updateDaily();
+      if (achieved) celebrateGoal();
+      else if (E.daily(state).ids.length < E.daily(state).goal) $('daily-message').textContent = '목표가 저장되었습니다.';
+    } catch (e) { $('daily-message').textContent = e.message; }
+  };
+  let midnightTimer;
+  function checkDay() {
+    clearTimeout(midnightTimer);
+    if (state.daily?.day !== E.dayKey()) {
+      clearConfetti(); updateDaily();
+      if (!storageBroken && account.canEdit()) save();
+    }
+    const now = Date.now();
+    const nextMidnight = Date.parse(E.dayKey(now) + 'T00:00:00+09:00') + 86400000;
+    midnightTimer = setTimeout(checkDay, Math.max(1, nextMidnight - now));
+  }
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) checkDay(); });
+  window.addEventListener('focus', checkDay);
   $('number-picker').onkeydown = event => { if (event.key === 'Escape') { $('number-picker').open = false; $('number-current').focus(); } };
   document.addEventListener('click', event => { if (!$('number-picker').contains(event.target)) $('number-picker').open = false; });
   $('form').onchange = () => { $('submit').disabled = !$('choices').querySelector('input:checked'); };
@@ -73,7 +123,9 @@
     const q = questions.find(q => q.id === state.current);
     const selected = [...$('choices').querySelectorAll('input:checked')].map(i => i.value);
     if (!selected.length) return;
-    const correct = E.answer(state, q, selected); submitted = true; save();
+    const correct = E.answer(state, q, selected); submitted = true;
+    const achieved = E.claimGoal(state); save(); updateDaily();
+    if (achieved) celebrateGoal();
     updateNumbers();
     for (const input of $('choices').querySelectorAll('input')) {
       input.disabled = true;
@@ -137,7 +189,7 @@
     } catch { notice('이 퀴즈에서 사용할 수 없는 백업 파일입니다. 현재 진도는 유지됩니다.'); }
     finally { event.target.value = ''; }
   };
-  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) { reviewQueue = null; $('review-status').textContent = ''; state = E.fresh(); storageBroken = false; notice(''); save(); render(true); } };
+  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) { reviewQueue = null; $('review-status').textContent = ''; state = { ...E.fresh(), daily: E.daily(state) }; storageBroken = false; notice(''); save(); render(true); } };
 
-  render();
+  render(); checkDay();
 })();
