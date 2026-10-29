@@ -264,21 +264,21 @@
     "semantic_hash": ""
   },
   "quiz/signup/signup.js": {
-    "mtime": 1793235424.5015087,
-    "seen": 1793235444.9106839,
-    "ast_hash": "76778b9b1a98a3ac2b3cc75a726a90f8",
+    "mtime": 1793235726.2560425,
+    "seen": 1793235726.7524621,
+    "ast_hash": "be4eb76b10111e58596fe40796c7bd97",
     "semantic_hash": ""
   },
   "quiz/signup/signup.test.cjs": {
-    "mtime": 1793235424.501919,
-    "seen": 1793235444.9106848,
-    "ast_hash": "5b6db310cad9d33dece62b4990179e88",
+    "mtime": 1793235726.256124,
+    "seen": 1793235726.752463,
+    "ast_hash": "43dc2f618048ddc33ccca86a1a62946d",
     "semantic_hash": ""
   },
   "quiz/signup/index.html": {
-    "mtime": 1793235424.5010822,
-    "seen": 1793235444.910816,
-    "ast_hash": "81410016c8bd9be271cb0b4de5ae375e",
+    "mtime": 1793235726.2559416,
+    "seen": 1793235726.752578,
+    "ast_hash": "a4d46d4abbfba33d64308d578db4b0eb",
     "semantic_hash": ""
   }
 }
