@@ -17,3 +17,4 @@ exclude:
   - quiz/import_questions.py
   - quiz/account.test.cjs
   - quiz/signup/signup.test.cjs
+  - quiz/theme.test.cjs
