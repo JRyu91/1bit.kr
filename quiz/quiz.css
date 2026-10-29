@@ -52,3 +52,4 @@ summary{padding:8px 0;cursor:pointer;min-height:44px;font-size:15px}
 #account-form{display:grid;gap:10px;margin-top:8px}#account-form label{display:grid;gap:4px;font-size:14px}#account-form input{width:100%;min-height:44px;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:inherit;font-size:16px;background:#fffdf7;color:var(--ink)}#account-status{margin-top:8px;font-size:13px;color:var(--muted)}#account-summary{overflow-wrap:anywhere}
 
 #account-fields{display:grid;gap:10px}
+.auth-link{text-decoration:none}.auth-title{font-size:24px;margin-bottom:20px}#signup-fields{display:grid;gap:12px}#signup-fields label{display:grid;gap:4px;font-size:14px}#signup-fields input{width:100%;min-height:44px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:#fffdf7;color:var(--ink);font:inherit;font-size:16px}#signup-status{margin-top:16px;font-size:14px;color:var(--muted)}

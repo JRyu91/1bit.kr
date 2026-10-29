@@ -1,8 +1,8 @@
 {
   "_config.yml": {
-    "mtime": 1793190647.2559724,
-    "seen": 1793190889.7238662,
-    "ast_hash": "3814523904890ae48dad7aa53601ee56",
+    "mtime": 1793233311.6759589,
+    "seen": 1793233313.511752,
+    "ast_hash": "687d603ba42b389cffd3c19f1580635e",
     "semantic_hash": ""
   },
   "contact/contact.js": {
@@ -102,9 +102,9 @@
     "semantic_hash": ""
   },
   "quiz/index.html": {
-    "mtime": 1793232993.0120606,
-    "seen": 1793233015.672447,
-    "ast_hash": "6d18806603e126fafc0e01d4929ff50f",
+    "mtime": 1793233285.822611,
+    "seen": 1793233313.5121212,
+    "ast_hash": "01c47cad23a48f61b79339a09e680256",
     "semantic_hash": ""
   },
   "projects/1st Project_Team Bluebell.pdf": {
@@ -252,15 +252,33 @@
     "semantic_hash": ""
   },
   "quiz/account.js": {
-    "mtime": 1793233013.9850762,
-    "seen": 1793233015.6723,
-    "ast_hash": "0c0f8e263103e6d7a88cdf22256b6f64",
+    "mtime": 1793233285.8223805,
+    "seen": 1793233313.511947,
+    "ast_hash": "0b588338d3fd32bf5f734e56fab195c9",
     "semantic_hash": ""
   },
   "quiz/account.test.cjs": {
-    "mtime": 1793232993.0124838,
-    "seen": 1793233015.672301,
-    "ast_hash": "6b100466c8c2b40679bd554e1fdf1dff",
+    "mtime": 1793233285.8228514,
+    "seen": 1793233313.511948,
+    "ast_hash": "8afdfc7ed5f3f8f14e1ebc30af81248c",
+    "semantic_hash": ""
+  },
+  "quiz/signup/signup.js": {
+    "mtime": 1793233329.3465009,
+    "seen": 1793233339.2942421,
+    "ast_hash": "1b7d3dc5a04ea862ed639777b87ae15a",
+    "semantic_hash": ""
+  },
+  "quiz/signup/signup.test.cjs": {
+    "mtime": 1793233311.656571,
+    "seen": 1793233313.512026,
+    "ast_hash": "d59690c56860f9c85a11a333705f3b92",
+    "semantic_hash": ""
+  },
+  "quiz/signup/index.html": {
+    "mtime": 1793233329.3463922,
+    "seen": 1793233339.2943842,
+    "ast_hash": "716dbae6f3c704eda65bf02786759ca4",
     "semantic_hash": ""
   }
 }
