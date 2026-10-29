@@ -16,3 +16,4 @@ exclude:
   - .playwright-cli
   - quiz/import_questions.py
   - quiz/account.test.cjs
+  - quiz/signup/signup.test.cjs

@@ -6,10 +6,8 @@
     constructor(questions, change) {
       this.questions = questions; this.change = change; this.user = null; this.key = guestKey;
       this.revision = 0; this.paused = false; this.queue = Promise.resolve(); this.sequence = 0;
-      $('account-form').onsubmit = event => { event.preventDefault(); this.login(this.signupMode); };
-      $('account-signup').onclick = () => { if (this.busy) return; this.setMode(true); this.status('아이디, 비밀번호, 닉네임을 입력하세요.'); };
-      $('account-login-back').onclick = () => { if (this.busy) return; this.setMode(false); this.status('아이디와 비밀번호를 입력하세요.'); };
-      this.setMode(false);
+      this.api = QuizAccount.api;
+      $('account-form').onsubmit = event => { event.preventDefault(); this.login(); };
       $('account-logout').onclick = () => this.logout();
       $('cloud-reload').onclick = () => this.reload();
       $('import-guest').onclick = () => this.importGuest();
@@ -17,25 +15,16 @@
         if (event.key === this.key || event.key === null) { this.paused = true; this.status('다른 탭에서 진도가 변경되었습니다. 현재 기록을 백업하고 새로고침하세요.'); }
       });
     }
-    setMode(signup) {
-      this.signupMode = signup;
-      $('account-name-field').hidden = !signup;
-      $('account-name').disabled = !signup; $('account-name').required = signup;
-      $('account-submit').textContent = signup ? '회원가입' : '로그인';
-      $('account-signup').hidden = signup; $('account-login-back').hidden = !signup;
-      $('account-password').autocomplete = signup ? 'new-password' : 'current-password';
-      $('account-password').minLength = signup ? 8 : 0; $('account-password').value = '';
-    }
     status(message) {
       $('quiz-content').hidden = !this.user;
       if (!this.user) $('account-panel').open = true;
       $('account-status').textContent = message;
-      $('account-summary').textContent = this.user ? `${this.user.name} · ${message}` : `${this.signupMode ? '회원가입' : '로그인'} · 계정별 진도 저장`;
+      $('account-summary').textContent = this.user ? `${this.user.name} · ${message}` : '로그인 · 계정별 진도 저장';
       $('account-form').hidden = !!this.user; $('account-actions').hidden = !this.user;
       $('cloud-reload').hidden = !this.user || !this.paused;
       $('import-guest').hidden = !this.user;
     }
-    async api(path, body) {
+    static async api(path, body) {
       const response = await fetch(base + path, { credentials: 'include', cache: 'no-store', ...(body === undefined ? {} : { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(body) }) });
       const result = response.status === 204 ? {} : await response.json();
       if (!response.ok) {
@@ -103,20 +92,14 @@
         } catch (e) { this.paused = true; if (e.status === 401 || e.status === 403) this.user = null; this.status(e.message + ' · 진도 백업으로 현재 기록을 보관하세요.'); $('account-panel').open = true; }
       });
     }
-    async login(signup) {
+    async login() {
       if (this.busy) return;
       this.busy = true;
       try {
         const id = $('account-id').value.trim(), pw = $('account-password').value;
-        if (signup) {
-          if (pw.length < 8) throw Error('가입 비밀번호는 8자 이상으로 설정하세요.');
-          const name = $('account-name').value.trim();
-          if (!name) throw Error('닉네임을 입력하세요.');
-          await this.api('/account/signup', { id, pw, name, gender: 'male' });
-        }
         const me = await this.api('/account/login', { id, pw });
         $('account-password').value = '';
-        const state = await this.load(me.ok); this.setMode(false); this.change(state);
+        const state = await this.load(me.ok); this.change(state);
         if (!this.paused) $('account-panel').open = false;
       } catch (e) { if (this.user) { this.paused = true; this.change(this.latest); } this.status(e.message); }
       finally { this.busy = false; }
@@ -127,7 +110,7 @@
       this.busy = true; this.loading = true;
       try {
         await this.queue; await this.api('/account/logout', {});
-        this.user = null; this.key = guestKey; this.paused = false; this.setMode(false);
+        this.user = null; this.key = guestKey; this.paused = false;
         const guest = this.read(guestKey); this.latest = this.valid(guest) ? guest : window.QuizEngine.fresh();
         this.change(this.latest); this.status('로그아웃되었습니다. 다시 로그인하세요.');
       } catch (e) { this.status(e.message); }
