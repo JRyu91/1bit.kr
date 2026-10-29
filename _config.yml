@@ -18,3 +18,4 @@ exclude:
   - quiz/account.test.cjs
   - quiz/signup/signup.test.cjs
   - quiz/theme.test.cjs
+  - quiz/daily.test.cjs
