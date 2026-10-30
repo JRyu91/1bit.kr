@@ -4,7 +4,6 @@
   const E = window.QuizEngine;
   let account;
   let questions, state, submitted = false, storageBroken = false;
-  let reviewQueue = null, reviewReturn = null;
   const notice = text => { $('notice').textContent = text; };
   function save() {
     if (storageBroken) return;
@@ -24,7 +23,7 @@
       state = stored;
     }
   } catch { storageBroken = true; notice('저장된 진도를 읽을 수 없습니다. 기존 데이터는 유지됩니다. 백업을 불러오거나 처음부터 시작하세요.'); }
-  account = new window.QuizAccount(questions, value => { state = value; storageBroken = false; reviewQueue = null; $('review-status').textContent = ''; render(); });
+  account = new window.QuizAccount(questions, value => { state = value; storageBroken = false; render(); });
   state = await account.start(state);
   $('account-fields').disabled = false;
   if (account.user && !account.paused) storageBroken = false;
@@ -54,12 +53,13 @@
     document.body.append(layer);
     confettiTimer = setTimeout(clearConfetti, 1400);
   }
-  function render(focus = false, complete = false) {
+  function render(focus = false, complete = state.complete === true) {
     clearConfetti(); updateDaily();
     submitted = false;
     const q = questions.find(q => q.id === state.current);
     $('question').hidden = complete; $('done').hidden = !complete;
     $('number').textContent = `문제 ${q.id}`;
+    $('auto-review').hidden = state.autoReview !== q.id;
     $('prompt').textContent = q.prompt;
     $('choices').replaceChildren();
     for (const c of q.choices) {
@@ -74,10 +74,11 @@
     updateNumbers(complete);
     if (focus) { $('number').focus({ preventScroll: true }); $('question').scrollIntoView({ block: 'start' }); }
   }
-  function updateNumbers(complete = false) {
+  function updateNumbers(complete = state.complete === true) {
     const wrongCount = Object.values(state.records).filter(r => !r.correct).length;
-    $('review').textContent = reviewQueue === null ? `복습하기 (${wrongCount})` : '복습 종료';
-    $('review').disabled = reviewQueue === null && wrongCount === 0;
+    $('review-status').textContent = state.review ? '오답만 복습 중' : '';
+    $('review').textContent = !state.review ? `복습하기 (${wrongCount})` : '복습 종료';
+    $('review').disabled = !state.review && wrongCount === 0;
     const status = id => !state.records[id] ? 'unanswered' : state.records[id].correct ? 'correct' : 'wrong';
     const text = id => `${id} [${!state.records[id] ? '△' : state.records[id].correct ? 'O' : 'X'}]`;
     $('number-current').textContent = complete ? '문제 번호 지정' : text(state.current);
@@ -88,7 +89,7 @@
       button.type = 'button'; button.textContent = text(item.id); button.className = status(item.id);
       button.setAttribute('aria-label', `문제 ${item.id}, ${!state.records[item.id] ? '미풀이' : state.records[item.id].correct ? '정답' : '오답'}`);
       if (!complete && item.id === state.current) button.setAttribute('aria-current', 'true');
-      button.onclick = () => { if (!account.canEdit()) return; reviewQueue = null; $('review-status').textContent = ''; state.current = item.id; $('number-picker').open = false; save(); render(true); };
+      button.onclick = () => { if (!account.canEdit()) return; delete state.review; $('review-status').textContent = ''; state.current = item.id; state.autoReview = null; state.complete = false; $('number-picker').open = false; save(); render(true); };
       $('numbers').append(button);
     }
   }
@@ -153,25 +154,29 @@
   };
   $('review').onclick = () => {
     if (!account.canEdit()) return;
-    if (reviewQueue !== null) {
-      state.current = reviewReturn; reviewQueue = null;
-      $('review-status').textContent = ''; save(); render(true); return;
+    if (state.review) {
+      const back = state.review.back; delete state.review; Object.assign(state, { current: back.current, autoReview: back.autoReview, complete: back.complete });
+      save(); render(true); return;
     }
-    reviewQueue = questions.filter(q => state.records[q.id] && !state.records[q.id].correct).map(q => q.id);
-    if (!reviewQueue.length) { reviewQueue = null; return; }
-    reviewReturn = state.current; state.current = reviewQueue.shift();
-    $('review-status').textContent = '오답만 복습 중'; save(); render(true);
+    const queue = questions.filter(q => state.records[q.id] && !state.records[q.id].correct).map(q => q.id);
+    if (!queue.length) return;
+    const back = { current: state.current, autoReview: state.autoReview ?? null, complete: state.complete === true };
+    state.current = queue.shift(); state.autoReview = null; state.complete = false;
+    state.review = { queue, back }; save(); render(true);
   };
   $('next').onclick = () => {
     if (!account.canEdit()) return;
-    if (reviewQueue !== null) {
-      const id = reviewQueue.shift();
+    if (state.review) {
+      const id = state.review.queue.shift();
       if (id !== undefined) { state.current = id; save(); render(true); return; }
-      reviewQueue = null; state.current = reviewReturn;
+      const back = state.review.back; delete state.review; Object.assign(state, { current: back.current, autoReview: back.autoReview, complete: back.complete });
       const remaining = Object.values(state.records).filter(r => !r.correct).length;
       save(); render(); $('review-status').textContent = `복습 완료 · 남은 오답 ${remaining}개`; return;
     }
-    const q = E.next(state, questions); if (q) state.current = q.id; save(); render(!!q, !q);
+    const q = E.next(state, questions);
+    state.autoReview = q && state.records[q.id] && !state.records[q.id].correct ? q.id : null;
+    state.complete = !q;
+    if (q) state.current = q.id; save(); render(!!q);
   };
   $('backup').onclick = () => {
     const url = URL.createObjectURL(new Blob([JSON.stringify(state)], { type: 'application/json' }));
@@ -180,16 +185,18 @@
   $('restore').onchange = async event => {
     if (!account.canEdit()) return;
     const file = event.target.files[0]; if (!file) return;
+    const owner = account.user.id, before = state, sequence = account.sequence;
     try {
       if (file.size > 100000) throw Error();
       const restored = JSON.parse(await file.text());
       if (!E.valid(restored, questions)) throw Error();
+      if (!account.canEdit() || account.user.id !== owner || state !== before || account.sequence !== sequence) { notice('파일을 읽는 동안 계정 또는 진도가 변경되어 복원을 중단했습니다. 다시 백업을 선택하세요.'); return; }
       if (!confirm('현재 진도를 백업 내용으로 변경하시겠습니까?')) return;
-      reviewQueue = null; $('review-status').textContent = ''; state = restored; storageBroken = false; notice(''); save(); render();
+      $('review-status').textContent = ''; state = restored; storageBroken = false; notice(''); save(); render();
     } catch { notice('이 퀴즈에서 사용할 수 없는 백업 파일입니다. 현재 진도는 유지됩니다.'); }
     finally { event.target.value = ''; }
   };
-  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) { reviewQueue = null; $('review-status').textContent = ''; state = { ...E.fresh(), daily: E.daily(state) }; storageBroken = false; notice(''); save(); render(true); } };
+  $('reset').onclick = () => { if (!account.canEdit()) return; if (confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) { delete state.review; $('review-status').textContent = ''; state = { ...E.fresh(), daily: E.daily(state) }; storageBroken = false; notice(''); save(); render(true); } };
 
   render(); checkDay();
 })();

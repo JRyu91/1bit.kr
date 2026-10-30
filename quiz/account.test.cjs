@@ -58,6 +58,7 @@ client.api = async (path, body) => {
   assert.equal(client.user, null);
   assert.equal(client.canEdit(), false);
   assert.equal(element('quiz-content').hidden, true, 'logout hides quiz');
+  assert.equal(element('progress-tools').hidden, true, 'logout hides account backups');
   session = 'alice'; await client.load({ id: 'alice', name: 'alice' }, true);
   const previousApi = client.api;
   client.api = async (path, body) => { if (path === '/quiz/progress' && body) { const error = Error('로그인 필요'); error.status = 401; throw error; } return previousApi(path, body); };
@@ -65,5 +66,11 @@ client.api = async (path, body) => {
   assert.equal(client.user, null, 'expired session requires login');
   assert.equal(element('quiz-content').hidden, true);
   assert.equal(JSON.parse(storage.get(client.key)).pending, true, 'expired session keeps unsent progress');
+  assert.equal(element('progress-tools').hidden, false, 'expired session can download unsent backup');
+  const oldRecords = users.get('alice').state.records;
+  users.get('alice').state = { ...users.get('alice').state, autoReview: 6 };
+  const recovered = await client.load({ id: 'alice', name: 'alice' }, true);
+  assert.equal(recovered.autoReview, undefined, 'old tab screen metadata repaired');
+  assert.deepEqual(recovered.records, oldRecords, 'old tab recovery preserves learning records');
   console.log('account sync queue / guest import / account isolation / conflict recovery / changed session PASS');
 })().catch(e => { console.error(e); process.exitCode = 1; });

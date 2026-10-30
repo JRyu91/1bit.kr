@@ -58,3 +58,45 @@ assert.ok(E.valid(guessed, all));
 guessed.records[1].markedWrong = true;
 assert.ok(!E.valid(guessed, all));
 console.log('self-marked wrong / restore / re-answer PASS');
+
+const ordered = E.fresh();
+for (const question of all) {
+  assert.equal(E.next(ordered, all).id, question.id);
+  E.answer(ordered, question, question.answers);
+}
+assert.equal(E.next(ordered, all), null);
+const spaced = E.fresh();
+for (const question of all.slice(0, 16)) {
+  E.answer(spaced, question, question.id === 6 ? ['B'] : question.answers);
+}
+assert.equal(E.next(spaced, all).id, 6);
+E.answer(spaced, all[5], all[5].answers);
+assert.equal(E.next(spaced, all).id, 17);
+spaced.current = 6; spaced.autoReview = 6;
+assert.ok(E.valid(spaced, all));
+assert.equal(E.valid({...spaced, autoReview:17}, all), false);
+assert.ok(E.valid({...spaced, autoReview:null}, all));
+console.log('948-question sequence / automatic review return / review marker validation PASS');
+
+spaced.current = 6; spaced.autoReview = null;
+spaced.review = {queue:[7,8],back:{current:17,autoReview:null,complete:false}};
+assert.ok(E.valid(JSON.parse(JSON.stringify(spaced)), all));
+for (const queue of [[6],[7,7],[51],['7']]) assert.equal(E.valid({...spaced,review:{...spaced.review,queue}},all),false);
+assert.equal(E.valid({...spaced,complete:true}, all), false);
+ordered.complete = true;
+assert.ok(E.valid(ordered, all));
+console.log('persisted manual review / completion / invalid backup state PASS');
+
+assert.equal(E.valid({...spaced,review:{...spaced.review,back:{...spaced.review.back,records:{}}}},all),false);
+assert.equal(E.valid({...spaced,review:{...spaced.review,back:{...spaced.review.back,complete:true}}},all),false);
+console.log('review return backup cannot replace records or fake completion PASS');
+
+const staleNavigation = {...spaced,current:17,autoReview:6};
+const recovered = E.recoverNavigation(staleNavigation,all);
+assert.ok(E.valid(recovered,all));
+assert.deepEqual(recovered.records,spaced.records);
+assert.equal(recovered.current,17);
+assert.equal(recovered.review,undefined);
+assert.equal(E.recoverNavigation({...staleNavigation,count:-1},all).count,-1);
+assert.equal(E.valid(E.recoverNavigation({...staleNavigation,count:-1},all),all),false);
+console.log('old-tab navigation recovery preserves records and rejects invalid core state PASS');

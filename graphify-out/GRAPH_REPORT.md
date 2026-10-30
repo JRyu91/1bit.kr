@@ -1,17 +1,17 @@
-# Graph Report - 1bit.kr  (2026-10-29)
+# Graph Report - 1bit.kr  (2026-10-30)
 
 ## Corpus Check
-- 20 files · ~230,947 words
+- 20 files · ~231,372 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 5 file(s) not represented in the graph (top: .css 3, (none) 1, .zip 1)
 
 ## Summary
-- 113 nodes · 164 edges · 15 communities (6 shown, 9 thin omitted)
-- Extraction: 95% EXTRACTED · 5% INFERRED · 0% AMBIGUOUS · INFERRED: 9 edges (avg confidence: 0.85)
+- 118 nodes · 170 edges · 15 communities (6 shown, 9 thin omitted)
+- Extraction: 94% EXTRACTED · 6% INFERRED · 0% AMBIGUOUS · INFERRED: 10 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `9390cdb8`
+- Built from commit: `c4721d83`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -58,8 +58,8 @@ Cohesion: 0.12
 Nodes (10): code, a, b, code, fallback, mapped, source, blocked (+2 more)
 
 ### Community 2 - "engine.test.cjs"
-Cohesion: 0.22
-Nodes (8): extra, guessed, many, missing, multi, oldProgress, qs, s
+Cohesion: 0.15
+Nodes (12): extra, guessed, many, missing, multi, oldProgress, ordered, qs (+4 more)
 
 ### Community 4 - "account.test.cjs"
 Cohesion: 0.14
@@ -70,8 +70,8 @@ Cohesion: 0.54
 Nodes (7): celebrateGoal(), checkDay(), clearConfetti(), render(), save(), updateDaily(), updateNumbers()
 
 ### Community 14 - "engine.js"
-Cohesion: 0.36
-Nodes (4): answer(), claimGoal(), daily(), setGoal()
+Cohesion: 0.33
+Nodes (6): answer(), claimGoal(), daily(), recoverNavigation(), setGoal(), valid()
 
 ## Knowledge Gaps
 - **9 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
