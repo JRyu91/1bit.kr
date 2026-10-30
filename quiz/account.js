@@ -17,6 +17,7 @@
     }
     status(message) {
       $('quiz-content').hidden = !this.user;
+      $('progress-tools').hidden = !this.user && !this.paused;
       if (!this.user) $('account-panel').open = true;
       $('account-status').textContent = message;
       $('account-summary').textContent = this.user ? `${this.user.name} · ${message}` : '로그인 · 계정별 진도 저장';
@@ -59,9 +60,11 @@
     async load(user, discardPending = false) {
       this.user = user; this.key = guestKey + ':account:' + user.id;
       const cached = this.read(this.key);
+      if (cached?.state) cached.state = window.QuizEngine.recoverNavigation(cached.state, this.questions);
       if (cached && this.valid(cached.state)) this.latest = cached.state;
       else this.latest = window.QuizEngine.fresh();
       const cloud = await this.api('/quiz/progress');
+      cloud.state = window.QuizEngine.recoverNavigation(cloud.state, this.questions);
       if (cloud.accountId !== user.id || cloud.state !== null && !this.valid(cloud.state)) throw Error('계정 진도를 확인할 수 없습니다. 현재 기록을 백업하세요.');
       this.revision = cloud.revision;
       if (!discardPending && cached?.pending && this.valid(cached.state)) {
