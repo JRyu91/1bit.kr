@@ -58,6 +58,8 @@ export class QuizAccount {
   latest: QuizState = E.fresh();
   message = '문제와 로그인 상태를 불러오는 중';
   api = api;
+  /** 되돌리기 어려운 동작 전 확인. 화면이 자체 확인창으로 바꿔 끼운다. */
+  confirm: (message: string) => boolean | Promise<boolean> = message => globalThis.confirm(message);
   questions: Question[];
   change: (state: QuizState) => void;
   notify: () => void;
@@ -183,7 +185,7 @@ export class QuizAccount {
   }
   async logout() {
     if (this.busy) return;
-    if (!confirm('로그아웃하시겠습니까? 같은 브라우저의 게임에서도 로그아웃됩니다.')) return;
+    if (!(await this.confirm('로그아웃하시겠습니까? 같은 브라우저의 게임에서도 로그아웃됩니다.'))) return;
     this.busy = true;
     this.loading = true;
     try {
@@ -205,7 +207,7 @@ export class QuizAccount {
   }
   async reload() {
     if (this.busy || !this.user) return;
-    if (!confirm('현재 미전송 진도를 서버 기록으로 변경하시겠습니까? 필요한 기록은 먼저 진도 백업으로 저장하세요.')) return;
+    if (!(await this.confirm('현재 미전송 진도를 서버 기록으로 변경하시겠습니까? 필요한 기록은 먼저 진도 백업으로 저장하세요.'))) return;
     this.busy = true;
     this.loading = true;
     try {
@@ -220,14 +222,14 @@ export class QuizAccount {
       this.loading = false;
     }
   }
-  importGuest() {
+  async importGuest() {
     if (!this.user || !this.canEdit()) return;
     const guest = this.read(guestKey);
     if (!this.valid(guest) || !Object.keys(guest.records).length) {
       this.status('가져올 기존 브라우저 진도가 없습니다.');
       return;
     }
-    if (!confirm('이 계정의 진도를 기존 브라우저 기록으로 변경하시겠습니까?')) return;
+    if (!(await this.confirm('이 계정의 진도를 기존 브라우저 기록으로 변경하시겠습니까?'))) return;
     this.change(guest);
     this.save(guest);
   }

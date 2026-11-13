@@ -30,7 +30,7 @@ await assert.rejects(() => api('/quiz/progress', {}), error => error.status === 
 const guest = E.fresh(); E.answer(guest, questions[0], ['A']);
 storage.set(guestKey, JSON.stringify(guest));
 assert.equal(Object.keys((await client.start(guest)).records).length, 0, 'guest never imported silently');
-client.importGuest(); await client.queue;
+await client.importGuest(); await client.queue;
 assert.equal(users.get('alice').state.records[1].correct, true);
 const state = E.fresh(); E.answer(state, questions[1], ['A']);
 client.save(state); state.current = 3; client.save(state); await client.queue;
