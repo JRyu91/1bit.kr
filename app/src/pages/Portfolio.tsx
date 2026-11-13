@@ -1,5 +1,5 @@
 // 틀: Astryx `classic-gallery` 페이지 템플릿(가운데 소개 + 필터 탭 + 균일 타일 격자).
-import {useState, type CSSProperties} from 'react';
+import {useEffect, useState, type CSSProperties} from 'react';
 import {VStack, HStack, Layout, LayoutContent} from '@astryxdesign/core/Layout';
 import {Center} from '@astryxdesign/core/Center';
 import {Text, Heading} from '@astryxdesign/core/Text';
@@ -114,6 +114,10 @@ const projects: Project[] = [
 export default function Portfolio() {
   const [filter, setFilter] = useState<Filter>('all');
   const [open, setOpen] = useState<Project | null>(null);
+  useEffect(() => {
+    const id = location.hash.slice(1);
+    if (id) document.getElementById(id)?.scrollIntoView();
+  }, []);
   const shown = filter === 'all' ? projects : projects.filter(project => project.category === filter);
 
   return (

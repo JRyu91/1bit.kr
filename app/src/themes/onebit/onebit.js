@@ -92,8 +92,8 @@ export const onebitTheme = {
     "--_astryx-pre-tempo-duration-slow": "700ms",
     "--_astryx-pre-tempo-duration-slow-max": "935ms",
     "--_astryx-motion-tempo": "1",
-    "--font-family-body": "\"Malgun Gothic\", \"맑은 고딕\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", system-ui, sans-serif",
-    "--font-family-heading": "\"Malgun Gothic\", \"맑은 고딕\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", system-ui, sans-serif",
+    "--font-family-body": "\"Malgun Gothic\", system-ui, sans-serif",
+    "--font-family-heading": "\"Malgun Gothic\", system-ui, sans-serif",
     "--font-family-code": "ui-monospace, \"SF Mono\", Monaco, Consolas, \"Liberation Mono\", \"Courier New\", monospace",
     "--color-syntax-keyword": "light-dark(#6b187c, #efa8ff)",
     "--color-syntax-string": "light-dark(#0b5615, #a4d6a3)",
@@ -488,7 +488,7 @@ export const onebitTheme = {
       },
       "body": {
         "family": "Malgun Gothic",
-        "fallbacks": "\"맑은 고딕\", \"Apple SD Gothic Neo\", \"Noto Sans KR\", system-ui, sans-serif"
+        "fallbacks": "system-ui, sans-serif"
       },
       "heading": {
         "weight": "bold"

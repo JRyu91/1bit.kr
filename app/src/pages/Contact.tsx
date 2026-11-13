@@ -1,5 +1,6 @@
 // 틀: Astryx `blank` 페이지 템플릿 + 링크 목록(List/ListItem).
 import {useState} from 'react';
+import {useClipboard} from '@astryxdesign/core/hooks';
 import {Layout, LayoutContent, VStack, HStack} from '@astryxdesign/core/Layout';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Button} from '@astryxdesign/core/Button';
@@ -15,15 +16,8 @@ const links = [
 ];
 
 export default function Contact() {
-  const [status, setStatus] = useState('');
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(EMAIL);
-      setStatus('이메일 주소를 복사했습니다.');
-    } catch {
-      setStatus('복사하지 못했습니다. 위 이메일 주소를 선택해 복사해 주세요.');
-    }
-  }
+  const {copy, isCopied} = useClipboard({announce: '이메일 주소를 복사했습니다.'});
+  const [failed, setFailed] = useState(false);
 
   return (
     <Layout
@@ -56,10 +50,12 @@ export default function Contact() {
               ))}
             </List>
             <HStack gap={3} vAlign="center" wrap="wrap">
-              <Button label="이메일 복사" clickAction={copy} />
-              <Text type="supporting" as="p" role="status" aria-live="polite">
-                {status}
-              </Text>
+              <Button label={isCopied ? '복사했습니다' : '이메일 복사'} clickAction={async () => setFailed(!(await copy(EMAIL)))} />
+              {failed && (
+                <Text type="supporting" as="p" role="status">
+                  복사하지 못했습니다. 위 이메일 주소를 선택해 복사해 주세요.
+                </Text>
+              )}
             </HStack>
           </VStack>
         </LayoutContent>

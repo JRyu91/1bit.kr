@@ -5,6 +5,7 @@
 
 import {onebitTheme as _astryxTheme0} from "./themes/onebit/onebit.js";
 import "./themes/onebit/onebit.css";
+import "./themes/onebit/onebit.fonts.css";
 
 export const themes = {
   "onebit": _astryxTheme0,

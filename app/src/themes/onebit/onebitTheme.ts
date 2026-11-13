@@ -10,7 +10,8 @@ export const onebitTheme = defineTheme({
     scale: {base: 16, ratio: 1.2},
     body: {
       family: 'Malgun Gothic',
-      fallbacks: '"맑은 고딕", "Apple SD Gothic Neo", "Noto Sans KR", system-ui, sans-serif',
+      // 없는 기기는 시스템 한글 고딕(아이폰·맥: Apple SD 산돌고딕 Neo)으로 표시된다.
+      fallbacks: 'system-ui, sans-serif',
     },
     // 맑은 고딕은 Regular/Bold 두 굵기뿐이라 중간 굵기를 쓰지 않는다.
     heading: {weight: 'bold'},

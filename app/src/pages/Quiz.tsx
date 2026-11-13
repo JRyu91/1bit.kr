@@ -18,6 +18,7 @@ import {RadioList, RadioListItem} from '@astryxdesign/core/RadioList';
 import {CheckboxList, CheckboxListItem} from '@astryxdesign/core/CheckboxList';
 import {Collapsible} from '@astryxdesign/core/Collapsible';
 import {DropdownMenu} from '@astryxdesign/core/DropdownMenu';
+import {AlertDialog} from '@astryxdesign/core/AlertDialog';
 import type {Question, QuizState} from '../../../quiz/engine.js';
 import {E, QuizAccount, guestKey} from '../quiz/account';
 
@@ -67,6 +68,12 @@ export default function Quiz() {
   const [numbersOpen, setNumbersOpen] = useState(false);
   const [loginId, setLoginId] = useState('');
   const [loginPw, setLoginPw] = useState('');
+  const [ask, setAsk] = useState<{message: string; resolve: (ok: boolean) => void} | null>(null);
+  const askUser = (message: string) => new Promise<boolean>(resolve => setAsk({message, resolve}));
+  const answerAsk = (ok: boolean) => {
+    ask?.resolve(ok);
+    setAsk(null);
+  };
   const isNarrow = useMediaQuery('(max-width: 1024px)');
 
   // 새 문제를 보여줄 때마다 답 선택·채점 결과를 비운다.
@@ -101,6 +108,7 @@ export default function Quiz() {
         },
         redraw,
       );
+      account.confirm = askUser;
       const guest = account.read(guestKey);
       const state = await account.start(E.valid(guest, questions) ? guest : E.fresh());
       loaded.current = {questions, account, state};
@@ -324,7 +332,7 @@ export default function Quiz() {
         setNotice('파일을 읽는 동안 계정 또는 진도가 변경되어 복원을 중단했습니다. 다시 백업을 선택하세요.');
         return;
       }
-      if (!confirm('현재 진도를 백업 내용으로 변경하시겠습니까?')) return;
+      if (!(await askUser('현재 진도를 백업 내용으로 변경하시겠습니까?'))) return;
       current.state = restored;
       setReviewNote('');
       setNotice('');
@@ -334,9 +342,9 @@ export default function Quiz() {
       setNotice('이 퀴즈에서 사용할 수 없는 백업 파일입니다. 현재 진도는 유지됩니다.');
     }
   }
-  function reset() {
+  async function reset() {
     if (!account.canEdit()) return;
-    if (!confirm('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?')) return;
+    if (!(await askUser('진도와 오답 기록을 모두 지우고 처음부터 시작하시겠습니까?'))) return;
     current.state = {...E.fresh(), daily: E.daily(state)};
     setReviewNote('');
     setNotice('');
@@ -406,6 +414,17 @@ export default function Quiz() {
   );
 
   return (
+    <>
+    <AlertDialog
+      isOpen={ask !== null}
+      onOpenChange={isOpen => !isOpen && answerAsk(false)}
+      title="확인"
+      description={ask?.message ?? ''}
+      actionLabel="확인"
+      cancelLabel="취소"
+      actionVariant="primary"
+      onAction={() => answerAsk(true)}
+    />
     <Layout
       height="auto"
       contentWidth={1000}
@@ -425,11 +444,11 @@ export default function Quiz() {
               button={{label: '계정·진도'}}
               alignment="end"
               items={[
-                {label: '기존 브라우저 진도 가져오기', onClick: () => account.importGuest()},
+                {label: '기존 브라우저 진도 가져오기', onClick: () => void account.importGuest()},
                 ...(account.paused ? [{label: '서버 진도 불러오기', onClick: () => void account.reload()}] : []),
                 {label: '진도 백업', onClick: backup},
                 {label: '백업 불러오기', onClick: () => restoreInput.current?.click()},
-                {label: '처음부터 시작', onClick: reset},
+                {label: '처음부터 시작', onClick: () => void reset()},
                 {label: '로그아웃', onClick: () => void account.logout()},
               ]}
             />
@@ -515,5 +534,6 @@ export default function Quiz() {
         )
       }
     />
+    </>
   );
 }
