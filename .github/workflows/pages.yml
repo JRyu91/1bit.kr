@@ -1,0 +1,57 @@
+name: Deploy Pages
+
+# app/(Vite + React + Astryx)를 빌드해 GitHub Pages 로 배포한다.
+# /game/ 진입 페이지와 CNAME 은 저장소 루트의 것을 그대로 얹는다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: app/package-lock.json
+      - name: Test quiz logic
+        run: |
+          node quiz/engine.test.cjs
+          node quiz/daily.test.cjs
+          node app/src/quiz/account.test.mjs
+      - name: Build
+        working-directory: app
+        run: |
+          npm ci
+          npm run build
+      - name: Assemble site
+        run: |
+          cp -r game app/dist/game
+          cp CNAME app/dist/CNAME
+          # 저장소에만 보관하고 공개하지 않던 파일
+          rm -f app/dist/projects/legacy-pages.zip
+          rm -f app/dist/assets/flex.* app/dist/assets/wave.* app/dist/assets/thumbsup.*
+          test -f "app/dist/projects/Personal Project_web-game.pdf"
+          test -f app/dist/quiz/questions.json
+          test -f app/dist/profile/portrait.jpeg
+          test -f app/dist/game/index.html
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: app/dist
+      - id: deploy
+        uses: actions/deploy-pages@v4

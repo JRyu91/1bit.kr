@@ -1,0 +1,234 @@
+// 기존 quiz/account.js 의 계정·서버 동기화 로직을 화면(DOM)과 분리해 옮긴 것. 동작 규칙은 그대로다.
+import engineModule from '../../../quiz/engine.js';
+import type {Question, QuizState} from '../../../quiz/engine.js';
+
+// 번들러가 engine.js 를 CommonJS 로 보면 default, 일반 스크립트로 보면 전역에 실린다.
+export const E: typeof engineModule =
+  (engineModule as Partial<typeof engineModule> | undefined)?.fresh ? engineModule : (globalThis as never as {QuizEngine: typeof engineModule}).QuizEngine;
+
+export const guestKey = '1bit-aws-quiz-v1';
+const base = 'https://game-origin.1bit.kr/game';
+
+export type User = {id: string; name: string};
+type Cached = {state: QuizState; revision: number; pending: boolean};
+type ApiError = Error & {status?: number};
+
+const messages: Record<string, string> = {
+  '로그인이 필요해': '로그인이 필요합니다.',
+  '저장 서버에 연결할 수 없어': '저장 서버에 연결할 수 없습니다.',
+  '로그인 계정이 변경됐어. 새로고침해 줘': '로그인 계정이 변경되었습니다. 새로고침하세요.',
+  '올바른 퀴즈 진도가 아니야': '올바른 퀴즈 진도가 아닙니다.',
+  '다른 기기에서 진도가 바뀌었어. 현재 진도를 백업한 뒤 서버 진도를 불러와 줘':
+    '다른 기기에서 진도가 변경되었습니다. 현재 진도를 백업한 뒤 서버 진도를 불러오세요.',
+  '캐릭터 이름은 1~10자로 정한다': '닉네임은 1~10자로 입력하세요.',
+  '아이디는 3자 이상이어야 한다': '아이디는 3자 이상으로 입력하세요.',
+  '아이디는 영문·숫자·밑줄만 쓸 수 있다': '아이디는 영문·숫자·밑줄만 사용하세요.',
+  'g_ 로 시작하는 아이디는 쓸 수 없다': 'g_로 시작하는 아이디는 사용할 수 없습니다.',
+  '비밀번호는 4자 이상이어야 한다': '비밀번호는 4자 이상으로 입력하세요.',
+  '이미 있는 아이디이거나 캐릭터 이름이다': '이미 사용 중인 아이디 또는 닉네임입니다.',
+  '비밀번호가 다르다': '비밀번호가 일치하지 않습니다.',
+  'DB 연결 안 됨': '저장 서버에 연결할 수 없습니다.',
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function api(path: string, body?: unknown): Promise<any> {
+  const response = await fetch(base + path, {
+    credentials: 'include',
+    cache: 'no-store',
+    ...(body === undefined ? {} : {method: 'POST', headers: {'content-type': 'application/json'}, body: JSON.stringify(body)}),
+  });
+  const result = response.status === 204 ? {} : await response.json();
+  if (!response.ok) {
+    const error: ApiError = Error(messages[result.err] || result.err || '서버에 연결할 수 없습니다.');
+    error.status = response.status;
+    throw error;
+  }
+  return result;
+}
+
+export class QuizAccount {
+  user: User | null = null;
+  key = guestKey;
+  revision = 0;
+  paused = false;
+  busy = false;
+  loading = false;
+  queue: Promise<void> = Promise.resolve();
+  sequence = 0;
+  latest: QuizState = E.fresh();
+  message = '문제와 로그인 상태를 불러오는 중';
+  api = api;
+  questions: Question[];
+  change: (state: QuizState) => void;
+  notify: () => void;
+
+  /** change: 진도가 통째로 바뀌었을 때, notify: 상태 문구·로그인 여부만 바뀌었을 때 화면을 다시 그린다. */
+  constructor(questions: Question[], change: (state: QuizState) => void, notify: () => void = () => {}) {
+    this.questions = questions;
+    this.change = change;
+    this.notify = notify;
+  }
+  status(message: string) {
+    this.message = message;
+    this.notify();
+  }
+  /** 다른 탭이 같은 진도를 바꾸면 덮어쓰지 않도록 멈춘다. */
+  onStorage(event: {key: string | null}) {
+    if (event.key === this.key || event.key === null) {
+      this.paused = true;
+      this.status('다른 탭에서 진도가 변경되었습니다. 현재 기록을 백업하고 새로고침하세요.');
+    }
+  }
+  read(key: string) {
+    try {
+      return JSON.parse(localStorage.getItem(key) as string);
+    } catch {
+      return null;
+    }
+  }
+  cache(value: Cached) {
+    try {
+      localStorage.setItem(this.key, JSON.stringify(value));
+    } catch {
+      this.status('브라우저 백업 저장에 실패했습니다. 서버 저장 상태를 확인하세요.');
+    }
+  }
+  valid(state: unknown) {
+    return E.valid(state, this.questions);
+  }
+  async start(guest: QuizState) {
+    this.latest = guest;
+    try {
+      const me = await this.api('/account/me');
+      return await this.load(me.ok);
+    } catch (e) {
+      if (this.user) {
+        this.paused = true;
+        this.status((e as Error).message);
+        return this.latest;
+      }
+      this.status('로그인하거나 가입한 후 문제를 풀어보세요.');
+      return guest;
+    }
+  }
+  async load(user: User, discardPending = false) {
+    this.user = user;
+    this.key = guestKey + ':account:' + user.id;
+    const cached: Cached | null = this.read(this.key);
+    if (cached?.state) cached.state = E.recoverNavigation(cached.state, this.questions);
+    this.latest = cached && this.valid(cached.state) ? cached.state : E.fresh();
+    const cloud = await this.api('/quiz/progress');
+    cloud.state = E.recoverNavigation(cloud.state, this.questions);
+    if (cloud.accountId !== user.id || (cloud.state !== null && !this.valid(cloud.state)))
+      throw Error('계정 진도를 확인할 수 없습니다. 현재 기록을 백업하세요.');
+    this.revision = cloud.revision;
+    if (!discardPending && cached?.pending && this.valid(cached.state)) {
+      this.latest = cached.state;
+      if (cached.revision !== cloud.revision) {
+        this.paused = true;
+        this.status('미전송 기록과 서버 진도가 다릅니다. 백업 후 서버 진도를 불러오세요.');
+        return this.latest;
+      }
+      this.paused = false;
+      this.save(this.latest);
+      return this.latest;
+    }
+    this.latest = cloud.state || E.fresh();
+    this.paused = false;
+    this.cache({state: this.latest, revision: this.revision, pending: false});
+    this.status('서버 저장 완료');
+    return this.latest;
+  }
+  canEdit() {
+    return !!this.user && !this.loading && !this.paused;
+  }
+  save(state: QuizState) {
+    if (!this.canEdit()) return;
+    this.latest = JSON.parse(JSON.stringify(state));
+    const snapshot = this.latest;
+    const sequence = ++this.sequence;
+    this.cache({state: this.latest, revision: this.revision, pending: true});
+    this.status('저장 중');
+    this.queue = this.queue.then(async () => {
+      if (this.paused) return;
+      try {
+        const result = await this.api('/quiz/progress', {accountId: this.user!.id, revision: this.revision, state: snapshot});
+        this.revision = result.revision;
+        const pending = sequence !== this.sequence;
+        this.cache({state: this.latest, revision: this.revision, pending});
+        this.status(pending ? '저장 중' : '서버 저장 완료');
+      } catch (e) {
+        const error = e as ApiError;
+        this.paused = true;
+        if (error.status === 401 || error.status === 403) this.user = null;
+        this.status(error.message + ' · 진도 백업으로 현재 기록을 보관하세요.');
+      }
+    });
+  }
+  async login(id: string, pw: string) {
+    if (this.busy) return;
+    this.busy = true;
+    try {
+      const me = await this.api('/account/login', {id, pw});
+      this.change(await this.load(me.ok));
+    } catch (e) {
+      if (this.user) {
+        this.paused = true;
+        this.change(this.latest);
+      }
+      this.status((e as Error).message);
+    } finally {
+      this.busy = false;
+    }
+  }
+  async logout() {
+    if (this.busy) return;
+    if (!confirm('로그아웃하시겠습니까? 같은 브라우저의 게임에서도 로그아웃됩니다.')) return;
+    this.busy = true;
+    this.loading = true;
+    try {
+      await this.queue;
+      await this.api('/account/logout', {});
+      this.user = null;
+      this.key = guestKey;
+      this.paused = false;
+      const guest = this.read(guestKey);
+      this.latest = this.valid(guest) ? guest : E.fresh();
+      this.change(this.latest);
+      this.status('로그아웃되었습니다. 다시 로그인하세요.');
+    } catch (e) {
+      this.status((e as Error).message);
+    } finally {
+      this.busy = false;
+      this.loading = false;
+    }
+  }
+  async reload() {
+    if (this.busy || !this.user) return;
+    if (!confirm('현재 미전송 진도를 서버 기록으로 변경하시겠습니까? 필요한 기록은 먼저 진도 백업으로 저장하세요.')) return;
+    this.busy = true;
+    this.loading = true;
+    try {
+      await this.queue;
+      const me = await this.api('/account/me');
+      if (me.ok.id !== this.user.id) throw Error('로그인 계정이 변경되었습니다. 진도를 백업하고 새로고침하세요.');
+      this.change(await this.load(this.user, true));
+    } catch (e) {
+      this.status((e as Error).message);
+    } finally {
+      this.busy = false;
+      this.loading = false;
+    }
+  }
+  importGuest() {
+    if (!this.user || !this.canEdit()) return;
+    const guest = this.read(guestKey);
+    if (!this.valid(guest) || !Object.keys(guest.records).length) {
+      this.status('가져올 기존 브라우저 진도가 없습니다.');
+      return;
+    }
+    if (!confirm('이 계정의 진도를 기존 브라우저 기록으로 변경하시겠습니까?')) return;
+    this.change(guest);
+    this.save(guest);
+  }
+}
