@@ -1,17 +1,17 @@
 # Graph Report - 1bit.kr  (2026-11-14)
 
 ## Corpus Check
-- 49 files · ~463,150 words
+- 49 files · ~463,863 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: .css 5, (none) 2, .zip 1)
 
 ## Summary
-- 367 nodes · 525 edges · 28 communities (13 shown, 15 thin omitted)
+- 370 nodes · 531 edges · 28 communities (13 shown, 15 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `81d391d4`
+- Built from commit: `f7d34529`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -53,12 +53,12 @@
 ## Surprising Connections (you probably didn't know these)
 - `submit()` --calls--> `api()`  [EXTRACTED]
   app/src/pages/Signup.tsx → app/src/quiz/account.ts
+- `Signup()` --calls--> `api()`  [EXTRACTED]
+  app/src/pages/Signup.tsx → app/src/quiz/account.ts
 - `App()` --calls--> `Shell()`  [EXTRACTED]
   app/src/main.tsx → app/src/Shell.tsx
 - `Quiz()` --calls--> `QuizAccount`  [EXTRACTED]
   app/src/pages/Quiz.tsx → app/src/quiz/account.ts
-- `Signup()` --calls--> `api()`  [EXTRACTED]
-  app/src/pages/Signup.tsx → app/src/quiz/account.ts
 
 ## Import Cycles
 - None detected.
@@ -66,8 +66,8 @@
 ## Communities (28 total, 15 thin omitted)
 
 ### Community 0 - "Quiz"
-Cohesion: 0.15
-Nodes (15): celebrate(), Quiz(), leaveReview(), next(), pick(), reset(), restore(), saveGoal() (+7 more)
+Cohesion: 0.17
+Nodes (13): celebrate(), Quiz(), leaveReview(), next(), pick(), reset(), restore(), saveGoal() (+5 more)
 
 ### Community 1 - "viewer.test.cjs"
 Cohesion: 0.06
@@ -79,7 +79,7 @@ Nodes (22): before, full, other, s, answer(), claimGoal(), daily(), recoverNavig
 
 ### Community 4 - "main.tsx"
 Cohesion: 0.06
-Nodes (39): dependencies, @astryxdesign/core@^0.7.15, @astryxdesign/theme-neutral@^0.7.15, @heroicons/react@^2.2.0, react@^19.3.1, react-dom@^19.3.1, defaultThemeSlug, themes (+31 more)
+Nodes (36): dependencies, @astryxdesign/core@^0.7.15, @astryxdesign/theme-neutral@^0.7.15, @heroicons/react@^2.2.0, react@^19.3.1, react-dom@^19.3.1, defaultThemeSlug, themes (+28 more)
 
 ### Community 8 - "quiz.js"
 Cohesion: 0.54
@@ -114,8 +114,8 @@ Cohesion: 0.14
 Nodes (4): Daily, Question, QuizRecord, QuizState
 
 ### Community 27 - "Profile.tsx"
-Cohesion: 0.31
-Nodes (8): Bullet(), credentials, duties, InfoSection(), PageHeader(), Profile(), projects, skills
+Cohesion: 0.14
+Nodes (17): Project, projects, anchor, cover, Filter, frame, Portfolio(), ProjectArticle() (+9 more)
 
 ## Knowledge Gaps
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
@@ -124,16 +124,16 @@ Nodes (8): Bullet(), credentials, duties, InfoSection(), PageHeader(), Profile()
 _Questions this graph is uniquely positioned to answer:_
 
 - **Why does `@astryxdesign/core` connect `main.tsx` to `Quiz.tsx`, `Profile.tsx`, `package.json`?**
-  _High betweenness centrality (0.080) - this node is a cross-community bridge._
+  _High betweenness centrality (0.082) - this node is a cross-community bridge._
 - **Are the 9 inferred relationships involving `Quiz()` (e.g. with `backup()` and `.importGuest()`) actually correct?**
   _`Quiz()` has 9 INFERRED edges - model-reasoned connections that need verification._
 - **Should `viewer.test.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.05758582502768549 - nodes in this community are weakly interconnected._
-- **Why does `react` connect `main.tsx` to `Quiz.tsx`, `package.json`?**
+- **Why does `react` connect `main.tsx` to `Quiz.tsx`, `Profile.tsx`, `package.json`?**
   _High betweenness centrality (0.058) - this node is a cross-community bridge._
 - **Should `engine.test.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.08465608465608465 - nodes in this community are weakly interconnected._
 - **Why does `Quiz()` connect `Quiz` to `Quiz.tsx`?**
   _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Should `main.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.0593990216631726 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.06471631205673758 - nodes in this community are weakly interconnected._

@@ -18,11 +18,11 @@ const cover: CSSProperties = {width: '100%', height: '100%', objectFit: 'contain
 
 const metrics = [
   {label: 'Experience', value: '약 9년', note: '통신 장비 검증·기술지원 · 2017~2026'},
-  {label: 'Cloud Projects', value: '4건', note: '개인 1 · 해커톤 1 · 팀 프로젝트 2'},
+  {label: 'Cloud Projects', value: '5건', note: '진행 중 1 포함 · 해커톤 1위'},
   {label: 'Certification', value: '정보처리기사', note: '2026.06 취득 · AWS SAA-C03 준비 중'},
-  {label: 'Training', value: '2026.05~12', note: '클라우드 인프라·DevOps 직업훈련 · 2026.05.12~12.03 수료 예정'},
+  {label: 'Training', value: '2026.05~12', note: 'KT Cloud Infra 과정 · 2026.05.12~12.03 수료 예정'},
 ];
-const featured = projects.filter(project => project.id === 'personal' || project.id === 'endive');
+const featured = projects.filter(project => project.id === 'final' || project.id === 'personal');
 
 function MetricCard({label, value, note}: {label: string; value: string; note: string}) {
   return (
@@ -92,21 +92,24 @@ export default function Home() {
               </HStack>
               <Grid columns={{minWidth: 300, max: 2}} gap={6}>
                 {featured.map(project => (
-                  <ClickableCard key={project.id} label={`${project.name} 자세히 보기`} href={`/portfolio/#${project.id}`} padding={0}>
+                  <ClickableCard key={project.id} label={`${project.title} 자세히 보기`} href={`/portfolio/#${project.id}`} padding={0}>
                     <VStack gap={0}>
                       <AspectRatio ratio={16 / 9}>
                         <img style={cover} src={project.image} alt={project.alt} loading="lazy" />
                       </AspectRatio>
                       <VStack gap={2} padding={5}>
                         <HStack gap={2} vAlign="center" wrap="wrap">
-                          <Heading level={3}>{project.name}</Heading>
-                          {project.service && (
+                          <Text type="label" color="accent">
+                            {project.tag}
+                          </Text>
+                          {(project.inProgress || project.service) && (
                             <Text type="supporting" color="accent">
-                              Live
+                              {project.inProgress ? '· In progress' : '· Live'}
                             </Text>
                           )}
                         </HStack>
-                        <Text type="supporting">{project.label}</Text>
+                        <Heading level={3}>{project.title}</Heading>
+                        <Text type="supporting">{`${project.period} · ${project.team}`}</Text>
                         <Text type="label" color="accent">
                           {project.role}
                         </Text>
