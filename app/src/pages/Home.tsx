@@ -6,7 +6,6 @@ import {Card} from '@astryxdesign/core/Card';
 import {ClickableCard} from '@astryxdesign/core/ClickableCard';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Button} from '@astryxdesign/core/Button';
-import {Badge} from '@astryxdesign/core/Badge';
 import {Link} from '@astryxdesign/core/Link';
 import {Icon} from '@astryxdesign/core/Icon';
 import {AspectRatio} from '@astryxdesign/core/AspectRatio';
@@ -18,10 +17,10 @@ const heroImage: CSSProperties = {width: '100%', height: '100%', objectFit: 'con
 const cover: CSSProperties = {width: '100%', height: '100%', objectFit: 'contain', backgroundColor: 'var(--color-on-dark)'};
 
 const metrics = [
-  {label: '실무 경력', value: '약 9년', note: '통신 장비 검증·기술지원 · 2017~2026'},
-  {label: '클라우드 프로젝트', value: '4건', note: '개인 1 · 해커톤 1 · 팀 프로젝트 2'},
-  {label: '자격', value: '정보처리기사', note: '2026.06 취득 · AWS SAA-C03 준비 중'},
-  {label: '교육', value: '2026.12', note: '클라우드 인프라·DevOps 직업훈련 수료 예정'},
+  {label: 'Experience', value: '약 9년', note: '통신 장비 검증·기술지원 · 2017~2026'},
+  {label: 'Cloud Projects', value: '4건', note: '개인 1 · 해커톤 1 · 팀 프로젝트 2'},
+  {label: 'Certification', value: '정보처리기사', note: '2026.06 취득 · AWS SAA-C03 준비 중'},
+  {label: 'Training', value: '2026.12', note: '클라우드 인프라·DevOps 직업훈련 수료 예정'},
 ];
 const featured = projects.filter(project => project.id === 'personal' || project.id === 'endive');
 
@@ -29,10 +28,10 @@ function MetricCard({label, value, note}: {label: string; value: string; note: s
   return (
     <Card>
       <VStack gap={2}>
-        <Heading level={4}>{label}</Heading>
-        <Heading level={2} color="accent">
+        <Text type="label">{label}</Text>
+        <Text type="display-3" color="accent">
           {value}
-        </Heading>
+        </Text>
         <Text type="supporting" color="secondary">
           {note}
         </Text>
@@ -76,7 +75,7 @@ export default function Home() {
                   href="/profile/"
                   endContent={<Icon icon={ArrowRightIcon} size="sm" color="inherit" />}
                 />
-                <Button label="Portfolio" variant="secondary" href="/portfolio/" />
+                <Button label="Contact" variant="secondary" href="/contact/" />
               </HStack>
             </VStack>
 
@@ -88,8 +87,8 @@ export default function Home() {
 
             <VStack gap={4}>
               <HStack hAlign="between" vAlign="center" wrap="wrap" gap={2}>
-                <Heading level={2}>대표 프로젝트</Heading>
-                <Link href="/portfolio/">전체 프로젝트 보기</Link>
+                <Heading level={2}>Featured Projects</Heading>
+                <Link href="/portfolio/">View all projects</Link>
               </HStack>
               <Grid columns={{minWidth: 300, max: 2}} gap={6}>
                 {featured.map(project => (
@@ -101,7 +100,11 @@ export default function Home() {
                       <VStack gap={2} padding={5}>
                         <HStack gap={2} vAlign="center" wrap="wrap">
                           <Heading level={3}>{project.name}</Heading>
-                          {project.service && <Badge variant="success" label="운영 중" />}
+                          {project.service && (
+                            <Text type="supporting" color="accent">
+                              Live
+                            </Text>
+                          )}
                         </HStack>
                         <Text type="supporting">{project.label}</Text>
                         <Text type="label" color="accent">
