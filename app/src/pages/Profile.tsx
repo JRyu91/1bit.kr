@@ -45,6 +45,8 @@ const credentials: string[][] = [
 ];
 
 function PageHeader() {
+  const isNarrow = useMediaQuery('(max-width: 768px)');
+  const contact = <Button label="Contact" variant="primary" href="/contact/" />;
   return (
     <LayoutHeader hasDivider padding={6}>
       <VStack gap={3}>
@@ -55,9 +57,10 @@ function PageHeader() {
               <Heading level={1}>유준형</Heading>
               <Text type="body">Cloud Engineer · SE · DevOps</Text>
               <Text type="supporting">통신 장비 검증·기술지원 약 9년</Text>
+              {isNarrow && <HStack>{contact}</HStack>}
             </VStack>
           </StackItem>
-          <Button label="Contact" variant="primary" href="/contact/" />
+          {!isNarrow && contact}
         </HStack>
         <Text as="p" color="secondary" textWrap="pretty">
           9년간 광통신 장비 검증과 기술 지원, 유지보수를 맡았습니다. 현장에서 장비 문제를 분석하고 해결해 온 경험을 바탕으로 클라우드와
@@ -79,7 +82,7 @@ function InfoSection({title, note, items, isNarrow}: {title: string; note: strin
         <MetadataList label={{position: isNarrow ? 'top' : 'start', width: isNarrow ? undefined : 200}}>
           {items.map(([label, value]) => (
             <MetadataListItem key={value} label={label}>
-              {value}
+              <Text>{value}</Text>
             </MetadataListItem>
           ))}
         </MetadataList>
@@ -114,7 +117,7 @@ export default function Profile() {
                   <MetadataList label={{position: 'start', width: 64}}>
                     {results.map(([label, value]) => (
                       <MetadataListItem key={label} label={label}>
-                        {value}
+                        <Text>{value}</Text>
                       </MetadataListItem>
                     ))}
                   </MetadataList>
@@ -124,7 +127,7 @@ export default function Profile() {
                   <MetadataList label={{position: isNarrow ? 'top' : 'start', width: isNarrow ? undefined : 160}}>
                     {work.map(([label, value]) => (
                       <MetadataListItem key={label} label={label}>
-                        {value}
+                        <Text>{value}</Text>
                       </MetadataListItem>
                     ))}
                   </MetadataList>

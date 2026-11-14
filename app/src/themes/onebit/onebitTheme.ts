@@ -25,5 +25,6 @@ export const onebitTheme = defineTheme({
     '--color-icon-accent': ['#0B6E8A', '#5FC3DD'],
   },
   // 맑은 고딕 Bold는 큰 크기에서 자간이 넓어 보여 살짝 조인다.
-  components: {heading: {base: {letterSpacing: '-0.02em'}}},
+  // 한글은 단어 중간에서 줄이 바뀌지 않게 어절 단위로 끊는다.
+  components: {heading: {base: {letterSpacing: '-0.02em', wordBreak: 'keep-all'}}, text: {base: {wordBreak: 'keep-all'}}},
 });

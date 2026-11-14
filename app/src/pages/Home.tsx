@@ -59,7 +59,7 @@ export default function Home() {
               </VStack>
               <VStack gap={3} hAlign="center">
                 <Text type="label" color="accent">
-                  Cloud Infrastructure · DevOps
+                  Cloud Engineer · SE · DevOps
                 </Text>
                 <Heading level={1} type="display-2" justify="center" textWrap="balance">
                   유준형
