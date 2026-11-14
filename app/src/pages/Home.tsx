@@ -20,7 +20,7 @@ const metrics = [
   {label: 'Experience', value: '약 9년', note: '통신 장비 검증·기술지원 · 2017~2026'},
   {label: 'Cloud Projects', value: '4건', note: '개인 1 · 해커톤 1 · 팀 프로젝트 2'},
   {label: 'Certification', value: '정보처리기사', note: '2026.06 취득 · AWS SAA-C03 준비 중'},
-  {label: 'Training', value: '2026.12', note: '클라우드 인프라·DevOps 직업훈련 수료 예정'},
+  {label: 'Training', value: '2026.05~12', note: '클라우드 인프라·DevOps 직업훈련 · 2026.05.12~12.03 수료 예정'},
 ];
 const featured = projects.filter(project => project.id === 'personal' || project.id === 'endive');
 
@@ -29,7 +29,7 @@ function MetricCard({label, value, note}: {label: string; value: string; note: s
     <Card>
       <VStack gap={2}>
         <Text type="label">{label}</Text>
-        <Text type="display-3" size="2xl" weight="bold" color="accent">
+        <Text type="display-3" size="xl" weight="bold" color="accent">
           {value}
         </Text>
         <Text type="supporting" color="secondary">
