@@ -336,21 +336,21 @@
     "semantic_hash": ""
   },
   "app/src/pages/Home.tsx": {
-    "mtime": 1794666889.7076812,
-    "seen": 1794667598.891055,
+    "mtime": 1794667607.2021027,
+    "seen": 1794669006.669419,
     "ast_hash": "35179912fdd98f8f64f68198f4e04547",
     "semantic_hash": ""
   },
   "app/src/pages/Portfolio.tsx": {
-    "mtime": 1794667549.57247,
-    "seen": 1794667598.891057,
-    "ast_hash": "2c3c1d2a52a5a4ab9c888a3420b4ee44",
+    "mtime": 1794668959.7964487,
+    "seen": 1794669006.66942,
+    "ast_hash": "0ad1baa6a990f0ea7e6a57c258c36c8a",
     "semantic_hash": ""
   },
   "app/src/pages/Profile.tsx": {
-    "mtime": 1794667549.572354,
-    "seen": 1794667598.891058,
-    "ast_hash": "07dd20ae0e42aece35620309a0da535d",
+    "mtime": 1794668765.360337,
+    "seen": 1794669006.66942,
+    "ast_hash": "c1134f87dd85b5cb0637dbfa93a91828",
     "semantic_hash": ""
   },
   "app/src/themes/onebit/onebit.css.d.ts": {
@@ -504,21 +504,33 @@
     "semantic_hash": ""
   },
   "app/src/data/projects.ts": {
-    "mtime": 1794667549.572207,
-    "seen": 1794667598.8910122,
-    "ast_hash": "eb5c771e50c72182c0a5786103fdb571",
+    "mtime": 1794668854.745369,
+    "seen": 1794669006.669379,
+    "ast_hash": "80e74ec0dc75606fc495cdd8145f6dd0",
     "semantic_hash": ""
   },
   "projects/final-architecture-full.webp": {
-    "mtime": 1794666823.5795014,
-    "seen": 1794667598.892291,
+    "mtime": 1794667607.204322,
+    "seen": 1794669006.6706429,
     "ast_hash": "3c319be8ff43def941d652bb05fd2736",
     "semantic_hash": ""
   },
   "projects/final-architecture.webp": {
-    "mtime": 1794666823.163124,
-    "seen": 1794667598.8922932,
+    "mtime": 1794667607.2045465,
+    "seen": 1794669006.670644,
     "ast_hash": "5490f2022cd9b5280faebeabbb262e4b",
+    "semantic_hash": ""
+  },
+  "app/public/profile/portrait-square.jpeg": {
+    "mtime": 1794668667.2124765,
+    "seen": 1794669006.6703548,
+    "ast_hash": "aad232002ff7ee54c3e4504145e69e9f",
+    "semantic_hash": ""
+  },
+  "profile/portrait-square.jpeg": {
+    "mtime": 1794668667.2124765,
+    "seen": 1794669006.670552,
+    "ast_hash": "aad232002ff7ee54c3e4504145e69e9f",
     "semantic_hash": ""
   }
 }

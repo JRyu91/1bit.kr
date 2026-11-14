@@ -1,17 +1,17 @@
-# Graph Report - 1bit.kr  (2026-11-14)
+# Graph Report - 1bit.kr  (2026-11-15)
 
 ## Corpus Check
-- 49 files · ~463,863 words
+- 49 files · ~463,987 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 8 file(s) not represented in the graph (top: .css 5, (none) 2, .zip 1)
 
 ## Summary
-- 370 nodes · 531 edges · 28 communities (13 shown, 15 thin omitted)
+- 370 nodes · 532 edges · 28 communities (13 shown, 15 thin omitted)
 - Extraction: 96% EXTRACTED · 4% INFERRED · 0% AMBIGUOUS · INFERRED: 20 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `f7d34529`
+- Built from commit: `a46a82b1`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 
@@ -78,16 +78,16 @@ Cohesion: 0.08
 Nodes (22): before, full, other, s, answer(), claimGoal(), daily(), recoverNavigation() (+14 more)
 
 ### Community 4 - "main.tsx"
-Cohesion: 0.06
-Nodes (36): dependencies, @astryxdesign/core@^0.7.15, @astryxdesign/theme-neutral@^0.7.15, @heroicons/react@^2.2.0, react@^19.3.1, react-dom@^19.3.1, defaultThemeSlug, themes (+28 more)
+Cohesion: 0.08
+Nodes (29): @heroicons/react@^2.2.0, react@^19.3.1, defaultThemeSlug, themes, ThemeSlug, App(), [, current, sub], Page (+21 more)
 
 ### Community 8 - "quiz.js"
 Cohesion: 0.54
 Nodes (7): celebrateGoal(), checkDay(), clearConfetti(), render(), save(), updateDaily(), updateNumbers()
 
 ### Community 14 - "package.json"
-Cohesion: 0.08
-Nodes (29): @stylexjs/stylex@^0.19.2, devDependencies, @astryxdesign/cli@^0.7.15, oxlint@^1.90.0, @types/node@^24.19.2, @types/react@^19.3.0, @types/react-dom@^19.3.0, typescript@~7.0.2 (+21 more)
+Cohesion: 0.07
+Nodes (36): dependencies, @astryxdesign/core@^0.7.15, @astryxdesign/theme-neutral@^0.7.15, react-dom@^19.3.1, @stylexjs/stylex@^0.19.2, devDependencies, @astryxdesign/cli@^0.7.15, oxlint@^1.90.0 (+28 more)
 
 ### Community 15 - "compilerOptions"
 Cohesion: 0.10
@@ -115,7 +115,7 @@ Nodes (4): Daily, Question, QuizRecord, QuizState
 
 ### Community 27 - "Profile.tsx"
 Cohesion: 0.14
-Nodes (17): Project, projects, anchor, cover, Filter, frame, Portfolio(), ProjectArticle() (+9 more)
+Nodes (17): Project, projects, anchor, cover, Details(), frame, Note(), Portfolio() (+9 more)
 
 ## Knowledge Gaps
 - **15 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
@@ -130,10 +130,10 @@ _Questions this graph is uniquely positioned to answer:_
 - **Should `viewer.test.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.05758582502768549 - nodes in this community are weakly interconnected._
 - **Why does `react` connect `main.tsx` to `Quiz.tsx`, `Profile.tsx`, `package.json`?**
-  _High betweenness centrality (0.058) - this node is a cross-community bridge._
+  _High betweenness centrality (0.059) - this node is a cross-community bridge._
 - **Should `engine.test.cjs` be split into smaller, more focused modules?**
   _Cohesion score 0.08465608465608465 - nodes in this community are weakly interconnected._
 - **Why does `Quiz()` connect `Quiz` to `Quiz.tsx`?**
   _High betweenness centrality (0.042) - this node is a cross-community bridge._
 - **Should `main.tsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.06471631205673758 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.07692307692307693 - nodes in this community are weakly interconnected._

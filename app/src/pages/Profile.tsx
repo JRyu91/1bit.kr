@@ -1,7 +1,5 @@
 // 틀: Astryx `detail-page` 페이지 템플릿(요약 헤더 + 본문 섹션). 옆 패널 없이 한 열로 읽힌다.
-import {useClipboard, useMediaQuery} from '@astryxdesign/core/hooks';
-
-const EMAIL = 'ujun5190@gmail.com';
+import {useMediaQuery} from '@astryxdesign/core/hooks';
 import {Layout, LayoutHeader, LayoutContent, VStack, HStack, StackItem, Section} from '@astryxdesign/core/Layout';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Avatar} from '@astryxdesign/core/Avatar';
@@ -12,20 +10,18 @@ import {Icon} from '@astryxdesign/core/Icon';
 import {ArrowUpRightIcon} from '@heroicons/react/24/outline';
 import {projects} from '../data/projects';
 
-const duties = [
-  'KT·SKB 등 고객사 RFP·기술 요구사항 분석, 광모듈·DWDM 전송 시스템 BMT 수행',
-  '양산 전 광모듈 전기·광학·신뢰성 검증, IEEE·MSA 규격 적합성 확인',
-  '현장 장비 점검, EMS 알람·장비 로그 기반 장애 원인 분석',
-  'RMA 제품 분석·8D Report 작성, 생산 공정 개선 피드백',
-  'ISO 9001·14001·45001·TL9000 인증 심사 대응, 재고·기술지원 이력 관리',
+// 경력기술서 4분류를 한 줄씩. 성과는 담당(기술 검증)과 사업 결과(채택)를 나눠 Key Results 소제목에 담당을 한 번만 적는다.
+const work: string[][] = [
+  ['BMT·기술 검증', 'KT·SKB 등 고객사 RFP·요구사항 분석, 광모듈·DWDM 전송 시스템 시험환경 구성과 기술 검증'],
+  ['제품 검증·품질 개선', '양산 전 전기·광학·신뢰성 검증(IEEE·MSA 규격), RMA 원인 분석과 8D Report로 고객 대응·공정 개선'],
+  ['기술 지원·유지보수', 'EMS 알람·장비 로그로 현장 장애 원인 분석, 고객사·내부 부서 간 기술 이슈 조율'],
+  ['기술 문서·품질 관리', 'ISO 9001·14001·45001·TL9000 심사 대응, 기술 문서·재고·기술 지원 이력 관리'],
 ];
-// 담당(기술 검증)과 사업 결과(채택)를 나눠 적는다.
 const results: string[][] = [
-  ['2019', 'KT 5G Front Haul 광모듈 BMT — 기술 검증 담당 · 최종 채택'],
-  ['2020', 'KT 100G 광모듈 BMT — 기술 검증 담당 · 최종 채택'],
-  ['2024', 'KT 100G 80km 광모듈 BMT — 기술 검증 담당 · 최종 채택'],
+  ['2019', 'KT 5G Front Haul 광모듈 최종 채택'],
+  ['2020', 'KT 100G 광모듈 최종 채택'],
+  ['2024', 'KT 100G 80km 광모듈 최종 채택'],
   ['2025', 'SKB 10G·100G 통합광모듈 사급화 사업 기술 검증'],
-  ['RMA', '불량 원인 분석 결과를 8D Report로 고객 대응, 생산 공정 개선에 반영'],
 ];
 const skills: string[][] = [
   ['Cloud', 'AWS (1·2차, 최종), GCP (개인·해커톤), OpenStack (2차)'],
@@ -48,41 +44,24 @@ const credentials: string[][] = [
   ['AWS SAA-C03', '준비 중'],
 ];
 
-function Bullet() {
-  return (
-    <Text type="supporting" color="secondary">
-      {'・'}
-    </Text>
-  );
-}
-
 function PageHeader() {
-  const {copy, isCopied} = useClipboard({announce: '이메일 주소를 복사했습니다.'});
   return (
     <LayoutHeader hasDivider padding={6}>
       <VStack gap={3}>
         <HStack gap={4} vAlign="center" wrap="wrap">
-          <Avatar src="/profile/portrait.jpeg" name="유준형" size={72} shape="rounded" tooltip={false} />
+          <Avatar src="/profile/portrait-square.jpeg" name="유준형" size={96} shape="rounded" tooltip={false} />
           <StackItem size="fill">
-            <VStack gap={0}>
+            <VStack gap={1}>
               <Heading level={1}>유준형</Heading>
-              <HStack gap={1} vAlign="center" wrap="wrap">
-                <Text type="body">Cloud Infrastructure · DevOps</Text>
-                <HStack gap={1} vAlign="center">
-                  <Bullet />
-                  <Text type="body">통신 장비 검증·기술지원 약 9년</Text>
-                </HStack>
-              </HStack>
+              <Text type="body">Cloud Engineer · SE · DevOps</Text>
+              <Text type="supporting">통신 장비 검증·기술지원 약 9년</Text>
             </VStack>
           </StackItem>
-          <Button label={isCopied ? 'Copied' : 'Copy email'} variant="primary" clickAction={async () => {
-              // 복사가 막힌 브라우저에서는 메일 앱으로 넘긴다.
-              if (!(await copy(EMAIL))) location.href = `mailto:${EMAIL}`;
-            }} />
+          <Button label="Contact" variant="primary" href="/contact/" />
         </HStack>
         <Text as="p" color="secondary" textWrap="pretty">
-          통신 장비 검증·기술지원 경험을 바탕으로 클라우드 인프라·DevOps 직업훈련을 받으며 프로젝트를 하고 있습니다. Linux와
-          네트워크 기초부터 인프라 구성·배포 자동화까지 직접 적용하며 배우고 있습니다.
+          9년간 광통신 장비 검증과 기술 지원, 유지보수를 맡았습니다. 현장에서 장비 문제를 분석하고 해결해 온 경험을 바탕으로 클라우드와
+          시스템 인프라로 업무 영역을 넓히고 있습니다.
         </Text>
       </VStack>
     </LayoutHeader>
@@ -125,21 +104,31 @@ export default function Profile() {
                 <Heading level={2}>Experience</Heading>
                 <VStack gap={1}>
                   <Heading level={3}>(주)자람테크놀로지</Heading>
-                  <Text type="supporting">2017.02~2026.04 · 사업부 품질기술팀 과장</Text>
+                  <Text type="supporting">사업부 품질기술팀 과장 · 2017.02~2026.04 (9년 2개월)</Text>
                 </VStack>
-                <List listStyle="disc" density="compact">
-                  {duties.map(duty => (
-                    <ListItem key={duty} label={<Text>{duty}</Text>} />
-                  ))}
-                </List>
-                <Heading level={3}>Key Results</Heading>
-                <MetadataList label={{position: isNarrow ? 'top' : 'start', width: isNarrow ? undefined : 80}}>
-                  {results.map(([label, value]) => (
-                    <MetadataListItem key={label} label={label}>
-                      {value}
-                    </MetadataListItem>
-                  ))}
-                </MetadataList>
+                <VStack gap={2}>
+                  <HStack gap={2} vAlign="center" wrap="wrap">
+                    <Heading level={4}>Key Results</Heading>
+                    <Text type="supporting">BMT 기술 검증 담당</Text>
+                  </HStack>
+                  <MetadataList label={{position: 'start', width: 64}}>
+                    {results.map(([label, value]) => (
+                      <MetadataListItem key={label} label={label}>
+                        {value}
+                      </MetadataListItem>
+                    ))}
+                  </MetadataList>
+                </VStack>
+                <VStack gap={2}>
+                  <Heading level={4}>Work</Heading>
+                  <MetadataList label={{position: isNarrow ? 'top' : 'start', width: isNarrow ? undefined : 160}}>
+                    {work.map(([label, value]) => (
+                      <MetadataListItem key={label} label={label}>
+                        {value}
+                      </MetadataListItem>
+                    ))}
+                  </MetadataList>
+                </VStack>
               </VStack>
             </Section>
             <Section>

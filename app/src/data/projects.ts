@@ -17,6 +17,9 @@ export type Project = {
   duties: string[];
   achievements?: string[];
   troubleshooting?: {title: string; text: string}[];
+  why?: string;
+  lessons?: string;
+  compact?: boolean;
   techNote?: string;
   tech: string[];
   service?: {label: string; href: string};
@@ -63,7 +66,7 @@ export const projects: Project[] = [
     duties: [
       'Terraform으로 GCP 인프라 구성',
       'GKE On-Demand·Spot 노드풀 분리, KEDA 기반 채널 자동 확장',
-      'GitHub Actions·WIF로 서비스 계정 키 없이 빌드·배포 자동화',
+      'GitHub Actions·WIF로 빌드·배포 자동화',
     ],
     achievements: ['교육과정 개인 프로젝트 우수 사례 선정·발표', '서비스 운영 중'],
     troubleshooting: [
@@ -76,6 +79,7 @@ export const projects: Project[] = [
         text: 'Terraform으로 인프라를 삭제하면서 WIF 리소스까지 지워졌고, 30일 소프트 삭제 상태라 같은 이름으로 재생성할 수 없었습니다. gcloud undelete로 Workload Identity Provider를 복구하고 terraform import로 상태 파일에 다시 편입했습니다.',
       },
     ],
+    why: 'PC와 모바일에서 앱 설치 없이 접속하는 웹게임을 직접 만들고, 클라우드에서 운영까지 해 보려고 시작했습니다.',
     tech: ['GCP', 'GKE', 'Terraform', 'KEDA', 'Redis', 'Cloud SQL', 'GitHub Actions'],
     service: {label: '시간 낭비의 숲 플레이하기', href: '/game/'},
   },
@@ -93,7 +97,9 @@ export const projects: Project[] = [
     summary:
       'PCB SMT 제조 협력사의 품질 데이터를 관리하고 AI 이상 탐지를 연계하는 플랫폼 제안·데모입니다. 팀은 GKE 배포와 Key-less CI/CD를 구성했습니다.',
     role: '팀장·PM · 기획·아키텍처 설계·QA·발표',
-    duties: ['사업 시나리오 구성 및 인프라 아키텍처 설계', '7단계 E2E 서비스 검증·QA', '팀 내 기술 이슈 조율', '최종 사업 제안 발표'],
+    duties: ['인프라 아키텍처 설계', '7단계 E2E 서비스 검증·QA', '7인 팀의 기술 이슈 조율', '최종 발표'],
+    lessons:
+      '이전 직장에서 본 제조 공정 경험으로 아이디어를 내 팀원들을 설득했습니다. 짧은 일정에서는 기능 하나보다 전체 서비스의 연계와 완성도를 먼저 챙겼고, 소통과 합리적인 의사결정이 결과로 이어졌습니다.',
     achievements: ['KT Cloud Infra 과정 해커톤 1위'],
     techNote: '팀 기술',
     tech: ['GCP', 'GKE', 'Terraform', 'WIF'],
@@ -119,6 +125,9 @@ export const projects: Project[] = [
       'Helm·Ingress·Argo CD 배포 구성',
     ],
     achievements: ['Ansible 기반 Kubernetes 구성 자동화·DR 복구 동작 검증'],
+    why: 'Ansible 인벤토리를 동적으로 관리하려고 AWS 태그 기반 Dynamic Inventory를 적용했습니다.',
+    lessons:
+      '리소스 태깅이 왜 중요한지 알게 됐습니다. 인프라는 구축보다 장애가 났을 때 얼마나 빠르고 일관되게 복구하느냐가 중요하다는 점을 배웠습니다.',
     techNote: '팀 기술',
     tech: ['AWS', 'OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Argo CD'],
   },
@@ -141,6 +150,10 @@ export const projects: Project[] = [
       'Grafana Alert Rule·Contact Point 구성',
     ],
     achievements: ['노드 장애 감지·이메일 알림 동작 검증'],
+    compact: true,
+    why: '비용 때문에 리소스를 자주 지우고 다시 만들어야 해서, 모니터링 환경 구축을 Ansible로 자동화했습니다.',
+    lessons:
+      '서비스가 동작하는 것만큼, 문제가 생겼을 때 원인을 빨리 찾을 수 있는 환경이 중요하다는 걸 배웠습니다. 매번 같은 환경만 만드는 자동화가 맞는지 고민하다가, 2차 프로젝트에서 동적 인벤토리를 적용했습니다.',
     techNote: '팀 기술',
     tech: ['AWS', 'Ansible', 'Docker Swarm', 'Prometheus', 'Grafana'],
   },
