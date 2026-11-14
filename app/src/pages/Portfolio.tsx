@@ -52,7 +52,7 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
         {project.summary}
       </Text>
       <VStack gap={1}>
-        <Text weight="bold">My role</Text>
+        <Text weight="bold">Key work</Text>
         <List listStyle="disc" density="compact">
           {project.duties.map(duty => (
             <ListItem key={duty} label={<Text>{duty}</Text>} />
