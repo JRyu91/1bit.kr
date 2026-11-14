@@ -47,6 +47,9 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
         <MetadataListItem label="Role">
           <Text>{project.role}</Text>
         </MetadataListItem>
+        <MetadataListItem label="Contribution">
+          <Text>{project.contribution}</Text>
+        </MetadataListItem>
       </MetadataList>
       <Text as="p" textWrap="pretty">
         {project.summary}
