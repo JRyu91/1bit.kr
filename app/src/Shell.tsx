@@ -1,9 +1,10 @@
 import type {ReactNode} from 'react';
 import {AppShell} from '@astryxdesign/core/AppShell';
-import {TopNav, TopNavHeading, TopNavItem} from '@astryxdesign/core/TopNav';
+import {TopNav, TopNavItem} from '@astryxdesign/core/TopNav';
 import {DropdownMenu} from '@astryxdesign/core/DropdownMenu';
 import {Icon} from '@astryxdesign/core/Icon';
-import {CheckIcon, ComputerDesktopIcon, MoonIcon, SunIcon} from '@heroicons/react/24/outline';
+import {Button} from '@astryxdesign/core/Button';
+import {CheckIcon, ComputerDesktopIcon, HomeIcon, MoonIcon, SunIcon} from '@heroicons/react/24/outline';
 
 export type Mode = 'system' | 'light' | 'dark';
 
@@ -14,9 +15,9 @@ const menu = [
   {id: 'contact', label: 'Contact', href: '/contact/'},
 ];
 const modes = [
-  {id: 'system', label: '사용자 설정 따름', icon: ComputerDesktopIcon},
-  {id: 'light', label: '일반 모드', icon: SunIcon},
-  {id: 'dark', label: '다크 모드', icon: MoonIcon},
+  {id: 'system', label: 'System', icon: ComputerDesktopIcon},
+  {id: 'light', label: 'Light', icon: SunIcon},
+  {id: 'dark', label: 'Dark', icon: MoonIcon},
 ] as const;
 
 type Props = {current: string; mode: Mode; onModeChange: (mode: Mode) => void; children: ReactNode};
@@ -29,14 +30,14 @@ export default function Shell({current, mode, onModeChange, children}: Props) {
       height="auto"
       topNav={
         <TopNav
-          label="주요 메뉴"
-          heading={<TopNavHeading heading="유준형" headingHref="/" />}
+          label="Main menu"
+          heading={<Button label="Home" href="/" variant="ghost" isIconOnly icon={<Icon icon={HomeIcon} size="sm" />} />}
           centerContent={menu.map(item => (
             <TopNavItem key={item.id} label={item.label} href={item.href} isSelected={item.id === current} />
           ))}
           endContent={
             <DropdownMenu
-              button={{label: `화면 모드: ${active.label}`, variant: 'ghost', isIconOnly: true, icon: <Icon icon={active.icon} size="sm" />}}
+              button={{label: `Theme: ${active.label}`, variant: 'ghost', isIconOnly: true, icon: <Icon icon={active.icon} size="sm" />}}
               hasChevron={false}
               alignment="end"
               items={modes.map(item => ({

@@ -1,12 +1,13 @@
-// 틀: Astryx `detail-page` 페이지 템플릿(요약 헤더 + 본문 섹션 + 옆 패널).
-import {useMediaQuery} from '@astryxdesign/core/hooks';
-import {Layout, LayoutHeader, LayoutContent, LayoutPanel, VStack, HStack, StackItem, Section} from '@astryxdesign/core/Layout';
+// 틀: Astryx `detail-page` 페이지 템플릿(요약 헤더 + 본문 섹션). 옆 패널 없이 한 열로 읽힌다.
+import {useClipboard, useMediaQuery} from '@astryxdesign/core/hooks';
+
+const EMAIL = 'ujun5190@gmail.com';
+import {Layout, LayoutHeader, LayoutContent, VStack, HStack, StackItem, Section} from '@astryxdesign/core/Layout';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Avatar} from '@astryxdesign/core/Avatar';
 import {Button} from '@astryxdesign/core/Button';
 import {List, ListItem} from '@astryxdesign/core/List';
 import {MetadataList, MetadataListItem} from '@astryxdesign/core/MetadataList';
-import {Collapsible} from '@astryxdesign/core/Collapsible';
 import {Icon} from '@astryxdesign/core/Icon';
 import {ArrowUpRightIcon} from '@heroicons/react/24/outline';
 
@@ -22,14 +23,14 @@ const projects = [
   {id: 'endive', name: '2차 프로젝트', sub: 'ENDIVE-CLOUD', text: '담당: Kubernetes 클러스터 구축·Ansible 자동화.'},
   {id: 'bluebell', name: '1차 프로젝트', sub: 'Bluebell', text: '담당: Monitoring·Alerting 프로비저닝 자동화.'},
 ];
-const skills = [
+const skills: string[][] = [
   ['통신 실무', '통신 장비·광모듈 검증, DWDM'],
   ['클라우드·컨테이너', 'AWS, GCP, OpenStack, Docker, Kubernetes·GKE'],
   ['구성·배포 자동화', 'Terraform, Ansible, GitHub Actions, WIF'],
   ['모니터링', 'Prometheus, Grafana, Alerting'],
   ['기반 환경', 'Linux, 네트워킹'],
 ];
-const credentials = [
+const credentials: string[][] = [
   ['한성대학교 컴퓨터공학과', '2009~2026 · 학사과정 · 2026.08 졸업'],
   ['정보처리기사', '2026.06 취득'],
   ['클라우드 인프라·DevOps 직업훈련', '수강 중 · 2026.12 수료 예정'],
@@ -44,15 +45,12 @@ function Bullet() {
   );
 }
 
-function PageHeader({isNarrow}: {isNarrow: boolean}) {
-  const actions = [
-    <Button key="portfolio" label="Portfolio" variant="primary" href="/portfolio/" />,
-    <Button key="contact" label="Contact" variant="secondary" href="/contact/" />,
-  ];
+function PageHeader() {
+  const {copy, isCopied} = useClipboard({announce: '이메일 주소를 복사했습니다.'});
   return (
-    <LayoutHeader hasDivider padding={4}>
+    <LayoutHeader hasDivider padding={6}>
       <VStack gap={3}>
-        <HStack gap={4} vAlign="center">
+        <HStack gap={4} vAlign="center" wrap="wrap">
           <Avatar src="/profile/portrait.jpeg" name="유준형" size={72} shape="rounded" tooltip={false} />
           <StackItem size="fill">
             <VStack gap={0}>
@@ -66,70 +64,54 @@ function PageHeader({isNarrow}: {isNarrow: boolean}) {
               </HStack>
             </VStack>
           </StackItem>
-          {!isNarrow && <HStack gap={2}>{actions}</HStack>}
+          <Button label={isCopied ? 'Copied' : 'Copy email'} variant="primary" clickAction={async () => {
+              // 복사가 막힌 브라우저에서는 메일 앱으로 넘긴다.
+              if (!(await copy(EMAIL))) location.href = `mailto:${EMAIL}`;
+            }} />
         </HStack>
-        {isNarrow && (
-          <HStack gap={2}>
-            {actions.map(action => (
-              <StackItem key={action.key} size="fill">
-                <VStack hAlign="stretch">{action}</VStack>
-              </StackItem>
-            ))}
-          </HStack>
-        )}
+        <Text as="p" color="secondary" textWrap="pretty">
+          통신 장비 검증·기술지원 경험을 바탕으로 클라우드 인프라·DevOps 직업훈련과 프로젝트를 진행하고 있습니다. Linux와
+          네트워크 기초부터 인프라 구성·배포 자동화까지 직접 적용하며 학습하고 있습니다.
+        </Text>
       </VStack>
     </LayoutHeader>
   );
 }
 
-function PanelContent() {
+function InfoSection({title, note, items, isNarrow}: {title: string; note: string; items: string[][]; isNarrow: boolean}) {
   return (
-    <VStack gap={4}>
-      <Collapsible trigger={<Heading level={4}>기술 스택</Heading>}>
-        <MetadataList label={{position: 'top'}}>
-          {skills.map(([label, value]) => (
+    <Section>
+      <VStack gap={4}>
+        <VStack gap={1}>
+          <Heading level={2}>{title}</Heading>
+          <Text type="supporting">{note}</Text>
+        </VStack>
+        <MetadataList label={{position: isNarrow ? 'top' : 'start', width: isNarrow ? undefined : 200}}>
+          {items.map(([label, value]) => (
             <MetadataListItem key={label} label={label}>
               {value}
             </MetadataListItem>
           ))}
         </MetadataList>
-      </Collapsible>
-      <Collapsible trigger={<Heading level={4}>학력·자격·교육</Heading>}>
-        <MetadataList label={{position: 'top'}}>
-          {credentials.map(([label, value]) => (
-            <MetadataListItem key={label} label={label}>
-              {value}
-            </MetadataListItem>
-          ))}
-        </MetadataList>
-      </Collapsible>
-    </VStack>
+      </VStack>
+    </Section>
   );
 }
 
 export default function Profile() {
-  const isNarrow = useMediaQuery('(max-width: 1024px)');
+  const isNarrow = useMediaQuery('(max-width: 768px)');
   return (
     <Layout
       height="auto"
-      contentWidth={1000}
+      contentWidth={960}
       defaultHasDividers
-      header={<PageHeader isNarrow={isNarrow} />}
+      header={<PageHeader />}
       content={
-        <LayoutContent role="main">
+        <LayoutContent padding={6}>
           <VStack gap={4}>
             <Section>
               <VStack gap={4}>
-                <Heading level={2}>소개</Heading>
-                <Text as="p" textWrap="pretty">
-                  통신 장비 검증·기술지원 경험을 바탕으로, 클라우드 인프라·DevOps 직업훈련과 프로젝트를 진행하고 있습니다.
-                  Linux와 네트워크 기초부터 인프라 구성·배포 자동화까지 직접 적용하며 학습하고 있습니다.
-                </Text>
-              </VStack>
-            </Section>
-            <Section>
-              <VStack gap={4}>
-                <Heading level={2}>실무 경력</Heading>
+                <Heading level={2}>Experience</Heading>
                 <VStack gap={1}>
                   <Heading level={3}>(주)자람테크놀로지</Heading>
                   <Text type="supporting">2017.02~2026.04 · 사업부 품질기술팀 과장</Text>
@@ -144,7 +126,7 @@ export default function Profile() {
             <Section>
               <VStack gap={4}>
                 <VStack gap={1}>
-                  <Heading level={2}>클라우드 프로젝트</Heading>
+                  <Heading level={2}>Cloud Projects</Heading>
                   <Text type="supporting">교육·개인·팀 프로젝트 경험</Text>
                 </VStack>
                 <List hasDividers edge="flush">
@@ -165,21 +147,10 @@ export default function Profile() {
                 </List>
               </VStack>
             </Section>
-            {/* 좁은 화면에서는 옆 패널을 숨기지 않고 본문 끝에 이어 붙인다. */}
-            {isNarrow && (
-              <Section>
-                <PanelContent />
-              </Section>
-            )}
+            <InfoSection title="Skills" note="실무와 프로젝트에서 사용한 기술" items={skills} isNarrow={isNarrow} />
+            <InfoSection title="Education & Certifications" note="취득·수강·준비 상태 구분" items={credentials} isNarrow={isNarrow} />
           </VStack>
         </LayoutContent>
-      }
-      end={
-        isNarrow ? undefined : (
-          <LayoutPanel width={320} padding={4} role="complementary">
-            <PanelContent />
-          </LayoutPanel>
-        )
       }
     />
   );

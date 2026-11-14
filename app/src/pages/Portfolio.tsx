@@ -1,7 +1,6 @@
 // 틀: Astryx `classic-gallery` 페이지 템플릿(가운데 소개 + 필터 탭 + 균일 타일 격자).
 import {useEffect, useState, type CSSProperties} from 'react';
 import {VStack, HStack, Layout, LayoutContent} from '@astryxdesign/core/Layout';
-import {Center} from '@astryxdesign/core/Center';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Grid} from '@astryxdesign/core/Grid';
 import {Section} from '@astryxdesign/core/Section';
@@ -15,13 +14,6 @@ import {Dialog, DialogHeader} from '@astryxdesign/core/Dialog';
 import {List, ListItem} from '@astryxdesign/core/List';
 import {projects, type Project} from '../data/projects';
 
-const outer: CSSProperties = {
-  maxWidth: 1200,
-  width: '100%',
-  paddingInline: 'var(--spacing-6)',
-  paddingBlock: 'var(--spacing-8)',
-};
-const textCenter: CSSProperties = {textAlign: 'center'};
 // 도면은 흰 바탕 그림이라 다크 모드에서도 흰 판 위에 올린다.
 const cover: CSSProperties = {width: '100%', height: '100%', objectFit: 'contain', backgroundColor: 'var(--color-on-dark)'};
 const frame: CSSProperties = {width: '100%', height: '72dvh', border: 0, display: 'block'};
@@ -41,28 +33,28 @@ export default function Portfolio() {
     <>
       <Layout
         height="auto"
+        contentWidth={1100}
         content={
-          <LayoutContent padding={0}>
-            <Center axis="horizontal">
-              <VStack gap={8} style={outer}>
-                <Center axis="horizontal">
+          <LayoutContent padding={6}>
+              <VStack gap={8}>
+                <VStack hAlign="center">
                   <Section variant="transparent" maxWidth={680} padding={0}>
-                    <VStack gap={4} hAlign="center" style={textCenter}>
+                    <VStack gap={4} hAlign="center">
                       <VStack gap={2} hAlign="center">
-                        <Heading level={1}>프로젝트</Heading>
-                        <Text type="body" color="secondary">
+                        <Heading level={1} justify="center">Portfolio</Heading>
+                        <Text type="body" color="secondary" justify="center">
                           운영 인프라를 설계하고, 구축과 배포를 자동화한 작업들입니다. 각 프로젝트에서 직접 맡은 업무와 팀의
                           전체 구성을 구분해 정리했습니다. PDF는 발표 당시 기준의 최종 원본입니다.
                         </Text>
                       </VStack>
                       <TabList value={filter} onChange={value => setFilter(value as Filter)}>
-                        <Tab value="all" label="전체" />
-                        <Tab value="personal" label="개인" />
-                        <Tab value="team" label="팀" />
+                        <Tab value="all" label="All" />
+                        <Tab value="personal" label="Personal" />
+                        <Tab value="team" label="Team" />
                       </TabList>
                     </VStack>
                   </Section>
-                </Center>
+                </VStack>
                 <Grid columns={{minWidth: 320, max: 2}} columnGap={6} rowGap={10}>
                   {shown.map(project => (
                     <VStack key={project.id} id={project.id} as="article" gap={4}>
@@ -93,9 +85,9 @@ export default function Portfolio() {
                         ))}
                       </HStack>
                       <HStack gap={4} wrap="wrap" vAlign="center">
-                        <Button label="발표자료 보기" variant="primary" onClick={() => setOpen(project)} />
+                        <Button label="View slides" variant="primary" onClick={() => setOpen(project)} />
                         <Link href={project.pdf} download>
-                          다운로드 {project.size}
+                          Download {project.size}
                         </Link>
                         {project.service && <Link href={project.service.href}>{project.service.label}</Link>}
                       </HStack>
@@ -103,7 +95,6 @@ export default function Portfolio() {
                   ))}
                 </Grid>
               </VStack>
-            </Center>
           </LayoutContent>
         }
       />
@@ -116,7 +107,7 @@ export default function Portfolio() {
                 title={open.name}
                 subtitle="자료가 표시되지 않으면 원본 열기를 이용해 주세요."
                 onOpenChange={() => setOpen(null)}
-                endContent={<Button label="원본 열기" size="sm" href={open.pdf} target="_blank" />}
+                endContent={<Button label="Open original" size="sm" href={open.pdf} target="_blank" />}
               />
             }
             content={
