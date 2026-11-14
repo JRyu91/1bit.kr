@@ -29,7 +29,7 @@ function MetricCard({label, value, note}: {label: string; value: string; note: s
     <Card>
       <VStack gap={2}>
         <Text type="label">{label}</Text>
-        <Text type="display-3" color="accent">
+        <Text type="display-3" size="2xl" weight="bold" color="accent">
           {value}
         </Text>
         <Text type="supporting" color="secondary">
