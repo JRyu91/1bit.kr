@@ -6,6 +6,7 @@ export type Project = {
   title: string;
   period: string;
   team: string;
+  contribution: string;
   inProgress?: boolean;
   pdf?: string;
   size?: string;
@@ -33,6 +34,7 @@ export const projects: Project[] = [
     title: '식품·제조업 SaaS를 위한 멀티클라우드 SI 인프라',
     period: '2026.09.07~',
     team: '6인',
+    contribution: '35%',
     inProgress: true,
     image: '/projects/final-architecture.webp',
     imageFull: '/projects/final-architecture-full.webp',
@@ -56,6 +58,7 @@ export const projects: Project[] = [
     title: '시간 낭비의 숲 · 웹게임 운영 인프라',
     period: '2026.08.24~09.06',
     team: '1인',
+    contribution: '100%',
     pdf: '/projects/Personal%20Project_web-game.pdf',
     size: '3.6MB',
     image: '/projects/personal-architecture.webp',
@@ -90,6 +93,7 @@ export const projects: Project[] = [
     title: 'Partnerhub Cloud · AI 제조 공정 품질관리 SaaS',
     period: '2026.08.19~08.21',
     team: '7인',
+    contribution: '30%',
     pdf: '/projects/Hackathon_Team%20Eclipse.pdf',
     size: '1.9MB',
     image: '/projects/hackathon-architecture.webp',
@@ -111,6 +115,7 @@ export const projects: Project[] = [
     title: 'ENDIVE-CLOUD · AWS 멀티리전 DR 인프라',
     period: '2026.07.15~08.18',
     team: '5인',
+    contribution: '20%',
     pdf: '/projects/2st%20Project_Team%20Endive.pdf',
     size: '11.3MB',
     image: '/projects/endive-architecture.webp',
@@ -138,6 +143,7 @@ export const projects: Project[] = [
     title: 'Bluebell · AWS·온프레미스 하이브리드 3-Tier 인프라',
     period: '2026.06.11~07.14',
     team: '5인',
+    contribution: '20%',
     pdf: '/projects/1st%20Project_Team%20Bluebell.pdf',
     size: '5.6MB',
     image: '/projects/bluebell-architecture.webp',

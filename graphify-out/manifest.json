@@ -342,9 +342,9 @@
     "semantic_hash": ""
   },
   "app/src/pages/Portfolio.tsx": {
-    "mtime": 1794669823.144063,
-    "seen": 1794669824.385292,
-    "ast_hash": "51a4f2088a282a4f6a79fe77b3ec58de",
+    "mtime": 1794669998.3398125,
+    "seen": 1794670011.300103,
+    "ast_hash": "6a5bbee362c14780b4d1d4cffd6312ad",
     "semantic_hash": ""
   },
   "app/src/pages/Profile.tsx": {
@@ -504,9 +504,9 @@
     "semantic_hash": ""
   },
   "app/src/data/projects.ts": {
-    "mtime": 1794669015.8167942,
-    "seen": 1794669240.847189,
-    "ast_hash": "80e74ec0dc75606fc495cdd8145f6dd0",
+    "mtime": 1794669998.3396857,
+    "seen": 1794670011.300043,
+    "ast_hash": "b6bbc9a666e95621d671de630e718c5c",
     "semantic_hash": ""
   },
   "projects/final-architecture-full.webp": {
