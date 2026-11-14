@@ -277,7 +277,8 @@ export const onebitTheme = {
         "lineHeight": "var(--text-display-3-leading)"
       },
       "base": {
-        "letterSpacing": "-0.02em"
+        "letterSpacing": "-0.02em",
+        "wordBreak": "keep-all"
       }
     },
     "text": {
@@ -320,6 +321,9 @@ export const onebitTheme = {
         "fontFamily": "var(--font-family-heading)",
         "fontSize": "var(--text-display-3-size)",
         "lineHeight": "var(--text-display-3-leading)"
+      },
+      "base": {
+        "wordBreak": "keep-all"
       }
     },
     "item": {

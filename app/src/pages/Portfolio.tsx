@@ -38,9 +38,15 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
   return (
     <VStack gap={4}>
       <MetadataList>
-        <MetadataListItem label="Period">{project.period}</MetadataListItem>
-        <MetadataListItem label="Team">{project.team}</MetadataListItem>
-        <MetadataListItem label="Role">{project.role}</MetadataListItem>
+        <MetadataListItem label="Period">
+          <Text>{project.period}</Text>
+        </MetadataListItem>
+        <MetadataListItem label="Team">
+          <Text>{project.team}</Text>
+        </MetadataListItem>
+        <MetadataListItem label="Role">
+          <Text>{project.role}</Text>
+        </MetadataListItem>
       </MetadataList>
       <Text as="p" textWrap="pretty">
         {project.summary}
