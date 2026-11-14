@@ -336,21 +336,21 @@
     "semantic_hash": ""
   },
   "app/src/pages/Home.tsx": {
-    "mtime": 1794665833.6503122,
-    "seen": 1794665834.984322,
-    "ast_hash": "2a893c00c3b095632124eefd0cd964b5",
+    "mtime": 1794666889.7076812,
+    "seen": 1794667598.891055,
+    "ast_hash": "35179912fdd98f8f64f68198f4e04547",
     "semantic_hash": ""
   },
   "app/src/pages/Portfolio.tsx": {
-    "mtime": 1794664259.5744267,
-    "seen": 1794664529.117337,
-    "ast_hash": "325821a986aeaba1bdb0baaf9c10fcec",
+    "mtime": 1794667549.57247,
+    "seen": 1794667598.891057,
+    "ast_hash": "2c3c1d2a52a5a4ab9c888a3420b4ee44",
     "semantic_hash": ""
   },
   "app/src/pages/Profile.tsx": {
-    "mtime": 1794665833.6505504,
-    "seen": 1794665834.984343,
-    "ast_hash": "7e2201f32b002d6ea0364eb7bd39e929",
+    "mtime": 1794667549.572354,
+    "seen": 1794667598.891058,
+    "ast_hash": "07dd20ae0e42aece35620309a0da535d",
     "semantic_hash": ""
   },
   "app/src/themes/onebit/onebit.css.d.ts": {
@@ -504,9 +504,21 @@
     "semantic_hash": ""
   },
   "app/src/data/projects.ts": {
-    "mtime": 1794621517.324907,
-    "seen": 1794658678.764395,
-    "ast_hash": "3581956dbb689cb62d3141379696c516",
+    "mtime": 1794667549.572207,
+    "seen": 1794667598.8910122,
+    "ast_hash": "eb5c771e50c72182c0a5786103fdb571",
+    "semantic_hash": ""
+  },
+  "projects/final-architecture-full.webp": {
+    "mtime": 1794666823.5795014,
+    "seen": 1794667598.892291,
+    "ast_hash": "3c319be8ff43def941d652bb05fd2736",
+    "semantic_hash": ""
+  },
+  "projects/final-architecture.webp": {
+    "mtime": 1794666823.163124,
+    "seen": 1794667598.8922932,
+    "ast_hash": "5490f2022cd9b5280faebeabbb262e4b",
     "semantic_hash": ""
   }
 }
