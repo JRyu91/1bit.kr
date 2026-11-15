@@ -1,5 +1,6 @@
 // 틀: Astryx `classic-gallery` 페이지 템플릿(가운데 소개) + 프로젝트별 한 열 상세(헤더 → 도면|본문).
 import {useEffect, useState, type CSSProperties} from 'react';
+import {useMediaQuery} from '@astryxdesign/core/hooks';
 import {VStack, HStack, Layout, LayoutContent} from '@astryxdesign/core/Layout';
 import {Text, Heading} from '@astryxdesign/core/Text';
 import {Grid} from '@astryxdesign/core/Grid';
@@ -21,12 +22,13 @@ const cover: CSSProperties = {width: '100%', height: '100%', objectFit: 'contain
 const frame: CSSProperties = {width: '100%', height: '72dvh', border: 0, display: 'block'};
 // 해시로 들어올 때 sticky 상단 바에 제목이 가리지 않게 한다.
 // --_app-shell-header-height 는 AppShell 이 상단 바를 재서 넣는 내부 변수라 Astryx 올릴 때 이름이 그대로인지 확인할 것.
+const stickyFigure: CSSProperties = {position: 'sticky', top: 'calc(var(--_app-shell-header-height, 0px) + var(--spacing-4))', alignSelf: 'start'};
 const anchor: CSSProperties = {scrollMarginTop: 'calc(var(--_app-shell-header-height, 0px) + var(--spacing-4))'};
 
 function Note({title, children}: {title: string; children: string}) {
   return (
     <VStack gap={1}>
-      <Text weight="bold">{title}</Text>
+      <Heading level={4}>{title}</Heading>
       <Text as="p" type="supporting" textWrap="pretty">
         {children}
       </Text>
@@ -55,7 +57,7 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
         {project.summary}
       </Text>
       <VStack gap={1}>
-        <Text weight="bold">Key work</Text>
+        <Heading level={4}>Key work</Heading>
         <List listStyle="disc" density="compact">
           {project.duties.map(duty => (
             <ListItem key={duty} label={<Text>{duty}</Text>} />
@@ -85,14 +87,14 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
       </HStack>
       <HStack gap={4} wrap="wrap" vAlign="center">
         {project.pdf ? (
-          <Button label="View slides" variant="primary" onClick={onSlides} />
+          <Button label="View slides" variant="secondary" onClick={onSlides} />
         ) : (
-          <Button label="View architecture" variant="primary" onClick={onZoom} />
+          <Button label="View architecture" variant="secondary" onClick={onZoom} />
         )}
         {project.pdf && project.compact && <Button label="View architecture" variant="secondary" onClick={onZoom} />}
         {project.pdf && (
           <Link href={project.pdf} download>
-            Download {project.size}
+            Slides PDF {project.size}
           </Link>
         )}
         {project.service && <Link href={project.service.href}>{project.service.label}</Link>}
@@ -102,6 +104,8 @@ function Details({project, onZoom, onSlides}: {project: Project; onZoom: () => v
 }
 
 function ProjectArticle({project, onZoom, onSlides}: {project: Project; onZoom: () => void; onSlides: () => void}) {
+  // 도면|본문 2열일 때만 도면을 고정한다. 한 열로 쌓이면 고정된 도면이 글을 덮는다(격자 최소 폭 320×2 + 간격).
+  const isTwoColumn = useMediaQuery('(min-width: 720px)');
   const details = <Details project={project} onZoom={onZoom} onSlides={onSlides} />;
   return (
     <VStack id={project.id} as="article" gap={4} style={anchor}>
@@ -111,25 +115,25 @@ function ProjectArticle({project, onZoom, onSlides}: {project: Project; onZoom: 
             {project.tag}
           </Text>
           {project.inProgress && (
-            <Text type="supporting" color="accent">
+            <Text type="supporting">
               · In progress
             </Text>
           )}
         </HStack>
         <Heading level={2}>{project.title}</Heading>
         {project.achievements && (
-          <Text type="supporting" color="accent" weight="bold">
+          <Text type="supporting" color="primary" weight="bold">
             {project.achievements.join(' · ')}
           </Text>
         )}
       </VStack>
       {/* 1차처럼 짧게 보여줄 프로젝트는 큰 도면 대신 View architecture 버튼만 둔다. */}
       {project.compact ? (
-        details
+        <VStack maxWidth={720}>{details}</VStack>
       ) : (
         <Grid columns={{minWidth: 320, max: 2}} gap={6}>
-          {/* 격자 칸 높이만큼 카드가 늘어나지 않게 한 번 감싼다. */}
-          <VStack>
+          {/* 격자 칸 높이만큼 늘어나지 않게 감싸고, 긴 본문을 읽는 동안 도면이 따라오게 sticky로 둔다. */}
+          <VStack style={isTwoColumn ? stickyFigure : undefined}>
             <ClickableCard label={`${project.title} 아키텍처 확대`} padding={0} onClick={onZoom}>
               <AspectRatio ratio={3 / 2}>
                 <img style={cover} src={project.image} alt={project.alt} loading="lazy" />
@@ -157,7 +161,8 @@ export default function Portfolio() {
         height="auto"
         contentWidth={1100}
         content={
-          <LayoutContent padding={6}>
+          // 도면 sticky가 페이지 스크롤을 따라가도록 본문 영역 자체 스크롤을 끈다.
+          <LayoutContent padding={6} isScrollable={false}>
             <VStack gap={8}>
               <VStack hAlign="center">
                 <VStack gap={2} hAlign="center" maxWidth={680} width="100%">
