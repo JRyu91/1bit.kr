@@ -16,13 +16,13 @@ export const onebitTheme = defineTheme({
     // 맑은 고딕은 Regular/Bold 두 굵기뿐이라 중간 굵기를 쓰지 않는다.
     heading: {weight: 'bold'},
   },
-  // 포인트 색: 클라우드·인프라 톤의 딥 틸 블루. 다크 모드는 밝은 틸로, 그 위 글자는 어둡게.
+  // 포인트 색: 포트폴리오 PDF와 같은 계열의 진한 그린. 다크 모드는 밝은 그린으로, 그 위 글자는 어둡게.
   tokens: {
-    '--color-accent': ['#0B6E8A', '#5FC3DD'],
-    '--color-on-accent': ['#FFFFFF', '#0A1317'],
-    // Neutral 은 강조 글자를 검정/흰색으로 고정해 둬서 따로 맞춘다. 흰 바탕 대비 5.6:1.
-    '--color-text-accent': ['#0B6E8A', '#5FC3DD'],
-    '--color-icon-accent': ['#0B6E8A', '#5FC3DD'],
+    '--color-accent': ['#2F6B3E', '#7DC895'],
+    '--color-on-accent': ['#FFFFFF', '#0B140E'],
+    // Neutral 은 강조 글자를 검정/흰색으로 고정해 둬서 따로 맞춘다.
+    '--color-text-accent': ['#2F6B3E', '#7DC895'],
+    '--color-icon-accent': ['#2F6B3E', '#7DC895'],
   },
   // 맑은 고딕 Bold는 큰 크기에서 자간이 넓어 보여 살짝 조인다.
   // 한글은 단어 중간에서 줄이 바뀌지 않게 어절 단위로 끊는다.

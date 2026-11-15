@@ -1,3 +1,5 @@
+import {keepDots} from '../text';
+
 // Home·Profile·Portfolio 가 같이 쓰는 프로젝트 데이터. 배열 순서 = 화면 순서(진행 중 → 최근 → 1차).
 export type Project = {
   id: string;
@@ -26,7 +28,7 @@ export type Project = {
   service?: {label: string; href: string};
 };
 
-export const projects: Project[] = [
+const raw: Project[] = [
   {
     id: 'final',
     category: 'team',
@@ -48,7 +50,7 @@ export const projects: Project[] = [
       'Terraform 기반 Working/Standby 인프라 프로비저닝 구현',
       '기술 이슈 검토 및 인프라 구성 방향 협의',
     ],
-    techNote: '팀 기술',
+    techNote: 'Team stack',
     tech: ['AWS', 'EKS', 'KT Cloud', 'Terraform', 'Istio', 'Argo CD', 'Karpenter', 'Harbor', 'Prometheus', 'Grafana'],
   },
   {
@@ -64,7 +66,7 @@ export const projects: Project[] = [
     image: '/projects/personal-architecture.webp',
     alt: 'GKE 홈 채널·확장 채널, Redis와 Cloud SQL 연결 아키텍처',
     summary:
-      '웹게임의 접속 세션을 유지하며 채널 수를 조절하는 운영 인프라입니다. 홈 채널은 온디맨드, 확장 채널은 Spot 노드풀에 배치했습니다.',
+      '웹게임의 접속 세션을 유지하며 채널 수를 조절하는 운영 인프라입니다. 홈 채널은 On-Demand, 확장 채널은 Spot 노드풀에 배치했습니다.',
     role: '개인 수행 · 인프라 설계·구축·운영',
     duties: [
       'Terraform으로 GCP 인프라 구성',
@@ -105,7 +107,7 @@ export const projects: Project[] = [
     lessons:
       '이전 직장에서 본 제조 공정 경험으로 아이디어를 내 팀원들을 설득했습니다. 짧은 일정에서는 기능 하나보다 전체 서비스의 연계와 완성도를 먼저 챙겼고, 소통과 합리적인 의사결정이 결과로 이어졌습니다.',
     achievements: ['KT Cloud Infra 과정 해커톤 1위'],
-    techNote: '팀 기술',
+    techNote: 'Team stack',
     tech: ['GCP', 'GKE', 'Terraform', 'WIF'],
   },
   {
@@ -133,14 +135,14 @@ export const projects: Project[] = [
     why: 'Ansible 인벤토리를 동적으로 관리하려고 AWS 태그 기반 Dynamic Inventory를 적용했습니다.',
     lessons:
       '리소스 태깅이 왜 중요한지 알게 됐습니다. 인프라는 구축보다 장애가 났을 때 얼마나 빠르고 일관되게 복구하느냐가 중요하다는 점을 배웠습니다.',
-    techNote: '팀 기술',
+    techNote: 'Team stack',
     tech: ['AWS', 'OpenStack', 'Kubernetes', 'Terraform', 'Ansible', 'Argo CD'],
   },
   {
     id: 'bluebell',
     category: 'team',
     tag: '1st Project',
-    title: 'Bluebell · AWS·온프레미스 하이브리드 3-Tier 인프라',
+    title: 'Bluebell · AWS·온프레미스 하이브리드 3\u2011Tier 인프라',
     period: '2026.06.11~07.14',
     team: '5인',
     contribution: '20%',
@@ -148,7 +150,7 @@ export const projects: Project[] = [
     size: '5.6MB',
     image: '/projects/bluebell-architecture.webp',
     alt: 'AWS Web·WAS·DB 3-Tier와 Prometheus·Grafana 모니터링 아키텍처',
-    summary: 'AWS·온프레미스 3-Tier 환경의 구축·배포·장애복구 자동화 프로젝트입니다. 팀의 서비스 흐름에 모니터링과 알림 구성을 연결했습니다.',
+    summary: 'AWS·온프레미스 3-Tier 환경의 구축·배포·장애복구 자동화 프로젝트입니다. 팀이 만든 서비스에 모니터링·알림 구성을 연결했습니다.',
     role: 'Monitoring·Alerting 자동화',
     duties: [
       'Prometheus·Grafana로 서버·컨테이너·DB 메트릭 수집·대시보드 구성',
@@ -160,7 +162,12 @@ export const projects: Project[] = [
     why: '비용 때문에 리소스를 자주 지우고 다시 만들어야 해서, 모니터링 환경 구축을 Ansible로 자동화했습니다.',
     lessons:
       '서비스가 동작하는 것만큼, 문제가 생겼을 때 원인을 빨리 찾을 수 있는 환경이 중요하다는 걸 배웠습니다. 매번 같은 환경만 만드는 자동화가 맞는지 고민하다가, 2차 프로젝트에서 동적 인벤토리를 적용했습니다.',
-    techNote: '팀 기술',
+    techNote: 'Team stack',
     tech: ['AWS', 'Ansible', 'Docker Swarm', 'Prometheus', 'Grafana'],
   },
 ];
+
+// 화면에 나가는 문자열 전체에 가운뎃점 줄바꿈 보정을 건다(경로·id에는 가운뎃점이 없다).
+const fix = (value: unknown): unknown =>
+  typeof value === 'string' ? keepDots(value) : Array.isArray(value) ? value.map(fix) : value && typeof value === 'object' ? Object.fromEntries(Object.entries(value).map(([k, v]) => [k, fix(v)])) : value;
+export const projects = raw.map(fix) as Project[];

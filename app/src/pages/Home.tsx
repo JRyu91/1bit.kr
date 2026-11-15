@@ -11,6 +11,7 @@ import {Icon} from '@astryxdesign/core/Icon';
 import {AspectRatio} from '@astryxdesign/core/AspectRatio';
 import {ArrowRightIcon} from '@heroicons/react/20/solid';
 import {projects} from '../data/projects';
+import {keepDots} from '../text';
 
 const heroImage: CSSProperties = {width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated'};
 // 도면은 흰 바탕 그림이라 다크 모드에서도 흰 판 위에 올린다.
@@ -21,7 +22,7 @@ const metrics = [
   {label: 'Cloud Projects', value: '5건', note: '진행 중 1 포함 · 해커톤 1위'},
   {label: 'Certification', value: '정보처리기사', note: '2026.06 취득 · AWS SAA-C03 준비 중'},
   {label: 'Training', value: '2026.05~12', note: 'KT Cloud Infra 과정 · 2026.05.12~12.03 수료 예정'},
-];
+].map(m => ({...m, note: keepDots(m.note)}));
 const featured = projects.filter(project => project.id === 'final' || project.id === 'personal');
 
 function MetricCard({label, value, note}: {label: string; value: string; note: string}) {
@@ -29,7 +30,7 @@ function MetricCard({label, value, note}: {label: string; value: string; note: s
     <Card>
       <VStack gap={2}>
         <Text type="label">{label}</Text>
-        <Text type="display-3" size="xl" weight="bold" color="accent">
+        <Text size="xl" weight="bold" color="accent">
           {value}
         </Text>
         <Text type="supporting" color="secondary">
@@ -65,7 +66,7 @@ export default function Home() {
                   유준형
                 </Heading>
                 <Text type="body" color="secondary" justify="center" textWrap="balance">
-                  통신 장비 검증·기술지원 약 9년의 경험을 바탕으로, 클라우드 인프라·DevOps 직무를 준비합니다.
+                  {keepDots('통신 장비 검증·기술지원 약 9년의 경험을 바탕으로, 클라우드 엔지니어·SE·DevOps 직무를 준비합니다.')}
                 </Text>
               </VStack>
               <HStack gap={3} wrap="wrap" hAlign="center">
@@ -103,16 +104,14 @@ export default function Home() {
                             {project.tag}
                           </Text>
                           {(project.inProgress || project.service) && (
-                            <Text type="supporting" color="accent">
+                            <Text type="supporting">
                               {project.inProgress ? '· In progress' : '· Live'}
                             </Text>
                           )}
                         </HStack>
                         <Heading level={3}>{project.title}</Heading>
                         <Text type="supporting">{`${project.period} · ${project.team}`}</Text>
-                        <Text type="label" color="accent">
-                          {project.role}
-                        </Text>
+                        <Text type="supporting">{project.role}</Text>
                       </VStack>
                     </VStack>
                   </ClickableCard>
